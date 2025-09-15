@@ -1,7 +1,6 @@
-main(){}
-
 #include <a_samp>
 #include <a_mysql>
+#include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
 public OnGameModeInit()
 {
