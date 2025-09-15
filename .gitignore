@@ -1,13 +1,8 @@
 *.ini
-*.dll
-*.so
 *.exe
 *.cfg
 *.txt
 /scriptfiles
-/plugins
-/pawno/*
-!/pawno/include/
 /logs
 /.vscode
 /gamemodes/*.amx

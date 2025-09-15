@@ -1,3 +1,5 @@
+main(){}
+
 #include <a_samp>
 
 public OnGameModeInit()
