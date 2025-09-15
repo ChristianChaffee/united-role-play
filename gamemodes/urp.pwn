@@ -1,6 +1,7 @@
 main(){}
 
 #include <a_samp>
+#include <a_mysql>
 
 public OnGameModeInit()
 {
