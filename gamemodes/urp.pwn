@@ -10,7 +10,7 @@ public OnGameModeInit()
 
 public OnGameModeExit()
 {
-	return 1;
+	return 2;
 }
 
 public OnPlayerRequestClass(playerid, classid)
