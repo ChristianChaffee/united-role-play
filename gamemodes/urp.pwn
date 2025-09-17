@@ -1,25 +1,37 @@
+#pragma warning disable 239
+
 #include <a_samp>
 #include <a_mysql>
+#include <mdialog>
+#include <Pawn.Regex>
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
+
+#include "..\library\source\colors_new.inc"
+#include "..\library\source\global_new.inc"
+#include "..\library\source\dialogs_new.inc"
+#include "..\library\source\database\database_new.inc"
+#include "..\library\source\player\player_new.inc"
+
+#include "..\library\source\player\player_functions.inc"
+
+#include "..\library\source\database\database_hooks.inc"
+//==============================================================================
+
+#include "..\library\systems\skin_select_system\skin_select_new.inc"
+#include "..\library\systems\registration_system\registration_new.inc"
 
 public OnGameModeInit()
 {
-	// Don't use these lines if it's a filterscript
-	SetGameModeText("Blank Script");
-	AddPlayerClass(0, 1958.3783, 1343.1572, 15.3746, 269.1425, 0, 0, 0, 0, 0, 0);
 	return 1;
 }
 
 public OnGameModeExit()
 {
-	return 2;
+	return 1;
 }
 
 public OnPlayerRequestClass(playerid, classid)
 {
-	SetPlayerPos(playerid, 1958.3783, 1343.1572, 15.3746);
-	SetPlayerCameraPos(playerid, 1958.3783, 1343.1572, 15.3746);
-	SetPlayerCameraLookAt(playerid, 1958.3783, 1343.1572, 15.3746);
 	return 1;
 }
 
@@ -202,3 +214,16 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 {
 	return 1;
 }
+
+#include "..\library\systems\registration_system\registration_publics.inc"
+
+#include "..\library\systems\registration_system\registration_dialogs.inc"
+
+#include "..\library\systems\skin_select_system\skin_select_functions.inc"
+#include "..\library\systems\registration_system\registration_functions.inc"
+
+#include "..\library\systems\skin_select_system\skin_select_hooks.inc"
+#include "..\library\systems\registration_system\registration_hooks.inc"
+
+//==============================================================================
+#include "..\library\source\mapping\spawn.inc"
