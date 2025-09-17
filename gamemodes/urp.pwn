@@ -4,6 +4,7 @@
 #include <a_mysql>
 #include <mdialog>
 #include <Pawn.Regex>
+#include <Pawn.CMD>
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
 #include "..\library\source\colors_new.inc"
