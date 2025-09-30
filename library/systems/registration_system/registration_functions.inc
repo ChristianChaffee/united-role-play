@@ -1,20 +1,4 @@
 
-stock Registration:LoadPlayer(playerid, Cache:cache_id){
-	cache_set_active(cache_id);
-
-	cache_get_value_name(0, "name", GetPlayerData(playerid, p_name));
-	cache_get_value_name(0, "email", GetPlayerData(playerid, p_email));
-	cache_get_value_name_int(0, "nationality", GetPlayerData(playerid, p_nationality));
-	cache_get_value_name_int(0, "age", GetPlayerData(playerid, p_age));
-	cache_get_value_name_int(0, "skin", GetPlayerData(playerid, p_skin));
-	cache_get_value_name_int(0, "sex", GetPlayerData(playerid, p_sex));
-
-	cache_delete(cache_id);
-
-	SetPlayerSpawn(playerid, SPAWN_TYPE_STANDART);
-	return true;
-}
-
 stock Registration:ShowRegPassword(playerid){
 	big_string[0] = EOS;
 

@@ -19,6 +19,7 @@ enum player_info_struct
 	p_age,
 	p_skin,
 	p_sex,
+	p_money,
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };

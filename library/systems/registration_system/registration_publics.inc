@@ -23,7 +23,7 @@ public CheckAccountPassword(playerid){
 		return false;
 	}
 	else{
-		Registration:LoadPlayer(playerid, cache_save());
+		LoadPlayer(playerid, cache_save());
 		return true;
 	}
 }

@@ -1,10 +1,13 @@
 #pragma warning disable 239
 
+forward OnPlayerAccountLoaded(playerid);
+
 #include <a_samp>
 #include <a_mysql>
 #include <mdialog>
 #include <Pawn.Regex>
 #include <Pawn.CMD>
+#include <streamer>
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
 #include "..\library\source\colors_new.inc"
@@ -20,6 +23,9 @@
 
 #include "..\library\systems\skin_select_system\skin_select_new.inc"
 #include "..\library\systems\registration_system\registration_new.inc"
+#include "..\library\systems\inventory_system\inventory_new.inc"
+#include "..\library\systems\inventory_system\inventory_items\inventory_items_new.inc"
+#include "..\library\systems\inventory_system\drop_items\drop_items_new.inc"
 
 public OnGameModeInit()
 {
@@ -216,15 +222,28 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 	return 1;
 }
 
+stock OnPlayerAccountLoaded(playerid)
+{
+	#pragma unused playerid
+	return 1;
+}
+
 #include "..\library\systems\registration_system\registration_publics.inc"
+#include "..\library\systems\inventory_system\inventory_items\inventory_items_publics.inc"
 
 #include "..\library\systems\registration_system\registration_dialogs.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_functions.inc"
 #include "..\library\systems\registration_system\registration_functions.inc"
+#include "..\library\systems\inventory_system\inventory_functions.inc"
+#include "..\library\systems\inventory_system\inventory_items\inventory_items_functions.inc"
+#include "..\library\systems\inventory_system\drop_items\drop_items_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
+#include "..\library\systems\inventory_system\inventory_hooks.inc"
+
+#include "..\library\systems\inventory_system\inventory_commands.inc"
 
 //==============================================================================
 #include "..\library\source\mapping\spawn.inc"
