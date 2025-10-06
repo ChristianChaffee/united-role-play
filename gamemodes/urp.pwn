@@ -28,6 +28,8 @@
 
 public OnGameModeInit()
 {
+	Streamer_SetVisibleItems(STREAMER_TYPE_OBJECT, 1000);
+	Streamer_SetMaxItems(STREAMER_TYPE_OBJECT, 1000);
 	return 1;
 }
 
@@ -249,3 +251,11 @@ stock OnPlayerAccountLoaded(playerid)
 
 //==============================================================================
 #include "..\library\source\mapping\spawn.inc"
+#include "..\library\source\mapping\bank_int.inc"
+
+#warning TEST_CMD
+CMD:tpt(playerid){
+	SetPlayerVirtualWorld(playerid, 5);
+	SetPlayerInterior(playerid, 5);
+	SetPlayerPos(playerid, 1319.4584, 11.6674, 2068.5129);
+}
