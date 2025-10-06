@@ -26,6 +26,7 @@
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_new.inc"
 #include "..\library\systems\inventory_system\drop_items\drop_items_new.inc"
 #include "..\library\systems\enter_exits_system\enter_exits_new.inc"
+#include "..\library\systems\bank_system\bank_system_new.inc"
 
 public OnGameModeInit()
 {
@@ -241,8 +242,10 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ){
 #include "..\library\systems\inventory_system\inventory_items\inventory_items_publics.inc"
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_publics.inc"
 #include "..\library\systems\enter_exits_system\enter_exits_publics.inc"
+#include "..\library\systems\bank_system\bank_system_publics.inc"
 
 #include "..\library\systems\registration_system\registration_dialogs.inc"
+#include "..\library\systems\bank_system\bank_system_dialogs.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_functions.inc"
 #include "..\library\systems\registration_system\registration_functions.inc"
@@ -251,12 +254,14 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ){
 #include "..\library\systems\inventory_system\drop_items\drop_items_functions.inc"
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_functions.inc"
 #include "..\library\systems\enter_exits_system\enter_exits_functions.inc"
+#include "..\library\systems\bank_system\bank_system_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
 #include "..\library\systems\inventory_system\inventory_hooks.inc"
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_hooks.inc"
 #include "..\library\systems\enter_exits_system\enter_exits_hooks.inc"
+#include "..\library\systems\bank_system\bank_system_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 
