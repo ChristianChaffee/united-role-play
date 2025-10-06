@@ -230,7 +230,7 @@ stock OnPlayerAccountLoaded(playerid)
 	return 0;
 }
 
-stock OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ){
+public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ){
 	SetPlayerPosFindZ(playerid, fX, fY, fZ);
 	SetPlayerInterior(playerid, 0);
 	SetPlayerVirtualWorld(playerid, 0);

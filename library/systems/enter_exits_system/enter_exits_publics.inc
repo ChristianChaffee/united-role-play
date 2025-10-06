@@ -2,6 +2,7 @@
 forward LoadEnterExits();
 public LoadEnterExits(){
 	new rows, tick_time = GetTickCount();
+	cache_get_row_count(rows);
 
 	if(rows > MAX_ENTER_EXITS_COUNT){
 		printf("[LoadEnterExits - ERROR]: Количество записей в базе данных превышает размер массива (%d > %d)", rows, MAX_ENTER_EXITS_COUNT);
