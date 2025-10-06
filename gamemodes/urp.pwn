@@ -48,6 +48,8 @@ public OnPlayerRequestClass(playerid, classid)
 
 public OnPlayerConnect(playerid)
 {
+	ApplyAnimation(playerid, "DEALER", "_", 4.1, 1, 1, 1, 1, 1);
+	ApplyAnimation(playerid, "PED", "_", 4.1, 1, 1, 1, 1, 1);
 	return 1;
 }
 
