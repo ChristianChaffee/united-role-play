@@ -25,6 +25,7 @@
 #include "..\library\systems\inventory_system\inventory_items\inventory_items_new.inc"
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_new.inc"
 #include "..\library\systems\inventory_system\drop_items\drop_items_new.inc"
+#include "..\library\systems\enter_exits_system\enter_exits_new.inc"
 
 public OnGameModeInit()
 {
@@ -239,11 +240,13 @@ stock OnPlayerAccountLoaded(playerid)
 #include "..\library\systems\inventory_system\inventory_items\inventory_items_functions.inc"
 #include "..\library\systems\inventory_system\drop_items\drop_items_functions.inc"
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_functions.inc"
+#include "..\library\systems\enter_exits_system\enter_exits_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
 #include "..\library\systems\inventory_system\inventory_hooks.inc"
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_hooks.inc"
+#include "..\library\systems\enter_exits_system\enter_exits_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 
