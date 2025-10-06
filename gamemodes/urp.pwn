@@ -29,10 +29,11 @@
 #include "..\library\systems\bank_system\bank_system_new.inc"
 #include "..\library\systems\actor_system\actor_system_new.inc"
 
-public OnGameModeInit()
-{
+public OnGameModeInit(){
 	Streamer_SetVisibleItems(STREAMER_TYPE_OBJECT, 1000);
 	Streamer_SetMaxItems(STREAMER_TYPE_OBJECT, 1000);
+
+	SetTimer("SecondTimer", 1000, true);
 	return 1;
 }
 
@@ -238,6 +239,18 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ){
 	SetPlayerPosFindZ(playerid, fX, fY, fZ);
 	SetPlayerInterior(playerid, 0);
 	SetPlayerVirtualWorld(playerid, 0);
+	return 1;
+}
+
+forward SecondTimer();
+public SecondTimer(){
+	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
+		OnPlayerSecondUpdate(i);
+	}
+	return 1;
+}
+
+stock OnPlayerSecondUpdate(playerid){
 	return 1;
 }
 
