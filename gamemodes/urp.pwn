@@ -230,6 +230,13 @@ stock OnPlayerAccountLoaded(playerid)
 	return 0;
 }
 
+stock OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ){
+	SetPlayerPosFindZ(playerid, fX, fY, fZ);
+	SetPlayerInterior(playerid, 0);
+	SetPlayerVirtualWorld(playerid, 0);
+	return 1;
+}
+
 #include "..\library\systems\registration_system\registration_publics.inc"
 #include "..\library\systems\inventory_system\inventory_items\inventory_items_publics.inc"
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_publics.inc"
