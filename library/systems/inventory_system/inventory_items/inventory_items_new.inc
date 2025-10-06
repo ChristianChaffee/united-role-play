@@ -1,8 +1,9 @@
 
 #define ITEM_LETTER_ID 							1
 #define ITEM_MONEY_ID 							2
+#define ITEM_JOURNEY_BACKPACK 					3
 
-#define MAX_INVENTORY_ITEMS 					2
+#define MAX_INVENTORY_ITEMS 					3
 #define MAX_INVENTORY_SLOTS  					75
 
 #define GetInventoryItemData(%0,%1) 			inventory_item_info[%0][%1]

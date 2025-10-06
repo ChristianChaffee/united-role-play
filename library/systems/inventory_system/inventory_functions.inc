@@ -40,10 +40,10 @@ stock Inventory:UpdatePreviewModels(playerid){
 	PlayerTextDrawSetPreviewModel(playerid, InvParadox_PTD[playerid][0], GetPlayerSkin(playerid));
 	PlayerTextDrawShow(playerid, InvParadox_PTD[playerid][0]);
 
-	for(new i, model_id; i < 25; i++){
+	for(new i, model_id, item_index; i < 25; i++){
 		PlayerTextDrawHide(playerid, SlotParadox_PTD[playerid][i]);
 
-		new item_index = Inventory:FindItemWithSlot(playerid, (GetPVarInt(playerid, "Inventory_Page") - 1) * 25 + i);
+		item_index = Inventory:FindItemWithSlot(playerid, (GetPVarInt(playerid, "Inventory_Page") - 1) * 25 + i);
 
 		model_id = (item_index == -1) ? (1649) : (GetInventoryItemData(inventory_player[playerid][item_index][inv_player_item_id], item_model_id));
 
@@ -55,6 +55,22 @@ stock Inventory:UpdatePreviewModels(playerid){
 			(item_index == -1) ? (0.0) : (GetInventoryItemData(inventory_player[playerid][item_index][inv_player_item_id], item_scale)));
 
 		PlayerTextDrawShow(playerid, SlotParadox_PTD[playerid][i]);
+	}
+
+	for(new i = 12, temp_acc_slot_index, model_id, item_index; i <= 17; i++){
+		temp_acc_slot_index = i - 12;
+		item_index = Inventory:FindAccItemWithSlot(playerid, temp_acc_slot_index);
+
+		model_id = (item_index == -1) ? (1649) : (GetInventoryItemData(GetAccessoryItemData(player_accessories_items_info[playerid][item_index][player_acc_item_id], acc_item_id), item_model_id));
+	
+		PlayerTextDrawSetPreviewModel(playerid, InvParadox_PTD[playerid][i], model_id);
+		PlayerTextDrawSetPreviewRot(playerid, InvParadox_PTD[playerid][i], 
+			(item_index == -1) ? (0.0) : (GetInventoryItemData(GetAccessoryItemData(player_accessories_items_info[playerid][item_index][player_acc_item_id], acc_item_id), item_rot_x)), 
+			(item_index == -1) ? (0.0) : (GetInventoryItemData(GetAccessoryItemData(player_accessories_items_info[playerid][item_index][player_acc_item_id], acc_item_id), item_rot_y)), 
+			(item_index == -1) ? (0.0) : (GetInventoryItemData(GetAccessoryItemData(player_accessories_items_info[playerid][item_index][player_acc_item_id], acc_item_id), item_rot_z)), 
+			(item_index == -1) ? (0.0) : (GetInventoryItemData(GetAccessoryItemData(player_accessories_items_info[playerid][item_index][player_acc_item_id], acc_item_id), item_scale)));
+
+		PlayerTextDrawShow(playerid, InvParadox_PTD[playerid][i]);
 	}
 }
 

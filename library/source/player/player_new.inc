@@ -3,6 +3,17 @@
 #define CHARACTER_MAX_AGE 				75
 
 //==============================================================================
+enum
+{
+	ATTACH_INDEX_ACC_1,
+	ATTACH_INDEX_ACC_2,
+	ATTACH_INDEX_ACC_3,
+	ATTACH_INDEX_ACC_4,
+	ATTACH_INDEX_ACC_5,
+	ATTACH_INDEX_ACC_6,
+}
+
+//==============================================================================
 #define GetPlayerData(%0,%1)			player_info[%0][%1]
 #define SetPlayerData(%0,%1,%2) 		player_info[%0][%1] = %2
 #define AddPlayerData(%0,%1,%2)  		player_info[%0][%1] += %2

@@ -9,6 +9,15 @@ hook OnPlayerClickTextDraw(playerid, Text:clickedid){
 }
 
 hook OnPlayerClickPTD(playerid, PlayerText:playertextid){
+	if(InvParadox_PTD[playerid][0] <= playertextid <= InvParadox_PTD[playerid][20]){
+		#warning DEBUG
+		for(new i; i < 21; i++){
+			if(playertextid == InvParadox_PTD[playerid][i]){
+				printf("%d", i);
+				break;
+			}
+		}
+	}
 	if(SlotParadox_PTD[playerid][0] <= playertextid <= SlotParadox_PTD[playerid][24]){
 
 		PlayerPlaySound(playerid, 1083, 0.0, 0.0, 0.0);

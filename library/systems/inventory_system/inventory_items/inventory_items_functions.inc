@@ -174,7 +174,7 @@ stock Inventory:SetPlayerSlotNull(playerid, slot_index){
 
 	static const fmt_query[] = "DELETE from player_inventory_items WHERE id = %d LIMIT 1";
 	new query[sizeof(fmt_query) - 2 + 11];
-	mysql_format(mysql, query, sizeof(query), fmt_query, inventory_player[playerid][slot_index]);
+	mysql_format(mysql, query, sizeof(query), fmt_query, inventory_player[playerid][slot_index][inv_player_id]);
 	mysql_tquery(mysql, query);
 
 	SetPlayerInventoryItemData(playerid, slot_index, inv_player_id, 0);
@@ -261,30 +261,49 @@ stock Inventory:UseItem(playerid){
 	if(!GetPVarType(playerid, "Inventory_DialogSlot")) return false;
 	new slot_index = GetPVarInt(playerid, "Inventory_DialogSlot");
 
-	switch(GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_id)){
-		case ITEM_LETTER_ID:{
-			big_string[0] = EOS;
-			format(big_string, sizeof(big_string),
-				""cl_blue"Текст письма: "cl_white"%s",
-				GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_str));
-			SPD(playerid, D_NULL, DIALOG_STYLE_MSGBOX,
-				"Письмо", big_string,
-				"Закрыть", "");
-			big_string[0] = EOS;
-
-			Inventory:SetPlayerSlotNull(playerid, slot_index);
+	if(Inventory:IsAccessoryItem(GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_id))){
+		for(new i; i < PLAYER_ACCESSORIES_SLOTS_COUNT; i++){
+			if(GetInventoryItemData(GetAccessoryItemData(GetPlayerAccessoryData(playerid, i, player_acc_item_id), acc_item_id), item_id) == GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_id)){
+				SendErrorMessage(playerid, "У Вас уже есть данный аксессуар.");
+				return false;
+			}
 		}
-		case ITEM_MONEY_ID:{
-			GiveMoney(playerid, GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one));
+		new free_acc_slot_index = Inventory:GetFreeAccSlotIndex(playerid);
+		if(free_acc_slot_index == -1){
+			SendErrorMessage(playerid, "У Вас заняты все слоты для аксессуаров.");
+			return false;
+		}
 
-			small_string[0] = EOS;
-			format(small_string, sizeof(small_string),
-				"Вы получили: "cl_white"%d$",
-				GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one));
-			SendClientMessage(playerid, COLOR_GREEN, small_string);
-			small_string[0] = EOS;
+		Inventory:GivePlayerAccessory(playerid, free_acc_slot_index, GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_id));
+		Inventory:UpdatePlayersAccessories(playerid);
+		Inventory:SetPlayerSlotNull(playerid, slot_index);
+	}
+	else{
+		switch(GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_id)){
+			case ITEM_LETTER_ID:{
+				big_string[0] = EOS;
+				format(big_string, sizeof(big_string),
+					""cl_blue"Текст письма: "cl_white"%s",
+					GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_str));
+				SPD(playerid, D_NULL, DIALOG_STYLE_MSGBOX,
+					"Письмо", big_string,
+					"Закрыть", "");
+				big_string[0] = EOS;
 
-			Inventory:SetPlayerSlotNull(playerid, slot_index);
+				Inventory:SetPlayerSlotNull(playerid, slot_index);
+			}
+			case ITEM_MONEY_ID:{
+				GiveMoney(playerid, GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one));
+
+				small_string[0] = EOS;
+				format(small_string, sizeof(small_string),
+					"Вы получили: "cl_white"%d$",
+					GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one));
+				SendClientMessage(playerid, COLOR_GREEN, small_string);
+				small_string[0] = EOS;
+
+				Inventory:SetPlayerSlotNull(playerid, slot_index);
+			}
 		}
 	}
 
