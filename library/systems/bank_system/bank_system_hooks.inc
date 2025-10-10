@@ -62,5 +62,11 @@ hook stock OnPlayerSecondUpdate(playerid){
 			SendClientMessage(playerid, COLOR_GREEN, "Ваша банковская карта готова! Для получения обратитесь в отделение банка.");
 		}
 	}
+	if(GetPlayerBankCardData(playerid, pbc_is_loaded) && GetPlayerBankCardData(playerid, pbc_id)
+		&& GetPlayerBankCardData(playerid, pbc_status) == BC_STATUS_WAIT
+		&& GetPlayerBankCardData(playerid, pbc_pin_code_timer) > 0){
+
+		SetPlayerBankCardData(playerid, pbc_pin_code_timer, GetPlayerBankCardData(playerid, pbc_pin_code_timer) -1);
+	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }

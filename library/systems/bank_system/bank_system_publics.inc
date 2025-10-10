@@ -14,6 +14,10 @@ public LoadPlayerBankCard(playerid){
 	cache_get_value_name_int(0, "pin_code", GetPlayerBankCardData(playerid, pbc_pin_code));
 	cache_get_value_name_int(0, "status", GetPlayerBankCardData(playerid, pbc_status));
 	cache_get_value_name_int(0, "timer", GetPlayerBankCardData(playerid, pbc_timer));
+
+	cache_get_value_name_int(0, "type", GetPlayerBankCardData(playerid, pbc_type));
+	cache_get_value_name_int(0, "deposit_balance", GetPlayerBankCardData(playerid, pbc_deposit_balance));
+	cache_get_value_name_int(0, "deposit_percent", GetPlayerBankCardData(playerid, pbc_deposit_percent));
 	return true;
 }
 

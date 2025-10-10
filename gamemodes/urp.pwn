@@ -254,6 +254,79 @@ stock OnPlayerSecondUpdate(playerid){
 	return 1;
 }
 
+stock ConvertTime(unixtime, &year = 0, &month = 0, &day = 0, &hour = 0, &minute = 0, &second = 0)
+{
+    // Константы для вычислений
+    const SECONDS_PER_DAY = 86400;
+    const SECONDS_PER_HOUR = 3600;
+    const SECONDS_PER_MINUTE = 60;
+    
+    // Начальная дата Unix epoch: 1 января 1970
+    new days_since_epoch = unixtime / SECONDS_PER_DAY;
+    new seconds_in_day = unixtime % SECONDS_PER_DAY;
+    
+    // Вычисляем время (часы, минуты, секунды)
+    hour = seconds_in_day / SECONDS_PER_HOUR;
+    minute = (seconds_in_day % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE;
+    second = seconds_in_day % SECONDS_PER_MINUTE;
+    
+    // Вычисляем дату
+    year = 1970;
+    day = 1;
+    
+    // Массив с количеством дней в месяцах (не високосный год)
+    new days_in_month[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    
+    // Добавляем дни с учетом високосных лет
+    while(days_since_epoch >= 365)
+    {
+        if(IsLeapYear(year))
+        {
+            if(days_since_epoch >= 366)
+            {
+                days_since_epoch -= 366;
+                year++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        else
+        {
+            days_since_epoch -= 365;
+            year++;
+        }
+    }
+    
+    // Корректируем массив дней для високосного года
+    if(IsLeapYear(year))
+    {
+        days_in_month[1] = 29; // Февраль в високосный год
+    }
+    else
+    {
+        days_in_month[1] = 28; // Февраль в обычный год
+    }
+    
+    // Определяем месяц и день
+    month = 0;
+    while(days_since_epoch >= days_in_month[month])
+    {
+        days_since_epoch -= days_in_month[month];
+        month++;
+    }
+    
+    day += days_since_epoch;
+    month++; // Месяцы от 1 до 12
+}
+
+// Вспомогательная функция для определения високосного года
+stock IsLeapYear(year)
+{
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
 #include "..\library\systems\registration_system\registration_publics.inc"
 #include "..\library\systems\inventory_system\inventory_items\inventory_items_publics.inc"
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_publics.inc"
