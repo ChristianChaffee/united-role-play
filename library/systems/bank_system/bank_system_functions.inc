@@ -67,6 +67,20 @@ stock Bank:IsValidPinCode(playerid){
 	return (GetPlayerBankCardData(playerid, pbc_pin_code_timer) > 0) ? (true) : (false);
 }
 
+stock Bank:UpdateTypeSettings(playerid){
+	if(!GetPlayerBankCardData(playerid, pbc_is_loaded) || !GetPlayerBankCardData(playerid, pbc_id)) return false;
+
+	SetPlayerBankCardData(playerid, pbc_deposit_percent, bank_deposit_percents[GetPlayerBankCardData(playerid, pbc_type)]);
+
+	static const fmt_query[] = "UPDATE bank_cards SET deposit_percent = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerBankCardData(playerid, pbc_deposit_percent),
+		GetPlayerBankCardData(playerid, pbc_id));
+	mysql_tquery(mysql, query);
+	return true;
+}
+
 stock Bank:GiveMoney(playerid, money){
 	if(!GetPlayerBankCardData(playerid, pbc_is_loaded) || !GetPlayerBankCardData(playerid, pbc_id)) return false;
 
@@ -76,6 +90,19 @@ stock Bank:GiveMoney(playerid, money){
 	new query[sizeof(fmt_query) + (-2 + 11) + (-2 + 11)];
 	mysql_format(mysql, query, sizeof(query), fmt_query,
 		GetPlayerBankCardData(playerid, pbc_balance), GetPlayerBankCardData(playerid, pbc_id));
+	mysql_tquery(mysql, query);
+	return true;
+}
+
+stock Bank:GiveDepositMoney(playerid, money){
+	if(!GetPlayerBankCardData(playerid, pbc_is_loaded) || !GetPlayerBankCardData(playerid, pbc_id)) return false;
+
+	AddPlayerBankCardData(playerid, pbc_deposit_balance, money);
+
+	static const fmt_query[] = "UPDATE bank_cards SET deposit_balance = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerBankCardData(playerid, pbc_deposit_balance), GetPlayerBankCardData(playerid, pbc_id));
 	mysql_tquery(mysql, query);
 	return true;
 }
@@ -183,6 +210,98 @@ stock Bank:ShowChangeType(playerid){
 	Dialog_Open(playerid, Dialog:D_BANK_MENU_SELECT_STATUS, DIALOG_STYLE_TABLIST_HEADERS,
 		"Банк", big_string,
 		"Выбрать", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Bank:ShowPutMoney(playerid){
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите сумму, на которую хотите пополнить баланс банковской карты\n\
+		"cl_grey"[Текущий баланс: %d$]",
+		GetPlayerBankCardData(playerid, pbc_balance));
+
+	Dialog_Open(playerid, Dialog:D_BANK_MENU_PUT_MONEY, DIALOG_STYLE_INPUT,
+		"Банк", big_string,
+		"Ввод", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Bank:ShowTakeMoney(playerid){
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите сумму, которую хотите снять с баланса банковской карты\n\
+		"cl_grey"[Текущий баланс: %d$]",
+		GetPlayerBankCardData(playerid, pbc_balance));
+
+	Dialog_Open(playerid, Dialog:D_BANK_MENU_TAKE_MONEY, DIALOG_STYLE_INPUT,
+		"Банк", big_string,
+		"Ввод", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Bank:ShowDepositMenu(playerid){
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Баланс депозита "cl_grey"["cl_white"%d$"cl_grey"]\n\
+		"cl_blue"- "cl_white"Информация о депозите\n\
+		"cl_blue"- "cl_white"Пополнить баланс депозита\n\
+		"cl_blue"- "cl_white"Снять с баланса депозита",
+		GetPlayerBankCardData(playerid, pbc_deposit_balance));
+
+	Dialog_Open(playerid, Dialog:D_BANK_MENU_DEPOSIT_MENU, DIALOG_STYLE_LIST,
+		"Банк | Депозиты", big_string,
+		"Далее", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Bank:ShowDepositInfo(playerid){
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"Депозитный счёт "cl_white"— пассивный баланс, который растёт каждый час (PayDay)\n\
+		в зависимости от статуса Вашего банковского счёта. От статуса банковского счёта зависит\n\
+		ежечасовой прирост суммы на депозитном счёте.\n\
+		Ваш текущий процент прироста депозита: "cl_grey"%d процентов"cl_white".",
+		GetPlayerBankCardData(playerid, pbc_deposit_percent));
+
+	Dialog_Open(playerid, Dialog:D_BANK_MENU_DEPOSIT_INFO, DIALOG_STYLE_MSGBOX,
+		"Банк | Депозиты", big_string,
+		"Назад", "");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Bank:ShowDepositPutMoney(playerid){
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите сумму, которую хотите перевести с основного счёта на депозитный\n\n\
+		"cl_grey"[Баланс основного счёта: %d$]\n\
+		"cl_grey"[Баланс депозитного счётв: %d$]",
+		GetPlayerBankCardData(playerid, pbc_balance),
+		GetPlayerBankCardData(playerid, pbc_deposit_balance));
+
+	Dialog_Open(playerid, Dialog:D_BANK_DEPOSIT_PUT_MONEY, DIALOG_STYLE_INPUT,
+		"Банк | Депозиты", big_string,
+		"Назад", "");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Bank:ShowDepositTakeMoney(playerid){
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите сумму, которую хотите перевести с депозитного счёта на основной\n\n\
+		"cl_grey"[Баланс основного счёта: %d$]\n\
+		"cl_grey"[Баланс депозитного счётв: %d$]",
+		GetPlayerBankCardData(playerid, pbc_balance),
+		GetPlayerBankCardData(playerid, pbc_deposit_balance));
+
+	Dialog_Open(playerid, Dialog:D_BANK_DEPOSIT_TAKE_MONEY, DIALOG_STYLE_INPUT,
+		"Банк | Депозиты", big_string,
+		"Назад", "");
 	big_string[0] = EOS;
 	return true;
 }

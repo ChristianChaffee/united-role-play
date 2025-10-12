@@ -37,6 +37,18 @@ DialogResponse:D_BANK_MENU(playerid, response, listitem, inputtext[]){
 	switch(listitem){
 		case 0: return Bank:ShowCardInfo(playerid);
 		case 1: return Bank:ShowTypeInfoList(playerid);
+		case 2: return Bank:ShowPutMoney(playerid);
+		case 3: return Bank:ShowTakeMoney(playerid);
+		case 4:{
+			if(GetPlayerBankCardData(playerid, pbc_type) == 0){
+				SendErrorMessage(playerid, "У Вас нет доступа к депозиту.");
+				Bank:ShowMainMenu(playerid);
+				return false;
+			}
+
+			Bank:ShowDepositMenu(playerid);
+			return true;
+		}
 	}
 	return true;
 }
@@ -122,5 +134,138 @@ DialogResponse:D_BANK_MENU_STATUS_ACCEPT(playerid, response, listitem, inputtext
 	small_string[0] = EOS;
 
 	Bank:ShowMainMenu(playerid);
+	Bank:UpdateTypeSettings(playerid);
 	return true;
 }
+
+DialogResponse:D_BANK_MENU_PUT_MONEY(playerid, response, listitem, inputtext[]){
+	if(!response) return Bank:ShowMainMenu(playerid);
+
+	new sum = strval(inputtext);
+
+	if(sum <= 0){
+		SendErrorMessage(playerid, "Корректно введите сумму.");
+		Bank:ShowPutMoney(playerid);
+		return false;
+	}
+	if(GetPlayerData(playerid, p_money) < sum){
+		SendErrorMessage(playerid, "У Вас недостаточно наличных денежных средств.");
+		Bank:ShowPutMoney(playerid);
+		return false;
+	}
+
+	Bank:GiveMoney(playerid, sum);
+	GiveMoney(playerid, -sum);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы пополнили банковский счёт на %d$. Остаток: %d$.",
+		sum, GetPlayerBankCardData(playerid, pbc_balance));
+	SendClientMessage(playerid, COLOR_GREEN, small_string);
+	small_string[0] = EOS;
+	return true;
+}
+
+DialogResponse:D_BANK_MENU_TAKE_MONEY(playerid, response, listitem, inputtext[]){
+	if(!response) return Bank:ShowMainMenu(playerid);
+
+	new sum = strval(inputtext);
+
+	if(sum <= 0){
+		SendErrorMessage(playerid, "Корректно введите сумму.");
+		Bank:ShowTakeMoney(playerid);
+		return false;
+	}
+	if(GetPlayerBankCardData(playerid, pbc_balance) < sum){
+		SendErrorMessage(playerid, "У Вас недостаточно средств на банковском счету.");
+		Bank:ShowTakeMoney(playerid);
+		return false;
+	}
+
+	Bank:GiveMoney(playerid, -sum);
+	GiveMoney(playerid, sum);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы сняли с баланса банковской карты %d$. Остаток: %d$.",
+		sum, GetPlayerBankCardData(playerid, pbc_balance));
+	SendClientMessage(playerid, COLOR_GREEN, small_string);
+	small_string[0] = EOS;
+	return true;
+}
+
+DialogResponse:D_BANK_MENU_DEPOSIT_MENU(playerid, response, listitem, inputtext[]){
+	if(!response) return Bank:ShowMainMenu(playerid);
+
+	switch(listitem){
+		case 0: return Bank:ShowDepositMenu(playerid);
+		case 1: return Bank:ShowDepositInfo(playerid);
+		case 2: return Bank:ShowDepositPutMoney(playerid);
+		case 3: return Bank:ShowDepositTakeMoney(playerid);
+	}
+	return true;
+}
+
+DialogResponse:D_BANK_MENU_DEPOSIT_INFO(playerid, response, listitem, inputtext[]){
+	return Bank:ShowDepositMenu(playerid);
+}
+
+DialogResponse:D_BANK_DEPOSIT_PUT_MONEY(playerid, response, listitem, inputtext[]){
+	if(!response) return Bank:ShowDepositMenu(playerid);
+
+	new sum = strval(inputtext);
+
+	if(sum <= 0){
+		SendErrorMessage(playerid, "Корректно введите сумму.");
+		Bank:ShowDepositPutMoney(playerid);
+		return false;
+	}
+	if(GetPlayerBankCardData(playerid, pbc_balance) < sum){
+		SendErrorMessage(playerid, "У Вас недостаточно средств на банковском счету.");
+		Bank:ShowDepositPutMoney(playerid);
+		return false;
+	}
+
+	Bank:GiveMoney(playerid, -sum);
+	Bank:GiveDepositMoney(playerid, sum);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы пополнили баланс депозита на %d$.", 
+		sum);
+	SendClientMessage(playerid, COLOR_GREEN, small_string);
+	small_string[0] = EOS;
+
+	Bank:ShowDepositMenu(playerid);
+	return true;
+}
+
+DialogResponse:D_BANK_DEPOSIT_TAKE_MONEY(playerid, response, listitem, inputtext[]){
+	if(!response) return Bank:ShowDepositMenu(playerid);
+
+	new sum = strval(inputtext);
+
+	if(sum <= 0){
+		SendErrorMessage(playerid, "Корректно введите сумму.");
+		Bank:ShowDepositTakeMoney(playerid);
+		return false;
+	}
+	if(GetPlayerBankCardData(playerid, pbc_deposit_balance) < sum){
+		SendErrorMessage(playerid, "У Вас недостаточно средств на банковском счету.");
+		Bank:ShowDepositTakeMoney(playerid);
+		return false;
+	}
+
+	Bank:GiveMoney(playerid, sum);
+	Bank:GiveDepositMoney(playerid, -sum);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы сняли с баланса депозита на %d$.", 
+		sum);
+	SendClientMessage(playerid, COLOR_GREEN, small_string);
+	small_string[0] = EOS;
+
+	Bank:ShowDepositMenu(playerid);
+	return true;
+} 
