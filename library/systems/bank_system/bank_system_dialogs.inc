@@ -268,4 +268,32 @@ DialogResponse:D_BANK_DEPOSIT_TAKE_MONEY(playerid, response, listitem, inputtext
 
 	Bank:ShowDepositMenu(playerid);
 	return true;
+}
+
+DialogResponse:D_BANK_RECOVERY_PASS(playerid, response, listitem, inputtext[]){
+	if(!response) return false;
+	if(GetPlayerData(playerid, p_money) < BANK_CARD_RECOVERY_PRICE){
+		SendErrorMessage(playerid, "У Вас недостаточно наличных денежных средств.");
+		return false;
+	}
+	GiveMoney(playerid, -BANK_CARD_RECOVERY_PRICE);
+
+	new pin_cod = RandomEx(1000, 9999);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		""cl_dark_red"Внимание! Ваш новый пин-код: "cl_white"%d"cl_dark_red". Запомните его!",
+		pin_cod);
+	SendClientMessage(playerid, -1, small_string);
+	small_string[0] = EOS;
+
+	SetPlayerBankCardData(playerid, pbc_pin_code, pin_cod);
+
+	static const fmt_query[] = "UPDATE bank_cards SET pin_code = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerBankCardData(playerid, pbc_pin_code),
+		GetPlayerBankCardData(playerid, pbc_id));
+	mysql_tquery(mysql, query);
+	return true;
 } 

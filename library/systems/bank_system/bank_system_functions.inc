@@ -305,3 +305,17 @@ stock Bank:ShowDepositTakeMoney(playerid){
 	big_string[0] = EOS;
 	return true;
 }
+
+stock Bank:ShowRecoveryMenu(playerid){
+	if(!GetPlayerBankCardData(playerid, pbc_is_loaded) || !GetPlayerBankCardData(playerid, pbc_id)){
+		SendErrorMessage(playerid, "У Вас нет банковской карты.");
+		return false;
+	}
+
+	Dialog_Open(playerid, Dialog:D_BANK_RECOVERY_PASS, DIALOG_STYLE_MSGBOX,
+		"Банк | Депозиты", 
+		""cl_blue"- "cl_white"Стоимость восстановления пин-кода от банковской карты составляет "#BANK_CARD_RECOVERY_PRICE"$\n\
+		"cl_dark_red"[Вы действительно хотите восстановить пин-код?]",
+		"Да", "Нет");
+	return true;
+}

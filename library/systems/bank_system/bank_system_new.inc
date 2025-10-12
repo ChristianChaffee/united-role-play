@@ -17,15 +17,19 @@
 #define BANK_CARD_CREATE_TIME 					1
 
 #define BANK_CARD_PIN_CODE_VALID_TIME 			60
+#define BANK_CARD_RECOVERY_PRICE 				15
 
 //==============================================================================
-new const Float:bank_cashboxes_pos[6][3] = {
+new const Float:bank_cashboxes_pos[5][3] = {
 	{1311.25, 24.06, 2068.52},
 	{1312.82, 24.06, 2068.52},
 	{1314.60, 24.06, 2068.52},
 	{1324.21, 24.06, 2068.52},
-	{1326.01, 24.06, 2068.51},
-	{1327.62, 24.06, 2068.51}
+	{1326.01, 24.06, 2068.51}
+};
+
+new const Float:bank_pass_recovery_pos[3] = {
+	1327.62, 24.06, 2068.51
 };
 
 new const bank_card_types[4][32] = {

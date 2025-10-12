@@ -17,6 +17,16 @@ hook OnGameModeInit(){
 			BANK_VW, BANK_INT);
 		small_string[0] = EOS;
 	}
+
+	CreateDynamicPickup(BANK_CASHBOX_PICKUP_MODEL_ID, 23, 
+			bank_pass_recovery_pos[0], bank_pass_recovery_pos[1], bank_pass_recovery_pos[2], 
+			BANK_VW, BANK_INT);
+
+	CreateDynamic3DTextLabel(""cl_dark_red"[Восстановление пин-кода]\n"cl_grey"'Left ALT'", -1, 
+		bank_pass_recovery_pos[0], bank_pass_recovery_pos[1], bank_pass_recovery_pos[2], 15.0, 
+		_, _, 1, 
+		BANK_VW, BANK_INT);
+
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
@@ -37,6 +47,10 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 				Bank:ShowMainMenu(playerid);
 				return Y_HOOKS_CONTINUE_RETURN_1;
 			}
+		}
+		if(IsPlayerInRangeOfPoint(playerid, 1.0, bank_pass_recovery_pos[0], bank_pass_recovery_pos[1], bank_pass_recovery_pos[2])){
+			Bank:ShowRecoveryMenu(playerid);
+			return Y_HOOKS_CONTINUE_RETURN_1;
 		}
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
