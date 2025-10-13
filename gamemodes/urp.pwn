@@ -28,6 +28,7 @@
 #include "..\library\systems\enter_exits_system\enter_exits_new.inc"
 #include "..\library\systems\bank_system\bank_system_new.inc"
 #include "..\library\systems\actor_system\actor_system_new.inc"
+#include "..\library\systems\quest_system\start_quest_system\start_quest_new.inc"
 
 public OnGameModeInit(){
 	Streamer_SetVisibleItems(STREAMER_TYPE_OBJECT, 1000);
@@ -333,9 +334,11 @@ stock IsLeapYear(year)
 #include "..\library\systems\enter_exits_system\enter_exits_publics.inc"
 #include "..\library\systems\bank_system\bank_system_publics.inc"
 #include "..\library\systems\actor_system\actor_system_publics.inc"
+#include "..\library\systems\quest_system\start_quest_system\start_quest_publics.inc"
 
 #include "..\library\systems\registration_system\registration_dialogs.inc"
 #include "..\library\systems\bank_system\bank_system_dialogs.inc"
+#include "..\library\systems\quest_system\start_quest_system\start_quest_dialogs.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_functions.inc"
 #include "..\library\systems\registration_system\registration_functions.inc"
@@ -345,6 +348,7 @@ stock IsLeapYear(year)
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_functions.inc"
 #include "..\library\systems\enter_exits_system\enter_exits_functions.inc"
 #include "..\library\systems\bank_system\bank_system_functions.inc"
+#include "..\library\systems\quest_system\start_quest_system\start_quest_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -353,6 +357,7 @@ stock IsLeapYear(year)
 #include "..\library\systems\enter_exits_system\enter_exits_hooks.inc"
 #include "..\library\systems\bank_system\bank_system_hooks.inc"
 #include "..\library\systems\actor_system\actor_system_hooks.inc"
+#include "..\library\systems\quest_system\start_quest_system\start_quest_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 
