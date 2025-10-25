@@ -67,3 +67,5 @@ new const Float:standart_spawn_pos[5][4] = {
 	{1150.7965, -1770.3,16.5992, 360.0},
 	{1147.6335, -1770.3,16.5992, 360.0}
 };
+
+new player_listitems[MAX_PLAYERS][100];

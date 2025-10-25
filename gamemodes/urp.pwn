@@ -243,6 +243,26 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ){
 	return 1;
 }
 
+public OnQueryError(errorid, const error[], const callback[], const query[], MySQL:handle){
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Ошибка #%d, обратитесь к разработчикам!", errorid);
+	SendClientMessageToAll(COLOR_DARK_RED, small_string);
+	small_string[0] = EOS;
+
+	for(new i, g = GetPlayerPoolSize(); i <= g; i++){
+		if(player_logged[i] && !strcmp(GetPlayerData(i, p_name), "William_Tucker")){
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				""cl_dark_red"[Error]: "cl_white"%s", query);
+			SendClientMessage(i, -1, small_string);
+			small_string[0] = EOS;
+			break;
+		}
+	}
+	return 1;
+}
+
 forward SecondTimer();
 public SecondTimer(){
 	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
