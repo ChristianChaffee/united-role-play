@@ -1,0 +1,11 @@
+{
+	"user": "German-Demidov",
+	"repo": "URP",
+	"tag": "0.0.1",
+	"entry": "gamemodes\\urp.pwn",
+	"output": "gamemodes/gamemodes\\urp.amx",
+	"local": true,
+	"runtime": {
+		"mode": "y_testing"
+	}
+}
