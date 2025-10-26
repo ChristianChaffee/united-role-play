@@ -35,3 +35,13 @@ hook OnPlayerEnterCheckpoint(playerid){
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
+
+hook stock OnPlayerSecondUpdate(playerid){
+	#warning DEBUG
+	printf("Loader");
+
+	if(GetPlayerData(playerid, p_job) == JOB_LOADER){
+		if(!IsPlayerInRangeOfPoint(playerid, 100.0, JOB_LOADER_CENTRAL_POINT)) Job:LoaderUninvite(playerid);
+	}
+	return 1;
+}

@@ -61,6 +61,9 @@ hook OnPlayerEnterCheckpoint(playerid){
 }
 
 hook stock OnPlayerSecondUpdate(playerid){
+	#warning DEBUG
+	printf("Lumber");
+
 	if(GetPlayerData(playerid, p_job) == JOB_LUMBERJACK && GetPVarInt(playerid, "JobLumberjack_TreeTimer") > 0){
 		SetPVarInt(playerid, "JobLumberjack_TreeTimer", GetPVarInt(playerid, "JobLumberjack_TreeTimer") - 1);
 		
@@ -76,7 +79,7 @@ hook stock OnPlayerSecondUpdate(playerid){
 	if(GetPlayerData(playerid, p_job) == JOB_LUMBERJACK){
 		if(!IsPlayerInRangeOfPoint(playerid, 150.0, JOB_LUMBERJACK_CENTRAL_POINT)) Job:LumberjackUninvite(playerid);
 	}
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook stock SecondTimerStock(){
