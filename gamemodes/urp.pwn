@@ -32,6 +32,7 @@
 #include "..\library\systems\quest_system\start_quest_system\start_quest_stages.inc"
 #include "..\library\systems\job_system\job_system_new.inc"
 #include "..\library\systems\job_system\job_loader\job_loader_new.inc"
+#include "..\library\systems\job_system\job_lumberjack\job_lumberjack_new.inc"
 
 public OnGameModeInit(){
 	Streamer_SetVisibleItems(STREAMER_TYPE_OBJECT, 1000);
@@ -371,6 +372,7 @@ stock IsLeapYear(year)
 #include "..\library\systems\bank_system\bank_system_dialogs.inc"
 #include "..\library\systems\quest_system\start_quest_system\start_quest_dialogs.inc"
 #include "..\library\systems\job_system\job_loader\job_loader_dialogs.inc"
+#include "..\library\systems\job_system\job_lumberjack\job_lumberjack_dialogs.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_functions.inc"
 #include "..\library\systems\registration_system\registration_functions.inc"
@@ -383,6 +385,7 @@ stock IsLeapYear(year)
 #include "..\library\systems\quest_system\start_quest_system\start_quest_functions.inc"
 #include "..\library\systems\job_system\job_system_functions.inc"
 #include "..\library\systems\job_system\job_loader\job_loader_functions.inc"
+#include "..\library\systems\job_system\job_lumberjack\job_lumberjack_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -394,6 +397,7 @@ stock IsLeapYear(year)
 #include "..\library\systems\quest_system\start_quest_system\start_quest_hooks.inc"
 #include "..\library\systems\job_system\job_system_hooks.inc"
 #include "..\library\systems\job_system\job_loader\job_loader_hooks.inc"
+#include "..\library\systems\job_system\job_lumberjack\job_lumberjack_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 
