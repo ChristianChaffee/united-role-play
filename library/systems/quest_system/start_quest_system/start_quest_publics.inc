@@ -13,6 +13,7 @@ public LoadStartQuests(){
 		cache_get_value_name_int(i, "id", GetStartQuestData(i + 1, sq_id));
 		cache_get_value_name(i, "name", GetStartQuestData(i + 1, sq_name));
 		cache_get_value_name(i, "description", GetStartQuestData(i + 1, sq_description));
+		cache_get_value_name_int(i, "reward_money", GetStartQuestData(i + 1, sq_reward_money));
 	}
 
 	printf("[LoadStartQuests]: Стартовые квесты загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
@@ -37,7 +38,7 @@ public LoadPlayerStartQuests(playerid, quest_index){
 		return false;
 	}
 
-	for(new i, temp_quest_id, temp_quest_index; i < rows; i++){
+	for(new i, temp_quest_id, temp_quest_index, in_progress_find; i < rows; i++){
 		cache_get_value_name_int(i, "quest_id", temp_quest_id);
 		temp_quest_index = StartQuest:GetIndexByID(temp_quest_id);
 		if(temp_quest_index == -1) continue;
@@ -47,6 +48,16 @@ public LoadPlayerStartQuests(playerid, quest_index){
 		cache_get_value_name_int(i, "id", GetPlayerStartQuestData(playerid, temp_quest_index, sqp_id));
 		cache_get_value_name_int(i, "account_id", GetPlayerStartQuestData(playerid, temp_quest_index, sqp_account_id));
 		cache_get_value_name_int(i, "status", GetPlayerStartQuestData(playerid, temp_quest_index, sqp_status));
+		cache_get_value_name_int(i, "stage", GetPlayerStartQuestData(playerid, temp_quest_index, sqp_stage));
+
+		if(temp_quest_index == SQ_WELCOME_TO_STATE){
+			StartQuest:StartQuest(playerid, SQ_WELCOME_TO_STATE);
+		}
+
+		if(!in_progress_find && GetPlayerStartQuestData(playerid, temp_quest_index, sqp_status) == SQ_STATUS_IN_PROGRESS){
+			StartQuest:UpdateQuest(playerid, temp_quest_index);
+			in_progress_find = 1;
+		}
 	}
 	return true;
 }
@@ -72,6 +83,7 @@ public IsPlayerHaveQuestInDB(playerid, quest_index){
 		mysql_format(mysql, query, sizeof(query), fmt_query, GetPlayerData(playerid, p_id));
 		mysql_tquery(mysql, query, "LoadPlayerStartQuests", "ii", playerid, quest_index);
 	}
+	return true;
 }
 
 forward LastPlayerQuestInsert(playerid);

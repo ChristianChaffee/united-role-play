@@ -55,6 +55,8 @@ public CheckAccountEmail(playerid, email[]){
 
 forward CreatePlayerAccount(playerid);
 public CreatePlayerAccount(playerid){
+	GetPlayerData(playerid, p_id) = cache_insert_id();
+
 	small_string[0] = EOS;
 	format(small_string, sizeof(small_string),
 		"Игрок %s[%d] зарегистрировался на проекте!",

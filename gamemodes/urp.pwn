@@ -29,6 +29,7 @@
 #include "..\library\systems\bank_system\bank_system_new.inc"
 #include "..\library\systems\actor_system\actor_system_new.inc"
 #include "..\library\systems\quest_system\start_quest_system\start_quest_new.inc"
+#include "..\library\systems\quest_system\start_quest_system\start_quest_stages.inc"
 
 public OnGameModeInit(){
 	Streamer_SetVisibleItems(STREAMER_TYPE_OBJECT, 1000);
@@ -122,6 +123,11 @@ public OnPlayerLeaveCheckpoint(playerid)
 
 public OnPlayerEnterRaceCheckpoint(playerid)
 {
+	if(GetPVarInt(playerid, "GPS_Enabled") == 1){
+		DisablePlayerRaceCheckpoint(playerid);
+		DeletePVar(playerid, "GPS_Enabled");
+		SendClientMessage(playerid, COLOR_YELLOW, "Вы прибыли к месту назначения.");
+	}
 	return 1;
 }
 
@@ -249,6 +255,9 @@ public OnQueryError(errorid, const error[], const callback[], const query[], MyS
 		"Ошибка #%d, обратитесь к разработчикам!", errorid);
 	SendClientMessageToAll(COLOR_DARK_RED, small_string);
 	small_string[0] = EOS;
+
+	printf("[MySQL Error] %d - %s (query: %s)",
+		errorid, error, query);
 
 	for(new i, g = GetPlayerPoolSize(); i <= g; i++){
 		if(player_logged[i] && !strcmp(GetPlayerData(i, p_name), "William_Tucker")){

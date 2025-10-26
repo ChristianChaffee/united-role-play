@@ -290,6 +290,10 @@ stock Inventory:UseItem(playerid){
 					"Закрыть", "");
 				big_string[0] = EOS;
 
+				if(GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_two) == SQ_WELCOME_TO_STATE){
+					StartQuest:SetStage(playerid, SQ_WELCOME_TO_STATE, SQ_STAGE_FIND_FRIEND);
+				}
+
 				Inventory:SetPlayerSlotNull(playerid, slot_index);
 			}
 			case ITEM_MONEY_ID:{
