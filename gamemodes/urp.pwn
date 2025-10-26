@@ -56,6 +56,7 @@ public OnPlayerConnect(playerid)
 {
 	ApplyAnimation(playerid, "DEALER", "_", 4.1, 1, 1, 1, 1, 1);
 	ApplyAnimation(playerid, "PED", "_", 4.1, 1, 1, 1, 1, 1);
+	ApplyAnimation(playerid, "SWORD", "_", 4.1, 1, 1, 1, 1, 1);
 	return 1;
 }
 
@@ -277,6 +278,8 @@ public OnQueryError(errorid, const error[], const callback[], const query[], MyS
 
 forward SecondTimer();
 public SecondTimer(){
+	SecondTimerStock();
+	
 	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
 		OnPlayerSecondUpdate(i);
 	}
@@ -284,6 +287,10 @@ public SecondTimer(){
 }
 
 stock OnPlayerSecondUpdate(playerid){
+	return 1;
+}
+
+stock SecondTimerStock(){
 	return 1;
 }
 

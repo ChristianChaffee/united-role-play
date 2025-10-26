@@ -1,4 +1,6 @@
 
+#include <YSI-Includes-5.x\YSI_Coding\y_hooks>
+
 hook OnPlayerDisconnect(playerid, reason){
 	if(GetPlayerData(playerid, p_job) == JOB_LOADER) Job:LoaderUninvite(playerid);
 	return Y_HOOKS_CONTINUE_RETURN_1;

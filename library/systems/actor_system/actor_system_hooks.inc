@@ -19,6 +19,9 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 				case JOB_LOADER_ACTOR_ID:{
 					Job:ShowLoaderDialog(playerid);
 				}
+				case JOB_LUMBERJACK_ACTOR_ID:{
+					Job:ShowLumberjackDialog(playerid);
+				}
 			}
 			return Y_HOOKS_CONTINUE_RETURN_1;
 		}

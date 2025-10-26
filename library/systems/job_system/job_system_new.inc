@@ -9,4 +9,5 @@ enum
 {
 	JOB_NONE,
 	JOB_LOADER,
+	JOB_LUMBERJACK,
 }
