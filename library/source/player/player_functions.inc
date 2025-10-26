@@ -72,9 +72,15 @@ stock IsPlayerInRangeOfPlayer(playerid, targetplayerid, Float:range){
 }
 
 stock GPSEnable(playerid, Float:x, Float:y, Float:z){
+	if(!GPSIsBlocked(playerid)) return false;
 	DisablePlayerRaceCheckpoint(playerid);
 
 	SetPlayerRaceCheckpoint(playerid, 1, x, y, z, x, y, z, 5.0);
 	SetPVarInt(playerid, "GPS_Enabled", 1);
 	return true;
+}
+
+stock GPSIsBlocked(playerid){
+	if(GetPlayerData(playerid, p_job) > 0) return true;
+	return false;
 }

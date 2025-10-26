@@ -2,6 +2,8 @@
 #define CHARACTER_MIN_AGE 				18
 #define CHARACTER_MAX_AGE 				75
 
+#define NATIONALITY_LEVEL 				3
+
 //==============================================================================
 enum
 {
@@ -31,6 +33,8 @@ enum player_info_struct
 	p_skin,
 	p_sex,
 	p_money,
+	p_job,
+	p_level,
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
