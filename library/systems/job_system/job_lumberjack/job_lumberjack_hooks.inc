@@ -76,7 +76,7 @@ hook stock OnPlayerSecondUpdate(playerid){
 	if(GetPlayerData(playerid, p_job) == JOB_LUMBERJACK){
 		if(!IsPlayerInRangeOfPoint(playerid, 150.0, JOB_LUMBERJACK_CENTRAL_POINT)) Job:LumberjackUninvite(playerid);
 	}
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return continue(playerid);
 }
 
 hook stock SecondTimerStock(){

@@ -82,5 +82,5 @@ hook stock OnPlayerSecondUpdate(playerid){
 
 		SetPlayerBankCardData(playerid, pbc_pin_code_timer, GetPlayerBankCardData(playerid, pbc_pin_code_timer) -1);
 	}
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return continue(playerid);
 }
