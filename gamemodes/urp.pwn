@@ -287,6 +287,7 @@ public SecondTimer(){
 }
 
 stock OnPlayerSecondUpdate(playerid){
+	#pragma unused playerid
 	return 1;
 }
 
