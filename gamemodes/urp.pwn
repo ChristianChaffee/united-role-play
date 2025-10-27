@@ -60,6 +60,7 @@ public OnPlayerConnect(playerid)
 	ApplyAnimation(playerid, "PED", "_", 4.1, 1, 1, 1, 1, 1);
 	ApplyAnimation(playerid, "SWORD", "_", 4.1, 1, 1, 1, 1, 1);
 	ApplyAnimation(playerid, "BOMBER", "_", 4.1, 1, 1, 1, 1, 1);
+	ApplyAnimation(playerid, "DEALER", "_", 4.1, 1, 1, 1, 1, 1);
 	return 1;
 }
 
@@ -374,6 +375,12 @@ stock IsLeapYear(year)
 stock Float:frandom(Float:max)
 {
     return floatdiv(float(random(0)), floatdiv(float(cellmax), max));
+}
+
+stock OnPlayerGiveInvItem(playerid, slot_index){
+	#pragma unused playerid
+	#pragma unused slot_index
+	return 1;
 }
 
 #include "..\library\systems\registration_system\registration_publics.inc"

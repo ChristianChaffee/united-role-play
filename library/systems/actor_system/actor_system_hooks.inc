@@ -25,6 +25,9 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 				case JOB_GS_ACTOR_ID:{
 					Job:ShowGSDialog(playerid);
 				}
+				case JOB_DEALLER_ACTOR_ID:{
+					Job:ShowDeallerInvite(playerid);
+				}
 			}
 			return Y_HOOKS_CONTINUE_RETURN_1;
 		}

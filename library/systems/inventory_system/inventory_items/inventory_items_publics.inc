@@ -46,4 +46,5 @@ public LoadPlayerInventoryItems(playerid){
 forward InventoryGetCacheInsertId(playerid, slot_index);
 public InventoryGetCacheInsertId(playerid, slot_index){
 	SetPlayerInventoryItemData(playerid, slot_index, inv_player_id, cache_insert_id());
+	OnPlayerGiveInvItem(playerid, slot_index);
 }
