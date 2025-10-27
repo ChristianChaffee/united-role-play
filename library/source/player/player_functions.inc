@@ -80,6 +80,12 @@ stock GPSEnable(playerid, Float:x, Float:y, Float:z){
 	return true;
 }
 
+stock GPSDisable(playerid){
+	DisablePlayerRaceCheckpoint(playerid);
+	DeletePVar(playerid, "GPS_Enabled");
+	return true;
+}
+
 stock GPSIsBlocked(playerid){
 	if(GetPlayerData(playerid, p_job) > 0) return true;
 	return false;

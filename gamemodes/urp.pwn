@@ -58,6 +58,7 @@ public OnPlayerConnect(playerid)
 	ApplyAnimation(playerid, "DEALER", "_", 4.1, 1, 1, 1, 1, 1);
 	ApplyAnimation(playerid, "PED", "_", 4.1, 1, 1, 1, 1, 1);
 	ApplyAnimation(playerid, "SWORD", "_", 4.1, 1, 1, 1, 1, 1);
+	ApplyAnimation(playerid, "BOMBER", "_", 4.1, 1, 1, 1, 1, 1);
 	return 1;
 }
 
@@ -367,6 +368,11 @@ stock ConvertTime(unixtime, &year = 0, &month = 0, &day = 0, &hour = 0, &minute 
 stock IsLeapYear(year)
 {
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
+stock Float:frandom(Float:max)
+{
+    return floatdiv(float(random(0)), floatdiv(float(cellmax), max));
 }
 
 #include "..\library\systems\registration_system\registration_publics.inc"

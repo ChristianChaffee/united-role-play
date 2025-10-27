@@ -6,11 +6,14 @@ DialogResponse:D_JOB_LOADER_INVITE(playerid, response, listitem, inputtext[]){
 		SetPlayerData(playerid, p_job, JOB_LOADER);
 
 		if(!GetPlayerData(playerid, p_sex)){
-			SetPlayerSkin(playerid, (!random(1)) ? (260) : (27));
+			SetPlayerSkin(playerid, (!random(2)) ? (260) : (27));
 		}
 		else{
 			SetPlayerSkin(playerid, 41);
 		}
+
+		DisablePlayerCheckpoint(playerid);
+		GPSDisable(playerid);
 
 		Job:GenerateLoaderLoad(playerid);
 	}
