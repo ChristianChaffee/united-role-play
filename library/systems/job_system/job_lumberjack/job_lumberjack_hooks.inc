@@ -88,4 +88,5 @@ hook stock SecondTimerStock(){
 			}
 		}
 	}
+	return continue();
 }

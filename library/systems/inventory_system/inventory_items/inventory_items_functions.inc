@@ -11,6 +11,7 @@ hook stock OnPlayerAccountLoaded(playerid){
 	new query[sizeof(fmt_query) - 2 + 24];
 	mysql_format(mysql, query, sizeof(query), fmt_query, GetPlayerData(playerid, p_name));
 	mysql_tquery(mysql, query, "LoadPlayerInventoryItems", "i", playerid);
+	return continue(playerid);
 }
 
 hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]){
