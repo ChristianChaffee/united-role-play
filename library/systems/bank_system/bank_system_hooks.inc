@@ -68,9 +68,6 @@ hook OnPlayerDisconnect(playerid, reason){
 }
 
 hook stock OnPlayerSecondUpdate(playerid){
-	#warning DEBUG
-	printf("Bank");
-
 	if(GetPlayerBankCardData(playerid, pbc_is_loaded) && GetPlayerBankCardData(playerid, pbc_id)
 		&& GetPlayerBankCardData(playerid, pbc_status) == BC_STATUS_WAIT && GetPlayerBankCardData(playerid, pbc_timer) > 0){
 
@@ -85,5 +82,5 @@ hook stock OnPlayerSecondUpdate(playerid){
 
 		SetPlayerBankCardData(playerid, pbc_pin_code_timer, GetPlayerBankCardData(playerid, pbc_pin_code_timer) -1);
 	}
-	return 1;
+	return continue(playerid);
 }
