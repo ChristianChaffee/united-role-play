@@ -35,6 +35,7 @@
 #include "..\library\systems\job_system\job_lumberjack\job_lumberjack_new.inc"
 #include "..\library\systems\job_system\job_garbage_sorter\job_garbage_sorter_new.inc"
 #include "..\library\systems\job_system\job_dealler\job_dealler_new.inc"
+#include "..\library\systems\job_system\job_gun_factory\job_gun_factory_new.inc"
 
 public OnGameModeInit(){
 	Streamer_SetVisibleItems(STREAMER_TYPE_OBJECT, 1000);
@@ -398,6 +399,7 @@ stock OnPlayerGiveInvItem(playerid, slot_index){
 #include "..\library\systems\job_system\job_lumberjack\job_lumberjack_dialogs.inc"
 #include "..\library\systems\job_system\job_garbage_sorter\job_garbage_sorter_dialogs.inc"
 #include "..\library\systems\job_system\job_dealler\job_dealler_dialogs.inc"
+#include "..\library\systems\job_system\job_gun_factory\job_gun_factory_dialogs.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_functions.inc"
 #include "..\library\systems\registration_system\registration_functions.inc"
@@ -413,6 +415,7 @@ stock OnPlayerGiveInvItem(playerid, slot_index){
 #include "..\library\systems\job_system\job_lumberjack\job_lumberjack_functions.inc"
 #include "..\library\systems\job_system\job_garbage_sorter\job_garbage_sorter_functions.inc"
 #include "..\library\systems\job_system\job_dealler\job_dealler_functions.inc"
+#include "..\library\systems\job_system\job_gun_factory\job_gun_factory_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -427,6 +430,7 @@ stock OnPlayerGiveInvItem(playerid, slot_index){
 #include "..\library\systems\job_system\job_lumberjack\job_lumberjack_hooks.inc"
 #include "..\library\systems\job_system\job_garbage_sorter\job_garbage_sorter_hooks.inc"
 #include "..\library\systems\job_system\job_dealler\job_dealler_hooks.inc"
+#include "..\library\systems\job_system\job_gun_factory\job_gun_factory_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 
@@ -439,6 +443,6 @@ stock OnPlayerGiveInvItem(playerid, slot_index){
 #warning TEST_CMD
 CMD:tpt(playerid){
 	SetPlayerVirtualWorld(playerid, 5);
-	SetPlayerInterior(playerid, 5);
-	SetPlayerPos(playerid, 1319.4584, 11.6674, 2068.5129);
+	SetPlayerInterior(playerid, 7);
+	SetPlayerPos(playerid, 1382.671997, -25.474714, 999.986694 + 1.5);
 }
