@@ -15,7 +15,7 @@ hook OnPlayerEnterCheckpoint(playerid){
 				Job:GenerateLoaderUnload(playerid);
 			}
 			case JOB_LOADER_STAGE_TO_WAREHOUSE:{
-				SendClientMessage(playerid, COLOR_WHITE, "Вы отнесли ящик и заработали "#JOB_LOADER_STATIC_PAY"$"cl_white".");
+				SendClientMessage(playerid, COLOR_YELLOW, "Вы отнесли ящик и заработали "#JOB_LOADER_STATIC_PAY"$"cl_white".");
 
 				SetPVarInt(playerid, "JobLoader_BoxesCount", GetPVarInt(playerid, "JobLoader_BoxesCount") + 1);
 				GiveMoney(playerid, JOB_LOADER_STATIC_PAY);

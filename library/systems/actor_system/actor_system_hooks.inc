@@ -28,6 +28,9 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 				case JOB_DEALLER_ACTOR_ID:{
 					Job:ShowDeallerInvite(playerid);
 				}
+				case JOB_GUN_FACTORY_ACTOR_ID:{
+					Job:ShowGunFactoryInvite(playerid);
+				}
 			}
 			return Y_HOOKS_CONTINUE_RETURN_1;
 		}
