@@ -45,6 +45,7 @@ hook OnPlayerEnterCheckpoint(playerid){
 
 		SetPVarInt(playerid, "JobLumberjack_WoodCount", GetPVarInt(playerid, "JobLumberjack_WoodCount") + 1);
 		GiveMoney(playerid, JOB_LUMBERJACK_STATIC_PAY);
+		StartQuest:GivePoints(playerid, SQ_FIRST_MONEY, JOB_LUMBERJACK_STATIC_PAY);
 		
 		small_string[0] = EOS;
 		format(small_string, sizeof(small_string),

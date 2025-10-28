@@ -35,6 +35,16 @@ stock StartQuest:StartQuest(playerid, quest_index){
 			SendClientMessage(playerid, COLOR_YELLOW, "Вам передали письмо! Просмотрите его через инвентарь.");
 			SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Откройте чат клавишей F6 и введите команду /inv");
 		}
+		case SQ_FIRST_MONEY:{
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"Отправляйтесь на любую из работ и заработайте %d$.",
+				GetStartQuestData(quest_index, sq_points));
+			SendClientMessage(playerid, COLOR_YELLOW, small_string);
+			small_string[0] = EOS;
+
+			SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Посмотреть доступные работы можно в '/gps'.");
+		}
 	}
 
 	SetPlayerStartQuestData(playerid, quest_index, sqp_status, SQ_STATUS_IN_PROGRESS);
@@ -66,6 +76,8 @@ stock StartQuest:FinishQuest(playerid, quest_index){
 	new query[sizeof(fmt_query) + (-2 + 11) + (-2 + 11)];
 	mysql_format(mysql, query, sizeof(query), fmt_query, SQ_STATUS_COMPLETED, GetPlayerStartQuestData(playerid, quest_index, sqp_id));
 	mysql_tquery(mysql, query);
+
+	OnPlayerFinishStartQuest(playerid, quest_index);
 	return true;
 }
 
@@ -80,6 +92,33 @@ stock StartQuest:SetStage(playerid, quest_index, stage){
 	static const fmt_query[] = "UPDATE start_player_quests SET stage = %d WHERE id = %d";
 	new query[sizeof(fmt_query) + (-2 + 11) + (-2 + 11)];
 	mysql_format(mysql, query, sizeof(query), fmt_query, stage, GetPlayerStartQuestData(playerid, quest_index, sqp_id));
+	mysql_tquery(mysql, query);
+	return true;
+}
+
+stock StartQuest:GivePoints(playerid, quest_index, points){
+	if(quest_index <= 0 || quest_index > START_QUESTS_COUNT) return false;
+	if(GetPlayerStartQuestData(playerid, quest_index, sqp_status) != SQ_STATUS_IN_PROGRESS) return false;
+	if(!GetPlayerStartQuestData(playerid, quest_index, sqp_id)) return false;
+
+	start_quest_player_info[playerid][quest_index][sqp_points] += points;
+	if(GetPlayerStartQuestData(playerid, quest_index, sqp_points) >= GetStartQuestData(quest_index, sq_points)){
+		StartQuest:FinishQuest(playerid, quest_index);
+	}
+	else{
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			"Прогресс квеста \"%s\": "cl_white"%d/%d.",
+			GetStartQuestData(quest_index, sq_name),
+			GetPlayerStartQuestData(playerid, quest_index, sqp_points),
+			GetStartQuestData(quest_index, sq_points));
+		SendClientMessage(playerid, COLOR_YELLOW, small_string);
+		small_string[0] = EOS;
+	}
+
+	static const fmt_query[] = "UPDATE start_player_quests SET points = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query, GetPlayerStartQuestData(playerid, quest_index, sqp_points), GetPlayerStartQuestData(playerid, quest_index, sqp_id));
 	mysql_tquery(mysql, query);
 	return true;
 }
@@ -122,6 +161,19 @@ stock StartQuest:UpdateQuest(playerid, quest_index){
 					GPSEnable(playerid, SQ_JONNY_POS);
 				}
 			}
+		}
+
+		case SQ_FIRST_MONEY:{
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"Отправляйтесь на любую из работ и заработайте %d$. Заработано: %d$ из %d$.",
+				GetStartQuestData(quest_index, sq_points),
+				GetPlayerStartQuestData(playerid, quest_index, sqp_points),
+				GetStartQuestData(quest_index, sq_points));
+			SendClientMessage(playerid, COLOR_YELLOW, small_string);
+			small_string[0] = EOS;
+
+			SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Посмотреть доступные работы можно в '/gps'.");
 		}
 	}
 	return true;
@@ -210,4 +262,10 @@ stock StartQuest:ShowJonnyIlligalJob(playerid){
 		"cl_blue"- "cl_white"Найти ты эти работы можешь в любое время на своём GPS "cl_grey"(/gps)",
 		"Хорошо", "");
 	return true;
+}
+
+stock OnPlayerFinishStartQuest(playerid, quest_index){
+	#pragma unused quest_index
+	#pragma unused playerid
+	return 1;
 }

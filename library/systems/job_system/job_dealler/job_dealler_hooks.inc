@@ -34,6 +34,7 @@ hook stock OnPlayerSecondUpdate(playerid){
 
 			SendClientMessage(playerid, COLOR_YELLOW, "Вы заработали "#JOB_DEALLER_PAY"$.");
 			GiveMoney(playerid, JOB_DEALLER_PAY);
+			StartQuest:GivePoints(playerid, SQ_FIRST_MONEY, JOB_DEALLER_PAY);
 
 			for(new i; i < MAX_INVENTORY_SLOTS; i++){
 				if(!GetPlayerInventoryItemData(playerid, i, inv_player_id)) continue;

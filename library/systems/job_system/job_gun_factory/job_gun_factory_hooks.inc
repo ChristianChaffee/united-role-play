@@ -35,6 +35,7 @@ hook OnPlayerEnterCheckpoint(playerid){
 
 			SendClientMessage(playerid, COLOR_YELLOW, "Вы отнесли оружие и заработали "#JOB_GUN_FACTORY_PAY"$"cl_white".");
 			GiveMoney(playerid, JOB_GUN_FACTORY_PAY);
+			StartQuest:GivePoints(playerid, SQ_FIRST_MONEY, JOB_GUN_FACTORY_PAY);
 
 			small_string[0] = EOS;
 			format(small_string, sizeof(small_string),

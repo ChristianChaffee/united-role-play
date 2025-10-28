@@ -113,6 +113,7 @@ stock Job:GSDestroyPlayerGarbage(playerid){
 	small_string[0] = EOS;
 
 	GiveMoney(playerid, floatround(pay));
+	StartQuest:GivePoints(playerid, SQ_FIRST_MONEY, floatround(pay));
 
 	SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Отправляйтесь собирать мусор.");
 	DeletePVar(playerid, "JobGarbageSorter_Weight");

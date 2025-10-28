@@ -14,6 +14,7 @@ public LoadStartQuests(){
 		cache_get_value_name(i, "name", GetStartQuestData(i + 1, sq_name));
 		cache_get_value_name(i, "description", GetStartQuestData(i + 1, sq_description));
 		cache_get_value_name_int(i, "reward_money", GetStartQuestData(i + 1, sq_reward_money));
+		cache_get_value_name_int(i, "points", GetStartQuestData(i + 1, sq_points));
 	}
 
 	printf("[LoadStartQuests]: Стартовые квесты загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
@@ -49,6 +50,7 @@ public LoadPlayerStartQuests(playerid, quest_index){
 		cache_get_value_name_int(i, "account_id", GetPlayerStartQuestData(playerid, temp_quest_index, sqp_account_id));
 		cache_get_value_name_int(i, "status", GetPlayerStartQuestData(playerid, temp_quest_index, sqp_status));
 		cache_get_value_name_int(i, "stage", GetPlayerStartQuestData(playerid, temp_quest_index, sqp_stage));
+		cache_get_value_name_int(i, "points", GetPlayerStartQuestData(playerid, temp_quest_index, sqp_points));
 
 		if(temp_quest_index == SQ_WELCOME_TO_STATE){
 			StartQuest:StartQuest(playerid, SQ_WELCOME_TO_STATE);

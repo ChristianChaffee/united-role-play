@@ -19,6 +19,7 @@ hook OnPlayerEnterCheckpoint(playerid){
 
 				SetPVarInt(playerid, "JobLoader_BoxesCount", GetPVarInt(playerid, "JobLoader_BoxesCount") + 1);
 				GiveMoney(playerid, JOB_LOADER_STATIC_PAY);
+				StartQuest:GivePoints(playerid, SQ_FIRST_MONEY, JOB_LOADER_STATIC_PAY);
 				
 				small_string[0] = EOS;
 				format(small_string, sizeof(small_string),

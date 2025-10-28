@@ -34,6 +34,7 @@ enum start_quest_info_struct
 	sq_id,
 	sq_name[32],
 	sq_description[256],
+	sq_points,
 	sq_reward_money,
 }
 
@@ -46,5 +47,6 @@ enum start_quest_player_info_struct
 	sqp_status,
 	sqp_quest_id,
 	sqp_stage,
+	sqp_points
 }
 new start_quest_player_info[MAX_PLAYERS][START_QUESTS_COUNT + 1][start_quest_player_info_struct];
