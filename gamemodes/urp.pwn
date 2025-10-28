@@ -434,6 +434,7 @@ stock OnPlayerGiveInvItem(playerid, slot_index){
 #include "..\library\source\mapping\spawn.inc"
 #include "..\library\source\mapping\bank_int.inc"
 #include "..\library\source\mapping\loader_job_ext.inc"
+#include "..\library\source\mapping\gun_factory.inc"
 
 #warning TEST_CMD
 CMD:tpt(playerid){
