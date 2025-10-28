@@ -2,7 +2,7 @@
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
 hook OnGameModeInit(){
-	for(new i; i < sizeof(job_lumberjack_trees_info); i++){
+	for(new i; i < JOB_LUMBERJACK_TREES_COUNT; i++){
 		Job:CreateLumberjackTree(i);
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
@@ -15,7 +15,7 @@ hook OnPlayerDisconnect(playerid, reason){
 
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 	if(newkeys == KEY_WALK && GetPlayerData(playerid, p_job) == JOB_LUMBERJACK && GetPVarInt(playerid, "JobLumberjack_Stage") == JOB_LUMBERJACK_STAGE_TO_TREES){
-		for(new i, is_find; i < sizeof(job_lumberjack_trees_info); i++){
+		for(new i, is_find; i < JOB_LUMBERJACK_TREES_COUNT; i++){
 			if(job_lumberjack_trees_info[i][jlt_timer] > 0) continue;
 			if(!IsPlayerInRangeOfPoint(playerid, 2.0, job_lumberjack_trees_info[i][jlt_pos][0], job_lumberjack_trees_info[i][jlt_pos][1], job_lumberjack_trees_info[i][jlt_pos][2])) continue;
 
@@ -81,7 +81,7 @@ hook stock OnPlayerSecondUpdate(playerid){
 }
 
 hook stock SecondTimerStock(){
-	for(new i; i < sizeof(job_lumberjack_trees_info); i++){
+	for(new i; i < JOB_LUMBERJACK_TREES_COUNT; i++){
 		if(job_lumberjack_trees_info[i][jlt_timer] > 0){
 			job_lumberjack_trees_info[i][jlt_timer]--;
 			if(job_lumberjack_trees_info[i][jlt_timer] <= 0){

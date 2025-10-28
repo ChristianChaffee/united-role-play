@@ -8,17 +8,21 @@
 	
 */
 
+//==============================================================================
 #define JOB_GS_ACTOR_ID 							10
-#define JOB_GS_MAX_PLAYERS 							30
-#define JOB_GS_GARBAGE_MODEL_ID 					849
-#define JOB_GS_GARBAGE_COUNT 						19
-#define JOB_GS_MAX_WEIGHT 							3.5
-#define JOB_GS_WAREH_POS 							2200.90, -1970.25, 13.78
-#define JOB_GS_MAX_GARBAGE 							10.0
 #define JOB_GS_PLAYER_TIMER 						10
+#define JOB_GS_MAX_PLAYERS 							30
+#define JOB_GS_GARBAGE_COUNT 						19
 #define JOB_GS_TIMER 								120
+#define JOB_GS_GARBAGE_MODEL_ID 					849
+
+#define JOB_GS_MAX_WEIGHT 							3.5
+#define JOB_GS_MAX_GARBAGE 							10.0
+
+#define JOB_GS_WAREH_POS 							2200.90, -1970.25, 13.78
 #define JOB_GS_CENTRAL_POINT 						2185.10, -1982.77, 13.55
 
+//==============================================================================
 enum
 {
 	GS_GARBAGE_TYPE_PAPER,
@@ -26,15 +30,14 @@ enum
 	GS_GARBAGE_TYPE_GLASS,
 	GS_GARBAGE_MAX_TYPE,
 }
+
+//==============================================================================
+new const gs_garbage_type_prices[GS_GARBAGE_MAX_TYPE] = { 2, 5, 7 };
+
 new const gs_garbage_name_type[GS_GARBAGE_MAX_TYPE][2][32] = {
 	{"Бумага", "бумаги"},
 	{"Пластик", "пластика"},
 	{"Стекло", "стекла"}
-};
-new const gs_garbage_type_prices[GS_GARBAGE_MAX_TYPE] = {
-	2,
-	5,
-	7
 };
 
 new const Float:job_gs_garbage_pos[JOB_GS_GARBAGE_COUNT][6] = {
@@ -59,6 +62,7 @@ new const Float:job_gs_garbage_pos[JOB_GS_GARBAGE_COUNT][6] = {
 	{2191.712890, -1996.896240, 12.681596, -0.000021, 0.000013, -49.799873}
 };
 
+//==============================================================================
 enum gs_garbage_info_struct
 {
 	gsg_type,

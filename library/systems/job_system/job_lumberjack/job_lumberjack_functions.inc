@@ -1,6 +1,6 @@
 
 stock Job:CreateLumberjackTree(tree_index){
-	if(tree_index < 0 || tree_index >= sizeof(job_lumberjack_trees_info)) return false;
+	if(tree_index < 0 || tree_index >= JOB_LUMBERJACK_TREES_COUNT) return false;
 
 	if(IsValidDynamicObject(job_lumberjack_trees_info[tree_index][jlt_object_id])){
 		DestroyDynamicObject(job_lumberjack_trees_info[tree_index][jlt_object_id]);
@@ -28,7 +28,7 @@ stock Job:CreateLumberjackTree(tree_index){
 }
 
 stock Job:LumberjackDestroyTree(tree_index){
-	if(tree_index < 0 || tree_index >= sizeof(job_lumberjack_trees_info)) return false;
+	if(tree_index < 0 || tree_index >= JOB_LUMBERJACK_TREES_COUNT) return false;
 
 	if(IsValidDynamicObject(job_lumberjack_trees_info[tree_index][jlt_object_id])){
 		DestroyDynamicObject(job_lumberjack_trees_info[tree_index][jlt_object_id]);

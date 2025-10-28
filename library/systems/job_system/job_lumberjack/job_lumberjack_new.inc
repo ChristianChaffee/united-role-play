@@ -9,10 +9,12 @@
 
 */
 
-#define JOB_LUMBERJACK_ACTOR_ID 						9
-#define JOB_LUMBERJACK_MAX_PLAYERS 						30
+//==============================================================================
 #define JOB_LUMBERJACK_STATIC_PAY 						8
+#define JOB_LUMBERJACK_ACTOR_ID 						9
 #define JOB_LUMBERJACK_TIMER 							10
+#define JOB_LUMBERJACK_TREES_COUNT 						15
+#define JOB_LUMBERJACK_MAX_PLAYERS 						30
 #define JOB_LUMBERJACK_TREE_TIMER 						60
 
 #define JOB_LUMBERJACK_TREES_CP 						-519.55, -39.31, 61.54
@@ -36,7 +38,7 @@ enum job_lumberjack_trees_info_str
 	jlt_object_id,
 	Text3D:jlt_text,
 }
-new job_lumberjack_trees_info[15][job_lumberjack_trees_info_str] = {
+new job_lumberjack_trees_info[JOB_LUMBERJACK_TREES_COUNT][job_lumberjack_trees_info_str] = {
 	{{-547.870361, -39.800529, 62.684658, 0.000000, 0.000000, 0.000000}, 0, INVALID_OBJECT_ID, Text3D:INVALID_3DTEXT_ID},
 	{{-540.240417, -28.860523, 61.104701, 0.000000, 0.000000, 0.000000}, 0, INVALID_OBJECT_ID, Text3D:INVALID_3DTEXT_ID},
 	{{-540.240417, -36.960521, 61.454650, 0.000000, 0.000000, -30.899997}, 0, INVALID_OBJECT_ID, Text3D:INVALID_3DTEXT_ID},

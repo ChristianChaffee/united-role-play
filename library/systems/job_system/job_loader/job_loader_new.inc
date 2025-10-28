@@ -7,9 +7,11 @@
 
 */
 
+//==============================================================================
+#define JOB_LOADER_STATIC_PAY 							5
 #define JOB_LOADER_ACTOR_ID 							8
 #define JOB_LOADER_MAX_PLAYERS 							30
-#define JOB_LOADER_STATIC_PAY 							5
+
 #define JOB_LOADER_CENTRAL_POINT 						2191.27, -2277.48, 13.55
 
 //==============================================================================

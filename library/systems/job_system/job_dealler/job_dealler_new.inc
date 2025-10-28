@@ -5,11 +5,13 @@
 	JobDealler_Timer
 */
 
+//==============================================================================
+#define JOB_DEALLER_PLAYER_TIME 					5
 #define JOB_DEALLER_ACTOR_ID 						11
 #define JOB_DEALLER_DRUGS_COUNT 					10
 #define JOB_DEALLER_PAY 							50
-#define JOB_DEALLER_PLAYER_TIME 					5
 
+//==============================================================================
 new const Float:dealler_drug_pos[21][3] = {
 	{2446.1572, -1901.6011, 13.5469},
 	{2247.0720, -1796.0012, 13.5469},
