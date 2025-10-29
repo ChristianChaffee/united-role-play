@@ -13,8 +13,10 @@
 #include "..\library\source\dialogs_new.inc"
 #include "..\library\source\database\database_new.inc"
 #include "..\library\source\player\player_new.inc"
+#include "..\library\source\vehicle\vehicle_new.inc"
 
 #include "..\library\source\player\player_functions.inc"
+#include "..\library\source\vehicle\vehicle_functions.inc"
 
 #include "..\library\source\database\database_hooks.inc"
 //==============================================================================
