@@ -3,6 +3,7 @@
 
 hook OnGameModeInit(){
 	ManualVehicleEngineAndLights();
+	SetTimer("VehicleFuelTimer", VEHICLE_FUEL_TIME, true);
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
@@ -21,8 +22,13 @@ hook function CreateVehicle(vehicletype, Float:x, Float:y, Float:z, Float:rotati
 
 	SetVehicleData(vehicleid, v_siren, addsiren);
 	SetVehicleData(vehicleid, v_respawn_delay, respawn_delay);
+	SetVehicleFuel(vehicleid, 50.0);
 
 	SetVehicleEngine(vehicleid, false);
+	SetVehicleDoors(vehicleid, false);
+	SetVehicleLights(vehicleid, false);
+	SetVehicleBonnet(vehicleid, false);
+	SetVehicleBoot(vehicleid, false);
 	return vehicleid;
 }
 
@@ -38,4 +44,18 @@ hook function LinkVehicleToInterior(vehicleid, interiorid){
 
 	SetVehicleData(vehicleid, v_int, interiorid);
 	return continue(vehicleid, interiorid);
+}
+
+hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
+	if(newkeys == KEY_SUBMISSION && GetPlayerState(playerid) == PLAYER_STATE_DRIVER){
+		if(!GetVehicleEngine(GetPlayerVehicleID(playerid)) && GetVehicleData(GetPlayerVehicleID(playerid), v_fuel) <= 0.0){
+			SendErrorMessage(playerid, "В транспорте закончилось топливо.");
+			return Y_HOOKS_CONTINUE_RETURN_1;
+		}
+		SetVehicleEngine(GetPlayerVehicleID(playerid), !GetVehicleEngine(GetPlayerVehicleID(playerid)));
+	}
+	if(newkeys == KEY_ACTION && GetPlayerState(playerid) == PLAYER_STATE_DRIVER){
+		ShowVehicleMenu(playerid);
+	}
+	return Y_HOOKS_CONTINUE_RETURN_1;
 }

@@ -20,8 +20,12 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\player\player_functions.inc"
 #include "..\library\source\vehicle\vehicle_functions.inc"
 
+#include "..\library\source\vehicle\vehicle_publics.inc"
+
 #include "..\library\source\database\database_hooks.inc"
 #include "..\library\source\vehicle\vehicle_hooks.inc"
+
+#include "..\library\source\vehicle\vehicle_dialogs.inc"
 //==============================================================================
 
 #include "..\library\systems\skin_select_system\skin_select_new.inc"

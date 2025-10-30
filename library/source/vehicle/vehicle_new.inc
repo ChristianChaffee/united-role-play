@@ -1,5 +1,6 @@
 
 #define VEHICLE_MODELS_COUNT 						411
+#define VEHICLE_FUEL_TIME 							60000
 
 #define GetVehicleData(%0,%1)  						vehicle_info[%0][%1]
 #define SetVehicleData(%0,%1,%2)  					vehicle_info[%0][%1] = %2
@@ -34,5 +35,6 @@ enum vehicle_info_struct
 	v_siren,
 	v_respawn_delay,
 	Float:v_health,
+	Float:v_fuel,
 }
 new vehicle_info[MAX_VEHICLES][vehicle_info_struct];

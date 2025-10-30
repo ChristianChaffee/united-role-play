@@ -63,6 +63,9 @@ stock Speedometr:UpdateAll(playerid){
 
 	//------- Speed
 	Speedometr:UpdateSpeed(playerid);
+
+	//------- Fuel
+	Speedometr:UpdateFuel(playerid);
 	return true;
 }
 
@@ -81,5 +84,19 @@ stock Speedometr:UpdateSpeed(playerid){
 	format(health_string, sizeof(health_string), "HEALTH:_%d", floatround(Float:GetVehicleHealthEx(vehicleid)));
 	PlayerTextDrawSetString(playerid, TDEditor_PTD[playerid][10], health_string);
 	health_string[0] = EOS;
+	return true;
+}
+
+stock Speedometr:UpdateFuel(playerid){
+	if(!GetPVarType(playerid, "Speedometr_IsShowed")) return false;
+
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER || !vehicleid) return false;
+
+	new Float:fuel = (26.0000 * GetVehicleData(vehicleid, v_fuel)) / 100.0;
+
+	PlayerTextDrawHide(playerid, TDEditor_PTD[playerid][5]);
+	PlayerTextDrawTextSize(playerid, TDEditor_PTD[playerid][5], fuel, 1.6599);
+	PlayerTextDrawShow(playerid, TDEditor_PTD[playerid][5]);
 	return true;
 }

@@ -12,6 +12,7 @@ stock GetVehicleDriver(vehicleid){
 	return INVALID_PLAYER_ID;
 }
 
+//-----------------------------------------------
 stock SetVehicleEngine(vehicleid, status){
 	if(!IsValidVehicle(vehicleid)) return -1;
 
@@ -19,6 +20,8 @@ stock SetVehicleEngine(vehicleid, status){
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 	engine = status;
 	SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+
+	SetVehicleLights(vehicleid, status);
 	return status;
 }
 
@@ -30,6 +33,7 @@ stock GetVehicleEngine(vehicleid){
 	return engine;
 }
 
+//-----------------------------------------------
 stock SetVehicleDoors(vehicleid, status){
 	if(!IsValidVehicle(vehicleid)) return -1;
 
@@ -40,6 +44,15 @@ stock SetVehicleDoors(vehicleid, status){
 	return status;
 }
 
+stock GetVehicleDoors(vehicleid){
+	if(!IsValidVehicle(vehicleid)) return -1;
+
+	new engine, lights, alarm, doors, bonnet, boot, objective;
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+	return doors;
+}
+
+//-----------------------------------------------
 stock SetVehicleLights(vehicleid, status){
 	if(!IsValidVehicle(vehicleid)) return -1;
 
@@ -50,6 +63,53 @@ stock SetVehicleLights(vehicleid, status){
 	return status;
 }
 
+stock GetVehicleLights(vehicleid){
+	if(!IsValidVehicle(vehicleid)) return -1;
+
+	new engine, lights, alarm, doors, bonnet, boot, objective;
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+	return lights;
+}
+
+//-----------------------------------------------
+stock SetVehicleBonnet(vehicleid, status){
+	if(!IsValidVehicle(vehicleid)) return -1;
+
+	new engine, lights, alarm, doors, bonnet, boot, objective;
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+	bonnet = status;
+	SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+	return status;
+}
+
+stock GetVehicleBonnet(vehicleid){
+	if(!IsValidVehicle(vehicleid)) return -1;
+
+	new engine, lights, alarm, doors, bonnet, boot, objective;
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+	return bonnet;
+}
+
+//-----------------------------------------------
+stock SetVehicleBoot(vehicleid, status){
+	if(!IsValidVehicle(vehicleid)) return -1;
+
+	new engine, lights, alarm, doors, bonnet, boot, objective;
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+	boot = status;
+	SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+	return status;
+}
+
+stock GetVehicleBoot(vehicleid){
+	if(!IsValidVehicle(vehicleid)) return -1;
+
+	new engine, lights, alarm, doors, bonnet, boot, objective;
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+	return boot;
+}
+
+//-----------------------------------------------
 stock GetVehicleSpeed(vehicleid){
 	new Float:velocity[3];
 	GetVehicleVelocity(vehicleid, velocity[0], velocity[1], velocity[2]);
@@ -61,4 +121,65 @@ stock Float:GetVehicleHealthEx(vehicleid){
 
 	GetVehicleHealth(vehicleid, GetVehicleData(vehicleid, v_health));
 	return GetVehicleData(vehicleid, v_health);
+}
+
+stock SetVehicleFuel(vehicleid, Float:fuel){
+	if(!IsValidVehicle(vehicleid)) return false;
+
+	SetVehicleData(vehicleid, v_fuel, fuel);
+	return true;
+}
+
+stock IsPlayerInRangeOfVehicle(playerid, vehicleid, Float:radius){
+	if(!IsValidVehicle(vehicleid)) return false;
+
+	if(GetPlayerVirtualWorld(playerid) != GetVehicleData(vehicleid, v_vw)
+		|| GetPlayerInterior(playerid) != GetVehicleData(vehicleid, v_int)) return false;
+
+	new Float:vehicle_pos[3];
+	GetVehiclePos(vehicleid, vehicle_pos[0], vehicle_pos[1], vehicle_pos[2]);
+
+	if(!IsPlayerInRangeOfPoint(playerid, radius, vehicle_pos[0], vehicle_pos[1], vehicle_pos[2])) return false;
+	return true;
+}
+
+stock ChangePlayerVehicleDoors(playerid, vehicleid){
+	if(!IsValidVehicle(vehicleid)) return false;
+	if(!IsPlayerInRangeOfVehicle(playerid, vehicleid, 10.0)){
+		SendErrorMessage(playerid, "Рядом с Вами нет подходящего транспорта.");
+		return false;
+	}
+
+	SetVehicleDoors(vehicleid, !GetVehicleDoors(vehicleid));
+	GameTextForPlayer(playerid, (!GetVehicleDoors(vehicleid)) ? ("~g~UNLOCK") : ("~r~LOCK"), 3000, 3);
+	return true;
+}
+
+//==============================================================================
+stock ShowVehicleMenu(playerid){
+	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER || !GetPlayerVehicleID(playerid)) return false;
+	
+	new vehicleid = GetPlayerVehicleID(playerid);
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_grey"Параметр\t"cl_grey"Статус\n\
+		"cl_blue"1. "cl_white"Двигатель\t"cl_grey"[%s"cl_grey"]\n\
+		"cl_blue"2. "cl_white"Двери\t"cl_grey"[%s"cl_grey"]\n\
+		"cl_blue"3. "cl_white"Фары\t"cl_grey"[%s"cl_grey"]\n\
+		"cl_blue"4. "cl_white"Капот\t"cl_grey"[%s"cl_grey"]\n\
+		"cl_blue"5. "cl_white"Багажник\t"cl_grey"[%s"cl_grey"]\n\
+		"cl_blue"6. "cl_white"Топливо\t"cl_grey"["cl_white"%.02f"cl_grey"]",
+		(GetVehicleEngine(vehicleid)) ? (""cl_green"Заведён") : (""cl_dark_red"Заглушен"),
+		(!GetVehicleDoors(vehicleid)) ? (""cl_green"Открыты") : (""cl_dark_red"Закрыты"),
+		(GetVehicleLights(vehicleid)) ? (""cl_green"Включены") : (""cl_dark_red"Выключены"),
+		(GetVehicleBonnet(vehicleid)) ? (""cl_green"Открыт") : (""cl_dark_red"Закрыт"),
+		(GetVehicleBoot(vehicleid)) ? (""cl_green"Открыт") : (""cl_dark_red"Закрыт"),
+		GetVehicleData(vehicleid, v_fuel));
+
+	Dialog_Open(playerid, Dialog:D_VEHICLE_MENU, DIALOG_STYLE_TABLIST_HEADERS,
+		"Управление транспортом", big_string,
+		"Выбрать", "Закрыть");
+	big_string[0] = EOS;
+	return true;
 }

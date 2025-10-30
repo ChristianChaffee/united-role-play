@@ -46,19 +46,22 @@ hook stock SetVehicleLights(vehicleid, status){
 	return continue(vehicleid, status);
 }
 
+hook stock SetVehicleFuel(vehicleid, Float:fuel){
+	new result = continue(vehicleid, fuel);
+
+	new playerid = GetVehicleDriver(vehicleid);
+	if(playerid == INVALID_PLAYER_ID) return result;
+
+	Speedometr:UpdateFuel(playerid);
+	return result;
+}
+
 hook OnPlayerStateChange(playerid, newstate, oldstate){
 	if(newstate == PLAYER_STATE_DRIVER){
 		Speedometr:ShowPlayerSpeedometr(playerid, true);
 	}
 	if(oldstate == PLAYER_STATE_DRIVER){
 		Speedometr:ShowPlayerSpeedometr(playerid, false);
-	}
-	return Y_HOOKS_CONTINUE_RETURN_1;
-}
-
-hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
-	if(newkeys == KEY_SUBMISSION && GetPlayerState(playerid) == PLAYER_STATE_DRIVER){
-		SetVehicleEngine(GetPlayerVehicleID(playerid), !GetVehicleEngine(GetPlayerVehicleID(playerid)));
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
@@ -412,7 +415,7 @@ hook OnPlayerConnect(playerid){
 	PlayerTextDrawSetShadow(playerid, TDEditor_PTD[playerid][4], 0);
 
 	TDEditor_PTD[playerid][5] = CreatePlayerTextDraw(playerid, 543.3331, 432.5111, "LD_SPAC:white"); // пусто
-	PlayerTextDrawTextSize(playerid, TDEditor_PTD[playerid][5], 26.0000, 1.6599);
+	PlayerTextDrawTextSize(playerid, TDEditor_PTD[playerid][5], 26.0000, 1.6599); // 26.0, 1.6599
 	PlayerTextDrawAlignment(playerid, TDEditor_PTD[playerid][5], 1);
 	PlayerTextDrawColor(playerid, TDEditor_PTD[playerid][5], -238863617);
 	PlayerTextDrawBackgroundColor(playerid, TDEditor_PTD[playerid][5], 255);
