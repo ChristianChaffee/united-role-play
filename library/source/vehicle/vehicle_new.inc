@@ -23,6 +23,7 @@ enum vehicle_params_info_struct
 enum vehicle_info_struct
 {
 	v_id,
+
 	v_model_id,
 	Float:v_pos_spawn_x,
 	Float:v_pos_spawn_y,
@@ -30,11 +31,33 @@ enum vehicle_info_struct
 	Float:v_pos_spawn_angle,
 	v_vw,
 	v_int,
+
 	v_color_1,
 	v_color_2,
+
 	v_siren,
 	v_respawn_delay,
 	Float:v_health,
 	Float:v_fuel,
 }
 new vehicle_info[MAX_VEHICLES][vehicle_info_struct];
+new const vehicle_info_empty[vehicle_info_struct] = {
+	0,
+	0,
+
+	0.0,
+	0.0,
+	0.0,
+	0.0,
+
+	0,
+	0,
+
+	0,
+	0,
+
+	0,
+	0,
+	0.0,
+	0.0
+};

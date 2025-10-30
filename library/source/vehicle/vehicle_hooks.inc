@@ -46,6 +46,15 @@ hook function LinkVehicleToInterior(vehicleid, interiorid){
 	return continue(vehicleid, interiorid);
 }
 
+hook function DestroyVehicle(vehicleid){
+	new result = continue(vehicleid);
+
+	if(result){
+		vehicle_info[vehicleid] = vehicle_info_empty;
+	}
+	return result;
+}
+
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 	if(newkeys == KEY_SUBMISSION && GetPlayerState(playerid) == PLAYER_STATE_DRIVER){
 		if(!GetVehicleEngine(GetPlayerVehicleID(playerid)) && GetVehicleData(GetPlayerVehicleID(playerid), v_fuel) <= 0.0){

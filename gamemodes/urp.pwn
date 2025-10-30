@@ -122,13 +122,21 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 	return 1;
 }
 
-public OnPlayerExitVehicle(playerid, vehicleid)
-{
+public OnPlayerExitVehicle(playerid, vehicleid){
+	if(GetPVarType(playerid, "InTempVehicle") && GetPVarInt(playerid, "InTempVehicle") == vehicleid){
+		DestroyVehicle(vehicleid);
+		DeletePVar(playerid, "InTempVehicle");
+	}
 	return 1;
 }
 
-public OnPlayerStateChange(playerid, newstate, oldstate)
-{
+public OnPlayerStateChange(playerid, newstate, oldstate){
+	if(oldstate == PLAYER_STATE_DRIVER && GetPVarType(playerid, "InTempVehicle") && GetPVarInt(playerid, "InTempVehicle")
+		&& IsValidVehicle(GetPVarInt(playerid, "InTempVehicle"))){
+
+		DestroyVehicle(GetPVarInt(playerid, "InTempVehicle"));
+		DeletePVar(playerid, "InTempVehicle");
+	}
 	return 1;
 }
 
@@ -456,28 +464,26 @@ stock OnPlayerGiveInvItem(playerid, slot_index){
 #include "..\library\source\mapping\gun_factory.inc"
 
 #warning TEST_CMD
-CMD:tpt(playerid){
-	SetPlayerVirtualWorld(playerid, 5);
-	SetPlayerInterior(playerid, 7);
-	SetPlayerPos(playerid, 1382.671997, -25.474714, 999.986694 + 1.5);
-	return true;
-}
+CMD:veh(playerid, params[]){
+	if(!player_logged[playerid] || strcmp(HEAD_ADMIN_NAME, GetPlayerData(playerid, p_name))) return false;
+	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/veh [ID модели]'");
+	if(params[0] < 400 || params[0] > 610) return SendErrorMessage(playerid, "Данной модели транспорта не существует.");
 
-#warning TEST_CMD
-CMD:ss(playerid){
-	for(new i; i < sizeof(TDEditor_TD); i++){
-		TextDrawShowForPlayer(playerid, TDEditor_TD[i]);
-	}
-	for(new i; i < 11; i++){
-		PlayerTextDrawShow(playerid, TDEditor_PTD[playerid][i]);
-	}
-	return true;
-}
-
-#warning TEST_CMD
-CMD:veh(playerid){
-	new Float:pos[3];
+	new Float:pos[4];
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	CreateVehicle(405, pos[0], pos[1], pos[2], 0.0, random(255), random(255), 1000);
+	GetPlayerFacingAngle(playerid, pos[3]);
+	new vehicleid = CreateVehicle(params[0], pos[0], pos[1], pos[2], pos[3], random(255), random(255), 1000);
+	PutPlayerInVehicle(playerid, vehicleid, 0);
+	SetPVarInt(playerid, "InTempVehicle", vehicleid);
+	return true;
+}
+
+#warning TEST_CMD
+CMD:delveh(playerid, params[]){
+	if(!player_logged[playerid] || strcmp(HEAD_ADMIN_NAME, GetPlayerData(playerid, p_name))) return false;
+	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/delveh [ID транспорта]'");
+	if(!IsValidVehicle(params[0])) return SendErrorMessage(playerid, "Данного транспорта не существует.");
+
+	DestroyVehicle(params[0]);
 	return true;
 }
