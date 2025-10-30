@@ -13,7 +13,7 @@
 #define SPEEDOMETR_COLOR_ON 						-238863772
 #define SPEEDOMETR_COLOR_OFF 						-1061109660
 
-#define SPEEDOMETR_TIMER 							35
+#define SPEEDOMETR_TIMER 							50
 
 //==============================================================================
 new Text:TDEditor_TD[33];
