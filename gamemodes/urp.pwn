@@ -6,6 +6,7 @@
 #include <Pawn.Regex>
 #include <Pawn.CMD>
 #include <streamer>
+#include <sscanf2>
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
 native IsValidVehicle(vehicleid);
