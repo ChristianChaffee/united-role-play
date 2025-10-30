@@ -8,6 +8,8 @@
 #include <streamer>
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
+native IsValidVehicle(vehicleid);
+
 #include "..\library\source\colors_new.inc"
 #include "..\library\source\global_new.inc"
 #include "..\library\source\dialogs_new.inc"
@@ -19,6 +21,7 @@
 #include "..\library\source\vehicle\vehicle_functions.inc"
 
 #include "..\library\source\database\database_hooks.inc"
+#include "..\library\source\vehicle\vehicle_hooks.inc"
 //==============================================================================
 
 #include "..\library\systems\skin_select_system\skin_select_new.inc"
