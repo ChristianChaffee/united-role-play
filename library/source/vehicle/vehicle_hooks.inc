@@ -1,6 +1,11 @@
 
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
+hook OnGameModeInit(){
+	ManualVehicleEngineAndLights();
+	return Y_HOOKS_CONTINUE_RETURN_1;
+}
+
 hook function CreateVehicle(vehicletype, Float:x, Float:y, Float:z, Float:rotation, color1, color2, respawn_delay, addsiren=0){
 	new vehicleid = continue(vehicletype, x, y, z, rotation, color1, color2, respawn_delay, addsiren);
 
@@ -16,6 +21,8 @@ hook function CreateVehicle(vehicletype, Float:x, Float:y, Float:z, Float:rotati
 
 	SetVehicleData(vehicleid, v_siren, addsiren);
 	SetVehicleData(vehicleid, v_respawn_delay, respawn_delay);
+
+	SetVehicleEngine(vehicleid, false);
 	return vehicleid;
 }
 

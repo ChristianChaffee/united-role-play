@@ -41,6 +41,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\job_system\job_garbage_sorter\job_garbage_sorter_new.inc"
 #include "..\library\systems\job_system\job_dealler\job_dealler_new.inc"
 #include "..\library\systems\job_system\job_gun_factory\job_gun_factory_new.inc"
+#include "..\library\systems\speedometr_system\speedometr_new.inc"
 
 public OnGameModeInit(){
 	Streamer_SetVisibleItems(STREAMER_TYPE_OBJECT, 1000);
@@ -397,6 +398,7 @@ stock OnPlayerGiveInvItem(playerid, slot_index){
 #include "..\library\systems\bank_system\bank_system_publics.inc"
 #include "..\library\systems\actor_system\actor_system_publics.inc"
 #include "..\library\systems\quest_system\start_quest_system\start_quest_publics.inc"
+#include "..\library\systems\speedometr_system\speedometr_publics.inc"
 
 #include "..\library\systems\registration_system\registration_dialogs.inc"
 #include "..\library\systems\bank_system\bank_system_dialogs.inc"
@@ -422,6 +424,7 @@ stock OnPlayerGiveInvItem(playerid, slot_index){
 #include "..\library\systems\job_system\job_garbage_sorter\job_garbage_sorter_functions.inc"
 #include "..\library\systems\job_system\job_dealler\job_dealler_functions.inc"
 #include "..\library\systems\job_system\job_gun_factory\job_gun_factory_functions.inc"
+#include "..\library\systems\speedometr_system\speedometr_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -437,6 +440,7 @@ stock OnPlayerGiveInvItem(playerid, slot_index){
 #include "..\library\systems\job_system\job_garbage_sorter\job_garbage_sorter_hooks.inc"
 #include "..\library\systems\job_system\job_dealler\job_dealler_hooks.inc"
 #include "..\library\systems\job_system\job_gun_factory\job_gun_factory_hooks.inc"
+#include "..\library\systems\speedometr_system\speedometr_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 
@@ -451,4 +455,24 @@ CMD:tpt(playerid){
 	SetPlayerVirtualWorld(playerid, 5);
 	SetPlayerInterior(playerid, 7);
 	SetPlayerPos(playerid, 1382.671997, -25.474714, 999.986694 + 1.5);
+	return true;
+}
+
+#warning TEST_CMD
+CMD:ss(playerid){
+	for(new i; i < sizeof(TDEditor_TD); i++){
+		TextDrawShowForPlayer(playerid, TDEditor_TD[i]);
+	}
+	for(new i; i < 11; i++){
+		PlayerTextDrawShow(playerid, TDEditor_PTD[playerid][i]);
+	}
+	return true;
+}
+
+#warning TEST_CMD
+CMD:veh(playerid){
+	new Float:pos[3];
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	CreateVehicle(405, pos[0], pos[1], pos[2], 0.0, random(255), random(255), 1000);
+	return true;
 }
