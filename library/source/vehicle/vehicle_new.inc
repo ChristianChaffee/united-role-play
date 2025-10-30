@@ -37,7 +37,7 @@ enum vehicle_params_info_struct
 	vp_name[64],
 	vp_fuel_type,
 	vp_type,
-	Float:vp_acceleration
+	Float:vp_acceleration,
 	vp_max_speed,
 }
 /*new const vehicle_params_info[VEHICLE_MODELS_COUNT][vehicle_params_info_struct] = {
