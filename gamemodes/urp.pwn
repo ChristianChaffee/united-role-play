@@ -49,6 +49,9 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\speedometr_system\speedometr_new.inc"
 
 public OnGameModeInit(){
+	EnableStuntBonusForAll(false);
+	DisableInteriorEnterExits();
+
 	Streamer_SetVisibleItems(STREAMER_TYPE_OBJECT, 1000);
 	Streamer_SetMaxItems(STREAMER_TYPE_OBJECT, 1000);
 
@@ -462,6 +465,15 @@ stock OnPlayerGiveInvItem(playerid, slot_index){
 #include "..\library\source\mapping\bank_int.inc"
 #include "..\library\source\mapping\loader_job_ext.inc"
 #include "..\library\source\mapping\gun_factory.inc"
+#include "..\library\source\mapping\licensing_center_ext.inc"
+#include "..\library\source\mapping\licensing_center_int.inc"
+
+#warning TEST_CMD
+CMD:tpt(playerid){
+	SetPlayerPos(playerid, 499.455505, -23.557301, 1275.432373 + 1.0);
+	SetPlayerVirtualWorld(playerid, 14);
+	SetPlayerInterior(playerid, 24);
+}
 
 #warning TEST_CMD
 CMD:veh(playerid, params[]){
