@@ -30,6 +30,14 @@ enum
 	VEHICLE_TYPE_TRAIN,
 }
 
+enum
+{
+	VEHICLE_STATUS_NONE,
+	VEHICLE_STATUS_DRIVING_SCHOOL,
+
+	VEHICLE_STATUS_MAX
+}
+
 //==============================================================================
 enum vehicle_params_info_struct
 {
@@ -113,6 +121,7 @@ enum vehicle_info_struct
 	v_respawn_delay,
 	Float:v_health,
 	Float:v_fuel,
+	v_status,
 }
 new vehicle_info[MAX_VEHICLES][vehicle_info_struct];
 new const vehicle_info_empty[vehicle_info_struct] = {
@@ -133,5 +142,7 @@ new const vehicle_info_empty[vehicle_info_struct] = {
 	0,
 	0,
 	0.0,
-	0.0
+	0.0,
+
+	VEHICLE_STATUS_NONE
 };

@@ -4,6 +4,8 @@
 
 #define NATIONALITY_LEVEL 				3
 
+#define LICENSES_COUNT 					7
+
 //==============================================================================
 enum
 {
@@ -35,6 +37,9 @@ enum player_info_struct
 	p_money,
 	p_job,
 	p_level,
+
+	p_licenses[LICENSES_COUNT],
+	p_licenses_times[LICENSES_COUNT]
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -56,6 +61,17 @@ new const character_nationality[15][32] = {
 	"Китай",
 	"Япония",
 	"Южная Корея"
+};
+
+//==============================================================================
+new const licensing_names[LICENSES_COUNT][128] = {
+	"Класс D (легковоый транспорт)",
+	"Класс M (мототранспорт)",
+	"Коммерчиские водительские права - CDL (грузовой транспорт/автобусы)",
+	"Лицензия на водный транспорт",
+	"Свидетельство пилота",
+	"Лицензия на владение оружием",
+	"Лицензия на рыбную ловлю"
 };
 
 //==============================================================================

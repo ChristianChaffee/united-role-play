@@ -155,6 +155,14 @@ stock ChangePlayerVehicleDoors(playerid, vehicleid){
 	return true;
 }
 
+stock SetVehicleStatus(vehicleid, status){
+	if(!IsValidVehicle(vehicleid)) return false;
+	if(status < 0 || status >= VEHICLE_STATUS_MAX) return false;
+
+	SetVehicleData(vehicleid, v_status, status);
+	return true;
+}
+
 //==============================================================================
 stock ShowVehicleMenu(playerid){
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER || !GetPlayerVehicleID(playerid)) return false;

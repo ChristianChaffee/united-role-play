@@ -18,6 +18,11 @@ stock SetPlayerSpawn(playerid, spawn_type){
 		}
 	}
 
+	ResetPlayerMoney(playerid);
+	GivePlayerMoney(playerid, GetPlayerData(playerid, p_money));
+
+	CheckPlayerLicenses(playerid);
+
 	player_logged[playerid] = true;
 	SpawnPlayer(playerid);
 
@@ -29,6 +34,7 @@ stock SetPlayerSpawn(playerid, spawn_type){
 }
 
 stock LoadPlayer(playerid, Cache:cache_id){
+	new temp_string[128];
 	cache_set_active(cache_id);
 
 	cache_get_value_name_int(0, "id", GetPlayerData(playerid, p_id));
@@ -39,6 +45,12 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	cache_get_value_name_int(0, "skin", GetPlayerData(playerid, p_skin));
 	cache_get_value_name_int(0, "sex", GetPlayerData(playerid, p_sex));
 	cache_get_value_name_int(0, "money", GetPlayerData(playerid, p_money));
+
+	cache_get_value_name(0, "licenses", temp_string);
+	sscanf(temp_string, "p<,>a<i>["#LICENSES_COUNT"]", player_info[playerid][p_licenses]);
+
+	cache_get_value_name(0, "licenses_times", temp_string);
+	sscanf(temp_string, "p<,>a<i>["#LICENSES_COUNT"]", player_info[playerid][p_licenses_times]);
 
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
@@ -89,4 +101,60 @@ stock GPSDisable(playerid){
 stock GPSIsBlocked(playerid){
 	if(GetPlayerData(playerid, p_job) > 0) return true;
 	return false;
+}
+
+stock CheckPlayerLicenses(playerid){
+	for(new i; i < LICENSES_COUNT; i++){
+		if(player_info[playerid][p_licenses][i] && player_info[playerid][p_licenses_times][i] <= gettime() && player_info[playerid][p_licenses_times][i] > 0){
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"Срок действия лицензии \"%s\" истёк.",
+				licensing_names[i]);
+			small_string[0] = EOS;
+			DeletePlayerLicense(playerid, i);
+		}
+	}
+}
+
+stock GivePlayerLicense(playerid, license_index, days){
+	if(!player_logged[playerid]) return false;
+	if(license_index < 0 || license_index >= LICENSES_COUNT) return false;
+	if(days <= 0 || days > 1000) return false;
+
+	player_info[playerid][p_licenses][license_index] = 1;
+	player_info[playerid][p_licenses_times][license_index] = gettime() + (days * 86400);
+	SavePlayerLicenses(playerid);
+	return true;
+}
+
+stock DeletePlayerLicense(playerid, license_index){
+	if(!player_logged[playerid]) return false;
+	if(license_index < 0 || license_index >= LICENSES_COUNT) return false;
+
+	player_info[playerid][p_licenses][license_index] = 0;
+	player_info[playerid][p_licenses_times][license_index] = 0;
+	SavePlayerLicenses(playerid);
+	return true;
+}
+
+stock SavePlayerLicenses(playerid){
+	if(!player_logged[playerid]) return false;
+
+	new licenses_string[2][128];
+	
+	for(new i; i < LICENSES_COUNT; i++){
+		format(licenses_string[0], 128, "%s%d%s",
+			licenses_string[0], player_info[playerid][p_licenses][i],
+			(i == LICENSES_COUNT - 1) ? ("") : (", "));
+
+		format(licenses_string[1], 128, "%s%d%s",
+			licenses_string[1], player_info[playerid][p_licenses_times][i],
+			(i == LICENSES_COUNT - 1) ? ("") : (", "));
+	}
+
+	static const fmt_query[] = "UPDATE accounts SET licenses = '%s', licenses_times = '%s' WHERE id = %d LIMIT 1";
+	new query[sizeof(fmt_query) + (-2 + 128) + (-2 + 128) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query, licenses_string[0], licenses_string[1], GetPlayerData(playerid, p_id));
+	mysql_tquery(mysql, query);
+	return true;
 }

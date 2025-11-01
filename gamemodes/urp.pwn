@@ -495,6 +495,9 @@ CMD:veh(playerid, params[]){
 }
 
 #warning TEST_CMD
+CMD:nrg(playerid){ return callcmd::veh(playerid, "522"); }
+
+#warning TEST_CMD
 CMD:delveh(playerid, params[]){
 	if(!player_logged[playerid] || strcmp(HEAD_ADMIN_NAME, GetPlayerData(playerid, p_name))) return false;
 	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/delveh [ID транспорта]'");
