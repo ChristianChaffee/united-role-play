@@ -81,8 +81,9 @@ public OnPlayerConnect(playerid)
 	return 1;
 }
 
-public OnPlayerDisconnect(playerid, reason)
-{
+public OnPlayerDisconnect(playerid, reason){
+	player_info[playerid] = player_info_default;
+	player_logged[playerid] = false;
 	return 1;
 }
 
