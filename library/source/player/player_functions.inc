@@ -21,6 +21,8 @@ stock SetPlayerSpawn(playerid, spawn_type){
 	ResetPlayerMoney(playerid);
 	GivePlayerMoney(playerid, GetPlayerData(playerid, p_money));
 
+	SetPlayerScore(playerid, GetPlayerData(playerid, p_level));
+
 	CheckPlayerLicenses(playerid);
 
 	player_logged[playerid] = true;
@@ -51,6 +53,9 @@ stock LoadPlayer(playerid, Cache:cache_id){
 
 	cache_get_value_name(0, "licenses_times", temp_string);
 	sscanf(temp_string, "p<,>a<i>["#LICENSES_COUNT"]", player_info[playerid][p_licenses_times]);
+
+	cache_get_value_name_int(0, "level", GetPlayerData(playerid, p_level));
+	cache_get_value_name_int(0, "exp", GetPlayerData(playerid, p_exp));
 
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
@@ -203,4 +208,33 @@ stock ProxDetector(playerid, Float:max_range, color, const string[], Float:max_r
 
     SendClientMessage(playerid, color, string);
     return 1;
+}
+
+stock GivePlayerExp(playerid, exp){
+	AddPlayerData(playerid, p_exp, exp);
+	if(GetPlayerData(playerid, p_level) < 100){
+		if(GetPlayerData(playerid, p_exp) >= GetExpToNextLevel(GetPlayerData(playerid, p_level) + 1)){
+			AddPlayerData(playerid, p_level, 1);
+			SetPlayerScore(playerid, GetPlayerData(playerid, p_level));
+
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"Поздравляем! Вы достигли %d уровня!",
+				GetPlayerData(playerid, p_level));
+			SendClientMessage(playerid, COLOR_GREEN, small_string);
+			small_string[0] = EOS;
+		}
+	}
+
+	static const fmt_query[] = "UPDATE accounts SET level = %d, exp = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11) + (-2 + 11) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerData(playerid, p_level), GetPlayerData(playerid, p_exp), GetPlayerData(playerid, p_id));
+	mysql_tquery(mysql, query);
+	return true;
+}
+
+stock GetExpToNextLevel(level){
+    if(level < 1) return 0;
+    return 4 * level + 4
 }

@@ -36,10 +36,12 @@ enum player_info_struct
 	p_sex,
 	p_money,
 	p_job,
-	p_level,
 
 	p_licenses[LICENSES_COUNT],
-	p_licenses_times[LICENSES_COUNT]
+	p_licenses_times[LICENSES_COUNT],
+
+	p_level,
+	p_exp,
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -55,10 +57,12 @@ new const player_info_default[player_info_struct] = {
 	0,
 	0,
 	0,
-	0,
 
 	{0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0}
+	{0, 0, 0, 0, 0, 0, 0},
+
+	0,
+	0
 };
 
 //==============================================================================
