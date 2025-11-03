@@ -223,6 +223,8 @@ stock GivePlayerExp(playerid, exp){
 				GetPlayerData(playerid, p_level));
 			SendClientMessage(playerid, COLOR_GREEN, small_string);
 			small_string[0] = EOS;
+
+			OnPlayerLevelChanged(playerid, GetPlayerData(playerid, p_level) - 1, GetPlayerData(playerid, p_level));
 		}
 	}
 

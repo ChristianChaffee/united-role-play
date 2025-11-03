@@ -23,7 +23,8 @@ public LoadStartQuests(){
 
 forward LoadPlayerStartQuests(playerid, quest_index);
 public LoadPlayerStartQuests(playerid, quest_index){
-	new rows;
+	if(GetPlayerData(playerid, p_start_quests_loaded)) return false;
+	new rows, tick_time = GetTickCount();
 	cache_get_row_count(rows);
 
 	if(!rows || rows != START_QUESTS_COUNT){
@@ -55,12 +56,21 @@ public LoadPlayerStartQuests(playerid, quest_index){
 		if(temp_quest_index == SQ_WELCOME_TO_STATE){
 			StartQuest:StartQuest(playerid, SQ_WELCOME_TO_STATE);
 		}
+		else if(temp_quest_index == SQ_THIRD_LEVEL && GetPlayerStartQuestData(playerid, SQ_THIRD_LEVEL, sqp_status) == SQ_STATUS_NONE
+			&&  GetPlayerStartQuestData(playerid, SQ_FIRST_MONEY, sqp_status) == SQ_STATUS_COMPLETED){
 
-		if(!in_progress_find && GetPlayerStartQuestData(playerid, temp_quest_index, sqp_status) == SQ_STATUS_IN_PROGRESS){
+			StartQuest:StartQuest(playerid, SQ_THIRD_LEVEL);
+		}
+		else if(!in_progress_find && GetPlayerStartQuestData(playerid, temp_quest_index, sqp_status) == SQ_STATUS_IN_PROGRESS){
 			StartQuest:UpdateQuest(playerid, temp_quest_index);
 			in_progress_find = 1;
 		}
 	}
+
+	SetPlayerData(playerid, p_start_quests_loaded, true);
+
+	printf("[LoadPlayerStartQuests]: Стартовые квесты %s[%d] загружены <%d шт> <%d мс>",
+		GetPlayerData(playerid, p_name), playerid, rows, GetTickCount() - tick_time);
 	return true;
 }
 

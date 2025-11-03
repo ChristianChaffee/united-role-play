@@ -96,7 +96,6 @@ DEFINE_HOOK_RETURN__(OnPlayerCommandText, 0);
 
 DEFINE_HOOK_RETURN__(OnRconCommand, 0);
 
-DEFINE_HOOK_RETURN__(OnPlayerAccountLoaded, 1);
 
 // Create the default replacements.  I try to avoid defining replacements for
 // the words `Player` and `Vehicle` - they're too important and fundamental.

@@ -274,7 +274,7 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 stock OnPlayerAccountLoaded(playerid)
 {
 	#pragma unused playerid
-	return 0;
+	return 1;
 }
 
 public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ){
@@ -407,6 +407,13 @@ stock Float:frandom(Float:max)
 stock OnPlayerGiveInvItem(playerid, slot_index){
 	#pragma unused playerid
 	#pragma unused slot_index
+	return 1;
+}
+
+stock OnPlayerLevelChanged(playerid, old_level, new_level){
+	#pragma unused playerid
+	#pragma unused old_level
+	#pragma unused new_level
 	return 1;
 }
 

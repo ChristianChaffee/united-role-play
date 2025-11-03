@@ -1,10 +1,5 @@
 
 stock StartQuest:LoadPlayerStartQuests(playerid){
-	if(!GetPlayerData(playerid, p_id)){
-		StartQuest:LoadPlayerStartQuests(playerid);
-		return false;
-	}
-
 	static const fmt_query[] = "SELECT * FROM start_player_quests WHERE account_id = %d";
 	new query[sizeof(fmt_query) + (-2 + 11)];
 	mysql_format(mysql, query, sizeof(query), fmt_query, GetPlayerData(playerid, p_id));
@@ -44,6 +39,17 @@ stock StartQuest:StartQuest(playerid, quest_index){
 			small_string[0] = EOS;
 
 			SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Посмотреть доступные работы можно в '/gps'.");
+		}
+		case SQ_THIRD_LEVEL:{
+			if(GetPlayerData(playerid, p_level) >= 3){
+				SetPlayerStartQuestData(playerid, quest_index, sqp_status, SQ_STATUS_IN_PROGRESS);
+				StartQuest:FinishQuest(playerid, quest_index);
+				return true;
+			}
+			else{
+				SendClientMessage(playerid, COLOR_YELLOW, "Получите 3-й игровой уровень.");
+				SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Поднять уровень можно накопив опыт (exp). Он копиться на работах и каждый PayDay.");
+			}
 		}
 	}
 
@@ -175,6 +181,16 @@ stock StartQuest:UpdateQuest(playerid, quest_index){
 
 			SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Посмотреть доступные работы можно в '/gps'.");
 		}
+
+		case SQ_THIRD_LEVEL:{
+			if(GetPlayerData(playerid, p_level) >= 3){
+				StartQuest:FinishQuest(playerid, SQ_THIRD_LEVEL);
+			}
+			else{
+				SendClientMessage(playerid, COLOR_YELLOW, "Получите 3-й игровой уровень.");
+				SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Поднять уровень можно накопив опыт (exp). Он копиться на работах и каждый PayDay.");
+			}
+		}
 	}
 	return true;
 }
@@ -265,7 +281,8 @@ stock StartQuest:ShowJonnyIlligalJob(playerid){
 }
 
 stock OnPlayerFinishStartQuest(playerid, quest_index){
-	#pragma unused quest_index
-	#pragma unused playerid
+	switch(quest_index){
+		case SQ_FIRST_MONEY: StartQuest:StartQuest(playerid, SQ_THIRD_LEVEL);
+	}
 	return 1;
 }

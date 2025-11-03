@@ -2,7 +2,7 @@
 #define StartQuest:%0(%1)						StrtQst_%0(%1)
 
 //==============================================================================
-#define START_QUESTS_COUNT 						2
+#define START_QUESTS_COUNT 						3
 
 #define GetStartQuestData(%0,%1)  				start_quest_info[%0][%1]
 
@@ -26,6 +26,7 @@ enum
 	SQ_NONE,
 	SQ_WELCOME_TO_STATE,
 	SQ_FIRST_MONEY,
+	SQ_THIRD_LEVEL,
 }
 
 //==============================================================================
