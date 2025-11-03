@@ -6,6 +6,7 @@
 */
 
 //==============================================================================
+#define JOB_DEALLER_EXP 							1
 #define JOB_DEALLER_PLAYER_TIME 					5
 #define JOB_DEALLER_ACTOR_ID 						11
 #define JOB_DEALLER_DRUGS_COUNT 					10

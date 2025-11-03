@@ -9,6 +9,7 @@
 */
 
 //==============================================================================
+#define JOB_GS_EXP 									3
 #define JOB_GS_ACTOR_ID 							10
 #define JOB_GS_PLAYER_TIMER 						10
 #define JOB_GS_MAX_PLAYERS 							30

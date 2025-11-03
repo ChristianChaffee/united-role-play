@@ -41,11 +41,17 @@ hook OnPlayerEnterCheckpoint(playerid){
 		DisablePlayerCheckpoint(playerid);
 	}
 	if(GetPlayerData(playerid, p_job) == JOB_LUMBERJACK && GetPVarInt(playerid, "JobLumberjack_Stage") == JOB_LUMBERJACK_STAGE_TO_WAREH){
-		SendClientMessage(playerid, COLOR_WHITE, "Вы отнесли дерево и заработали "#JOB_LUMBERJACK_STATIC_PAY"$"cl_white".");
-
 		SetPVarInt(playerid, "JobLumberjack_WoodCount", GetPVarInt(playerid, "JobLumberjack_WoodCount") + 1);
 		GiveMoney(playerid, JOB_LUMBERJACK_STATIC_PAY);
 		StartQuest:GivePoints(playerid, SQ_FIRST_MONEY, JOB_LUMBERJACK_STATIC_PAY);
+
+		if(GetPVarInt(playerid, "JobLumberjack_WoodCount") % 5 == 0){
+			SendClientMessage(playerid, COLOR_YELLOW, "Вы отнесли дерево и заработали "#JOB_LUMBERJACK_STATIC_PAY"$ и "#JOB_LUMBERJACK_EXP" exp.");
+			GivePlayerExp(playerid, JOB_LUMBERJACK_EXP);
+		}
+		else{
+			SendClientMessage(playerid, COLOR_YELLOW, "Вы отнесли дерево и заработали "#JOB_LUMBERJACK_STATIC_PAY"$.");
+		}
 		
 		small_string[0] = EOS;
 		format(small_string, sizeof(small_string),

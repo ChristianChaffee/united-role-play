@@ -104,11 +104,23 @@ stock Job:GSDestroyPlayerGarbage(playerid){
 	new Float:pay = GetPVarFloat(playerid, "JobGarbageSorter_Weight") * float(gs_garbage_type_prices[GetPVarInt(playerid, "JobGarbageSorter_Type")]);
 
 	small_string[0] = EOS;
-	format(small_string, sizeof(small_string),
-		"Вы отнесли %.02f кг (%s) и заработали %d$.",
-		GetPVarFloat(playerid, "JobGarbageSorter_Weight"),
-		gs_garbage_name_type[GetPVarInt(playerid, "JobGarbageSorter_Type")][0],
-		floatround(pay));
+	if(GetPVarFloat(playerid, "JobGarbageSorter_Weight") < 8.0){
+		format(small_string, sizeof(small_string),
+		"Вы отнесли %.02f кг (%s), заработав %d$.",
+			GetPVarFloat(playerid, "JobGarbageSorter_Weight"),
+			gs_garbage_name_type[GetPVarInt(playerid, "JobGarbageSorter_Type")][0],
+			floatround(pay));
+	}
+	else{
+		format(small_string, sizeof(small_string),
+		"Вы отнесли %.02f кг (%s), заработав %d$ и "#JOB_GS_EXP" exp.",
+			GetPVarFloat(playerid, "JobGarbageSorter_Weight"),
+			gs_garbage_name_type[GetPVarInt(playerid, "JobGarbageSorter_Type")][0],
+			floatround(pay));
+
+		GivePlayerExp(playerid, JOB_GS_EXP);
+	}
+
 	SendClientMessage(playerid, COLOR_YELLOW, small_string);
 	small_string[0] = EOS;
 

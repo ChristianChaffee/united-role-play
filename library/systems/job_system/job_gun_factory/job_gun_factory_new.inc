@@ -10,6 +10,7 @@
 */
 
 //==============================================================================
+#define JOB_GUN_FACTORY_EXP 						3
 #define JOB_GUN_FACTORY_TIMER 						10
 #define JOB_GUN_FACTORY_ACTOR_ID 					12
 #define JOB_GUN_FACTORY_PAY 						15

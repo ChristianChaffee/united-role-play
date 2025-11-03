@@ -32,9 +32,10 @@ hook stock OnPlayerSecondUpdate(playerid){
 		SetPVarInt(playerid, "JobDealler_Timer", GetPVarInt(playerid, "JobDealler_Timer") - 1);
 		if(GetPVarInt(playerid, "JobDealler_Timer") <= 0){
 
-			SendClientMessage(playerid, COLOR_YELLOW, "Вы заработали "#JOB_DEALLER_PAY"$.");
+			SendClientMessage(playerid, COLOR_YELLOW, "Вы заработали "#JOB_DEALLER_PAY"$ и "#JOB_DEALLER_EXP" exp.");
 			GiveMoney(playerid, JOB_DEALLER_PAY);
 			StartQuest:GivePoints(playerid, SQ_FIRST_MONEY, JOB_DEALLER_PAY);
+			GivePlayerExp(playerid, JOB_DEALLER_EXP);
 
 			for(new i; i < MAX_INVENTORY_SLOTS; i++){
 				if(!GetPlayerInventoryItemData(playerid, i, inv_player_id)) continue;

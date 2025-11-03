@@ -10,6 +10,7 @@
 */
 
 //==============================================================================
+#define JOB_LUMBERJACK_EXP 								3
 #define JOB_LUMBERJACK_STATIC_PAY 						8
 #define JOB_LUMBERJACK_ACTOR_ID 						9
 #define JOB_LUMBERJACK_TIMER 							10

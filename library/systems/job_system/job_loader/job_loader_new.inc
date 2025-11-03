@@ -8,6 +8,7 @@
 */
 
 //==============================================================================
+#define JOB_LOADER_EXP 									3
 #define JOB_LOADER_STATIC_PAY 							5
 #define JOB_LOADER_ACTOR_ID 							8
 #define JOB_LOADER_MAX_PLAYERS 							30

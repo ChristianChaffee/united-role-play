@@ -236,5 +236,5 @@ stock GivePlayerExp(playerid, exp){
 
 stock GetExpToNextLevel(level){
     if(level < 1) return 0;
-    return 4 * level + 4
+    return 4 * level + 4;
 }

@@ -33,7 +33,14 @@ hook OnPlayerEnterCheckpoint(playerid){
 			DisablePlayerCheckpoint(playerid);
 			SetPVarInt(playerid, "JobGunFactory_Count", GetPVarInt(playerid, "JobGunFactory_Count") + 1);
 
-			SendClientMessage(playerid, COLOR_YELLOW, "Вы отнесли оружие и заработали "#JOB_GUN_FACTORY_PAY"$"cl_white".");
+			if(GetPVarInt(playerid, "JobGunFactory_Count") % 5 == 0){
+				SendClientMessage(playerid, COLOR_YELLOW, "Вы отнесли оружие и заработали "#JOB_GUN_FACTORY_PAY"$ и "#JOB_GUN_FACTORY_EXP" exp.");
+				GivePlayerExp(playerid, JOB_GUN_FACTORY_EXP);
+			}
+			else{
+				SendClientMessage(playerid, COLOR_YELLOW, "Вы отнесли оружие и заработали "#JOB_GUN_FACTORY_PAY"$.");
+			}
+			
 			GiveMoney(playerid, JOB_GUN_FACTORY_PAY);
 			StartQuest:GivePoints(playerid, SQ_FIRST_MONEY, JOB_GUN_FACTORY_PAY);
 

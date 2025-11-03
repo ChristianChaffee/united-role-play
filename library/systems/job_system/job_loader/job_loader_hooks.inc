@@ -15,11 +15,17 @@ hook OnPlayerEnterCheckpoint(playerid){
 				Job:GenerateLoaderUnload(playerid);
 			}
 			case JOB_LOADER_STAGE_TO_WAREHOUSE:{
-				SendClientMessage(playerid, COLOR_YELLOW, "Вы отнесли ящик и заработали "#JOB_LOADER_STATIC_PAY"$"cl_white".");
-
 				SetPVarInt(playerid, "JobLoader_BoxesCount", GetPVarInt(playerid, "JobLoader_BoxesCount") + 1);
 				GiveMoney(playerid, JOB_LOADER_STATIC_PAY);
 				StartQuest:GivePoints(playerid, SQ_FIRST_MONEY, JOB_LOADER_STATIC_PAY);
+
+				if(GetPVarInt(playerid, "JobLoader_BoxesCount") % 5 == 0){
+					SendClientMessage(playerid, COLOR_YELLOW, "Вы отнесли ящик и заработали "#JOB_LOADER_STATIC_PAY"$ и "#JOB_LOADER_EXP" exp.");
+					GivePlayerExp(playerid, JOB_LOADER_EXP);
+				}
+				else{
+					SendClientMessage(playerid, COLOR_YELLOW, "Вы отнесли ящик и заработали "#JOB_LOADER_STATIC_PAY"$.");
+				}
 				
 				small_string[0] = EOS;
 				format(small_string, sizeof(small_string),
