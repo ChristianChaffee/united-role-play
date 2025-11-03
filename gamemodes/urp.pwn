@@ -24,6 +24,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\vehicle\vehicle_publics.inc"
 
 #include "..\library\source\database\database_hooks.inc"
+#include "..\library\source\player\player_hooks.inc"
 #include "..\library\source\vehicle\vehicle_hooks.inc"
 
 #include "..\library\source\vehicle\vehicle_dialogs.inc"
