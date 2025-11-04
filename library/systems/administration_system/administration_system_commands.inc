@@ -174,3 +174,40 @@ CMD:setint(playerid, params[]){
 	small_string[0] = EOS;
 	return true;
 }
+
+CMD:agivemoney(playerid, params[]){
+	if(sscanf(params, "ii", params[0], params[1])) return SendErrorMessage(playerid, "Используйте '/agivemoney [ID игрока] [Кол-во денег]'");
+
+	if(!IsPlayerConnected(params[0])) return SendErrorMessage(playerid, "Игрок не в сети.");
+	if(params[1] < 0 || params[1] > 10000000) return SendErrorMessage(playerid, "Количество денежных средств должно быть от 1$ до 10000000$.");
+
+	GiveMoney(params[0], params[1]);
+
+	small_string[0] = EOS;
+	if(playerid == params[0]){
+		format(small_string, sizeof(small_string),
+			"[A][%d] Администратор %s[%d] выдал(-а) себе %d$.",
+			GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name), playerid, params[1]);
+		Admin:SendAdminMessage(COLOR_GREY, small_string);
+
+		format(small_string, sizeof(small_string),
+			"Вы выдали себе %d$.",
+			params[1]);
+		SendClientMessage(playerid, COLOR_LIME, small_string);
+	}
+	else{
+		format(small_string, sizeof(small_string),
+			"[A][%d] Администратор %s[%d] выдал(-а) игроку %s[%d] %d$.",
+			GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name), playerid, 
+			GetPlayerData(params[0], p_name), params[0], params[1]);
+		Admin:SendAdminMessage(COLOR_GREY, small_string);
+
+		format(small_string, sizeof(small_string),
+			"Администратор %s выдал(-а) Вам %d$.",
+			GetPlayerData(playerid, p_name), params[1]);
+		SendClientMessage(params[0], COLOR_LIME, small_string);
+	}
+
+	small_string[0] = EOS;
+	return true;
+}
