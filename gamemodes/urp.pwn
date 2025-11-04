@@ -50,6 +50,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\speedometr_system\speedometr_new.inc"
 #include "..\library\systems\licensing_center\licensing_center_new.inc"
 #include "..\library\systems\administration_system\administration_system_new.inc"
+#include "..\library\systems\player_needs_system\player_needs_new.inc"
 
 public OnGameModeInit(){
 	EnableStuntBonusForAll(false);
@@ -445,6 +446,7 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\systems\job_system\job_gun_factory\job_gun_factory_dialogs.inc"
 #include "..\library\systems\licensing_center\licensing_center_dialogs.inc"
 #include "..\library\systems\administration_system\administration_system_dialogs.inc"
+#include "..\library\systems\player_needs_system\player_needs_dialogs.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_functions.inc"
 #include "..\library\systems\registration_system\registration_functions.inc"
@@ -464,6 +466,7 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\systems\speedometr_system\speedometr_functions.inc"
 #include "..\library\systems\licensing_center\licensing_center_functions.inc"
 #include "..\library\systems\administration_system\administration_system_functions.inc"
+#include "..\library\systems\player_needs_system\player_needs_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -482,6 +485,7 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\systems\speedometr_system\speedometr_hooks.inc"
 #include "..\library\systems\licensing_center\licensing_center_hooks.inc"
 #include "..\library\systems\administration_system\administration_system_hooks.inc"
+#include "..\library\systems\player_needs_system\player_needs_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 #include "..\library\systems\administration_system\administration_system_commands.inc"
