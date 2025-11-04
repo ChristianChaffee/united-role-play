@@ -493,38 +493,3 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\source\mapping\gun_factory.inc"
 #include "..\library\source\mapping\licensing_center_ext.inc"
 #include "..\library\source\mapping\licensing_center_int.inc"
-
-#warning TEST_CMD
-CMD:tpt(playerid){
-	SetPlayerPos(playerid, 499.455505, -23.557301, 1275.432373 + 1.0);
-	SetPlayerVirtualWorld(playerid, 14);
-	SetPlayerInterior(playerid, 24);
-}
-
-#warning TEST_CMD
-CMD:veh(playerid, params[]){
-	if(!player_logged[playerid] || strcmp(HEAD_ADMIN_NAME, GetPlayerData(playerid, p_name))) return false;
-	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/veh [ID модели]'");
-	if(params[0] < 400 || params[0] > 610) return SendErrorMessage(playerid, "Данной модели транспорта не существует.");
-
-	new Float:pos[4];
-	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	GetPlayerFacingAngle(playerid, pos[3]);
-	new vehicleid = CreateVehicle(params[0], pos[0], pos[1], pos[2], pos[3], random(255), random(255), 1000);
-	PutPlayerInVehicle(playerid, vehicleid, 0);
-	SetPVarInt(playerid, "InTempVehicle", vehicleid);
-	return true;
-}
-
-#warning TEST_CMD
-CMD:nrg(playerid){ return callcmd::veh(playerid, "522"); }
-
-#warning TEST_CMD
-CMD:delveh(playerid, params[]){
-	if(!player_logged[playerid] || strcmp(HEAD_ADMIN_NAME, GetPlayerData(playerid, p_name))) return false;
-	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/delveh [ID транспорта]'");
-	if(!IsValidVehicle(params[0])) return SendErrorMessage(playerid, "Данного транспорта не существует.");
-
-	DestroyVehicle(params[0]);
-	return true;
-}

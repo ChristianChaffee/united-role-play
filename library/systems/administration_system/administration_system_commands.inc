@@ -41,7 +41,7 @@ CMD:kick(playerid, params[]){
 	if(sscanf(params, "is[32]", params[0], params[1])) return SendErrorMessage(playerid, "Используйте '/kick [ID] [Причина]'.");
 
 	if(!IsPlayerConnected(params[0])) return SendErrorMessage(playerid, "Данный игрок не в сети.");
-	//if(playerid == params[0]) return SendErrorMessage(playerid, "Вы не можете отключить самого себя.");
+	if(playerid == params[0]) return SendErrorMessage(playerid, "Вы не можете отключить самого себя.");
 	if(GetPlayerAdminData(playerid, pa_level) < GetPlayerAdminData(params[0], pa_level)) return SendErrorMessage(playerid, "Вы не можете отключить данного игрока.");
 
 	small_string[0] = EOS;
@@ -74,6 +74,103 @@ CMD:ooc(playerid, params[]){
 		"<< %s[%d]: %s >>",
 		GetPlayerData(playerid, p_name), playerid, params[0]);
 	SendClientMessageToAll(COLOR_WHITE, small_string);
+	small_string[0] = EOS;
+	return true;
+}
+
+CMD:tveh(playerid, params[]){
+	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/tveh [ID модели]'");
+	if(params[0] < 400 || params[0] > 610) return SendErrorMessage(playerid, "Данной модели транспорта не существует.");
+
+	new Float:pos[4];
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	GetPlayerFacingAngle(playerid, pos[3]);
+	new vehicleid = CreateVehicle(params[0], pos[0], pos[1], pos[2], pos[3], random(255), random(255), 1000);
+	PutPlayerInVehicle(playerid, vehicleid, 0);
+	SetPVarInt(playerid, "InTempVehicle", vehicleid);
+	return true;
+}
+
+CMD:nrg(playerid){ return callcmd::tveh(playerid, "522"); }
+
+CMD:delveh(playerid, params[]){
+	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/delveh [ID транспорта]'");
+	if(!IsValidVehicle(params[0])) return SendErrorMessage(playerid, "Данного транспорта не существует.");
+
+	DestroyVehicle(params[0]);
+	return true;
+}
+
+CMD:tpcoord(playerid, params[]){
+	if(sscanf(params, "fff", params[0], params[1], params[2])) return SendErrorMessage(playerid, "Используйте '/tpcoord [X] [Y] [Z]'");
+
+	SetPlayerPos(playerid, params[0], params[1], params[2]);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы телепортировались по координатам %f, %f, %f.",
+		params[0], params[1], params[2]);
+	SendClientMessage(playerid, COLOR_LIME, small_string);
+	small_string[0] = EOS;
+	return true;
+}
+
+CMD:setvw(playerid, params[]){
+	if(sscanf(params, "ii", params[0], params[1])) return SendErrorMessage(playerid, "Используйте '/setvw [ID игрока] [Вирт. Мир]'");
+
+	if(!IsPlayerConnected(params[0])) return SendErrorMessage(playerid, "Игрок не в сети.");
+	if(params[1] < 0 || params[1] > 10000) return SendErrorMessage(playerid, "Виртуальный мир должен быть от 0 до 1000.");
+
+	SetPlayerVirtualWorld(params[0], params[1]);
+
+	small_string[0] = EOS;
+	if(playerid == params[0]){
+		format(small_string, sizeof(small_string),
+			"Вы установили себе виртуальный мир %d.", params[1]);
+		SendClientMessage(playerid, COLOR_LIME, small_string);
+	}
+	else{
+		format(small_string, sizeof(small_string),
+			"Вы установили игроку %s[%d] виртуальный мир %d.", 
+			GetPlayerData(params[0], p_name), params[0], params[1]);
+		SendClientMessage(playerid, COLOR_LIME, small_string);
+
+		format(small_string, sizeof(small_string),
+			"Администратор %s установил(-а) Вам виртуальный мир %d.", 
+			GetPlayerData(playerid, p_name), params[1]);
+		SendClientMessage(params[0], COLOR_LIME, small_string);
+	}
+
+	small_string[0] = EOS;
+	return true;
+}
+
+CMD:setint(playerid, params[]){
+	if(sscanf(params, "ii", params[0], params[1])) return SendErrorMessage(playerid, "Используйте '/setint [ID игрока] [Интерьер]'");
+
+	if(!IsPlayerConnected(params[0])) return SendErrorMessage(playerid, "Игрок не в сети.");
+	if(params[1] < 0 || params[1] > 10000) return SendErrorMessage(playerid, "Интерьер должен быть от 0 до 1000.");
+
+	SetPlayerInterior(params[0], params[1]);
+
+	small_string[0] = EOS;
+	if(playerid == params[0]){
+		format(small_string, sizeof(small_string),
+			"Вы установили себе интерьер %d.", params[1]);
+		SendClientMessage(playerid, COLOR_LIME, small_string);
+	}
+	else{
+		format(small_string, sizeof(small_string),
+			"Вы установили игроку %s[%d] интерьер %d.", 
+			GetPlayerData(params[0], p_name), params[0], params[1]);
+		SendClientMessage(playerid, COLOR_LIME, small_string);
+
+		format(small_string, sizeof(small_string),
+			"Администратор %s установил(-а) Вам интерьер %d.", 
+			GetPlayerData(playerid, p_name), params[1]);
+		SendClientMessage(params[0], COLOR_LIME, small_string);
+	}
+	
 	small_string[0] = EOS;
 	return true;
 }
