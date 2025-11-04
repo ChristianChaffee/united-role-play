@@ -9,6 +9,8 @@ stock Admin:SendAdminMessage(color, const str[]){
 	}
 }
 
+stock Admin:SendAdminActionMessage(color, const str[]) { SendClientMessageToAll(color, str); }
+
 //==============================================================================
 stock Admin:ShowCreatePassword(playerid){
 	if(!GetPlayerAdminData(playerid, pa_id)) return false;

@@ -322,6 +322,9 @@ public SecondTimer(){
 	return 1;
 }
 
+forward KickPlayerPublic(playerid);
+public KickPlayerPublic(playerid) { Kick(playerid); }
+
 stock OnPlayerSecondUpdate(playerid){
 	#pragma unused playerid
 	return 1;

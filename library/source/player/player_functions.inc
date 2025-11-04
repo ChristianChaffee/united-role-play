@@ -241,3 +241,5 @@ stock GetExpToNextLevel(level){
     if(level < 1) return 0;
     return 4 * level + 4;
 }
+
+stock KickPlayer(playerid, time_ms = 50) { SetTimerEx("KickPlayerPublic", time_ms, false, "i", playerid); }
