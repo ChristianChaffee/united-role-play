@@ -13,7 +13,7 @@ hook OnGameModeInit(){
 
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 	if(newkeys == KEY_WALK && IsPlayerInRangeOfPoint(playerid, 1.0, LICENSING_CENTER_PICKUP_POS)){
-		LicensingCenter:ShowMenu(playerid);
+		LicensingCenter_ShowMenu(playerid);
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
@@ -21,7 +21,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 hook OnPlayerStateChange(playerid, newstate, oldstate){
 	if(oldstate == PLAYER_STATE_DRIVER && GetPVarType(playerid, "LicensingCenter_Index") && GetPVarType(playerid, "LicensingCenter_VehicleID")){
 		SendClientMessage(playerid, COLOR_DARK_RED, "¬ы покинули экзаменационный транспорт и завалили экзамен.");
-		LicensingCenter:StopExam(playerid);
+		LicensingCenter_StopExam(playerid);
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
@@ -31,7 +31,7 @@ hook OnVehicleDeath(vehicleid, killerid){
 		for(new playerid, j = GetPlayerPoolSize(); playerid <= j; playerid++){
 			if(GetPVarType(playerid, "LicensingCenter_Index") && GetPVarType(playerid, "LicensingCenter_VehicleID")){
 				SendClientMessage(playerid, COLOR_DARK_RED, "¬аш экзаменационный транспорт уничтожен. Ёкзамен не сдан.");
-				LicensingCenter:StopExam(playerid);
+				LicensingCenter_StopExam(playerid);
 			}
 		}
 	}
@@ -43,7 +43,7 @@ hook OnVehicleSpawn(vehicleid){
 		for(new playerid, j = GetPlayerPoolSize(); playerid <= j; playerid++){
 			if(GetPVarType(playerid, "LicensingCenter_Index") && GetPVarType(playerid, "LicensingCenter_VehicleID")){
 				SendClientMessage(playerid, COLOR_DARK_RED, "¬аш экзаменационный транспорт уничтожен. Ёкзамен не сдан.");
-				LicensingCenter:StopExam(playerid);
+				LicensingCenter_StopExam(playerid);
 			}
 		}
 	}
@@ -56,7 +56,7 @@ hook OnPlayerEnterRCP(playerid){
 
 		if(GetVehicleHealthEx(GetPVarInt(playerid, "LicensingCenter_VehicleID")) < 850.0){
 			SendClientMessage(playerid, COLOR_DARK_RED, "Ёкзаменационный транспорт сильно повреждЄн. Ёкзамен не сдан.");
-			LicensingCenter:StopExam(playerid);
+			LicensingCenter_StopExam(playerid);
 			return Y_HOOKS_CONTINUE_RETURN_1;
 		}
 
@@ -79,7 +79,7 @@ hook OnPlayerEnterRCP(playerid){
 			SendClientMessage(playerid, COLOR_GREEN, small_string);
 			small_string[0] = EOS;
 
-			LicensingCenter:StopExam(playerid);
+			LicensingCenter_StopExam(playerid);
 		}
 		else if(next_cp + 1 >= MAX_LICENSING_CENTER_CP_COUNT || 
 			(licensing_center_route_cp[license_index][next_cp + 1][0] == 0.0 && licensing_center_route_cp[license_index][next_cp + 1][1] == 0.0 && licensing_center_route_cp[license_index][next_cp + 1][2] == 0.0)){
@@ -109,7 +109,7 @@ hook stock OnPlayerSecondUpdate(playerid){
 		SetPVarInt(playerid, "LicensingCenter_Timer", GetPVarInt(playerid, "LicensingCenter_Timer") - 1);
 		if(GetPVarInt(playerid, "LicensingCenter_Timer") <= 0){
 			SendClientMessage(playerid, COLOR_DARK_RED, "¬рем€ на сдачу экзамена вышло. Ёкзамен не сдан.");
-			LicensingCenter:StopExam(playerid);
+			LicensingCenter_StopExam(playerid);
 		}
 	}
 	return continue(playerid);

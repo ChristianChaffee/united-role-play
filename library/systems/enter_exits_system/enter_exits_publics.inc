@@ -10,6 +10,7 @@ public LoadEnterExits(){
 	}
 
 	for(new i; i < rows; i++){
+		cache_get_value_name_int(i, "id", GetEnterExitData(i, ee_id));
 		cache_get_value_name(i, "name", GetEnterExitData(i, ee_name));
 
 		cache_get_value_name_float(i, "enter_pos_x", GetEnterExitData(i, ee_enter_pos_x));

@@ -16,6 +16,7 @@ enum
 //==============================================================================
 enum enter_exit_info_struct
 {
+	ee_id,
 	ee_name[32],
 
 	Float:ee_enter_pos_x,

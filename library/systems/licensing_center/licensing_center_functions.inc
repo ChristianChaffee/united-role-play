@@ -1,5 +1,5 @@
 
-stock LicensingCenter:ShowMenu(playerid){
+stock LicensingCenter_ShowMenu(playerid){
 	big_string[0] = EOS;
 	format(big_string, sizeof(big_string), ""cl_grey"Лицензия\t"cl_grey"Стоимость");
 	for(new i; i < LICENSINGS_COUNT; i++){
@@ -116,7 +116,7 @@ stock LicensingCenter:StartExam(playerid){
 	return true;
 }
 
-stock LicensingCenter:StopExam(playerid, teleport = true){
+stock LicensingCenter_StopExam(playerid, teleport = true){
 
 	RemovePlayerFromVehicle(playerid);
 

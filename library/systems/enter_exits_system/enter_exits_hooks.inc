@@ -13,7 +13,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 				&& GetPlayerVirtualWorld(playerid) == GetEnterExitData(i, ee_enter_vw)
 				&& GetPlayerInterior(playerid) == GetEnterExitData(i, ee_enter_int)){
 
-				EnterExits:EnterPlayer(playerid, i);
+				EnterExits_EnterPlayer(playerid, i);
 				return Y_HOOKS_CONTINUE_RETURN_1;
 			}
 			if(IsPlayerInRangeOfPoint(playerid, 1.0, GetEnterExitData(i, ee_exit_pos_x), GetEnterExitData(i, ee_exit_pos_y), GetEnterExitData(i, ee_exit_pos_z))

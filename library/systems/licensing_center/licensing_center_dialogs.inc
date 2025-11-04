@@ -10,7 +10,7 @@ DialogResponse:D_LICENSING_CENTER_MENU(playerid, response, listitem, inputtext[]
 DialogResponse:D_LICENSING_CENTER_ACCEPT(playerid, response, listitem, inputtext[]){
 	if(!response){
 		DeletePVar(playerid, "LicensingCenter_Index");
-		LicensingCenter:ShowMenu(playerid);
+		LicensingCenter_ShowMenu(playerid);
 		return false;
 	}
 

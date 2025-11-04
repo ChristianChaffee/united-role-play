@@ -2,7 +2,7 @@
 #define StartQuest:%0(%1)						StrtQst_%0(%1)
 
 //==============================================================================
-#define START_QUESTS_COUNT 						3
+#define START_QUESTS_COUNT 						4
 
 #define GetStartQuestData(%0,%1)  				start_quest_info[%0][%1]
 
@@ -11,7 +11,11 @@
 
 //==============================================================================
 #define SQ_JONNY_ACTOR_ID 						7
-#define SQ_JONNY_POS 							1149.99, -1751.45, 13.58	
+#define SQ_JONNY_POS 							1149.99, -1751.45, 13.58
+
+#define SQ_LICENSING_CENTER_ENTER_ID 			4
+#define SQ_LICENSING_CENTER_POS 				-2032.03, -100.65, 35.16
+#define SQ_RUBY_POS 							507.76, -24.65, 1276.95
 
 //==============================================================================
 enum
@@ -27,6 +31,7 @@ enum
 	SQ_WELCOME_TO_STATE,
 	SQ_FIRST_MONEY,
 	SQ_THIRD_LEVEL,
+	SQ_DRIVING_LICENSE,
 }
 
 //==============================================================================

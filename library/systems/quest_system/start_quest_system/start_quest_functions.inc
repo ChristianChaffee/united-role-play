@@ -51,6 +51,10 @@ stock StartQuest:StartQuest(playerid, quest_index){
 				SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Поднять уровень можно накопив опыт (exp). Он копиться на работах и каждый PayDay.");
 			}
 		}
+		case SQ_DRIVING_LICENSE:{
+			SendClientMessage(playerid, COLOR_YELLOW, "Джонни хочет поговорить с Вами. Он отмечен на Вашей мини-карте.");
+			GPSEnable(playerid, SQ_JONNY_POS);
+		}
 	}
 
 	SetPlayerStartQuestData(playerid, quest_index, sqp_status, SQ_STATUS_IN_PROGRESS);
@@ -191,6 +195,26 @@ stock StartQuest:UpdateQuest(playerid, quest_index){
 				SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Поднять уровень можно накопив опыт (exp). Он копиться на работах и каждый PayDay.");
 			}
 		}
+
+		case SQ_DRIVING_LICENSE:{
+
+			switch(GetPlayerStartQuestData(playerid, quest_index, sqp_stage)){
+				case SQ_STAGE_DRIVING_TO_JONNY:{
+					SendClientMessage(playerid, COLOR_YELLOW, "Джонни хочет поговорить с Вами. Он отмечен на Вашей мини-карте.");
+					GPSEnable(playerid, SQ_JONNY_POS);
+				}
+				case SQ_STAGE_DRIVING_TO_LC:{
+					SendClientMessage(playerid, COLOR_YELLOW, "Отправляйтесь к центру лицензирования. Он отмечен на Вашей мини-карте");
+					GPSEnable(playerid, SQ_LICENSING_CENTER_POS);
+				}
+				case SQ_STAGE_DRIVING_TO_RUBY:{
+					SendClientMessage(playerid, COLOR_YELLOW, "Найдите Руби в центре лицензирования. Обычно он за стойкой рецепшена.");
+				}
+				case SQ_STAGE_DRIVING_DRIVE:{
+					SendClientMessage(playerid, COLOR_YELLOW, "Успешно пройдите практический экзамен.");
+				}
+			}
+		}
 	}
 	return true;
 }
@@ -240,6 +264,14 @@ stock StartQuest:ShowJonnyDialog(playerid){
 		Dialog_Open(playerid, Dialog:D_START_QUESTS_JONNY_1, DIALOG_STYLE_MSGBOX,
 			"Джонни", 
 			""cl_blue"- "cl_white"Привет, ты должно быть от Билла?",
+			"Да", "Нет");
+	}
+	else if(GetPlayerStartQuestData(playerid, SQ_DRIVING_LICENSE, sqp_status) == SQ_STATUS_IN_PROGRESS
+		&& GetPlayerStartQuestData(playerid, SQ_DRIVING_LICENSE, sqp_stage) == SQ_STAGE_DRIVING_TO_JONNY){
+
+		Dialog_Open(playerid, Dialog:D_START_QUESTS_JONNY_7, DIALOG_STYLE_MSGBOX,
+			"Джонни", 
+			""cl_blue"- "cl_white"Вижу ты уже освоился в нашем штате, не так ли?",
 			"Да", "Нет");
 	}
 	return true;

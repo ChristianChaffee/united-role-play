@@ -59,10 +59,15 @@ public LoadPlayerStartQuests(playerid, quest_index){
 		else if(temp_quest_index == SQ_THIRD_LEVEL && GetPlayerStartQuestData(playerid, SQ_THIRD_LEVEL, sqp_status) == SQ_STATUS_NONE
 			&&  GetPlayerStartQuestData(playerid, SQ_FIRST_MONEY, sqp_status) == SQ_STATUS_COMPLETED){
 
-			StartQuest:StartQuest(playerid, SQ_THIRD_LEVEL);
+			SetTimerEx("StartQuestTimer", 2000, false, "ii", playerid, temp_quest_index);
+		}
+		else if(temp_quest_index == SQ_DRIVING_LICENSE && GetPlayerStartQuestData(playerid, SQ_DRIVING_LICENSE, sqp_status) == SQ_STATUS_NONE
+			&&  GetPlayerStartQuestData(playerid, SQ_THIRD_LEVEL, sqp_status) == SQ_STATUS_COMPLETED){
+
+			SetTimerEx("StartQuestTimer", 2000, false, "ii", playerid, temp_quest_index);
 		}
 		else if(!in_progress_find && GetPlayerStartQuestData(playerid, temp_quest_index, sqp_status) == SQ_STATUS_IN_PROGRESS){
-			StartQuest:UpdateQuest(playerid, temp_quest_index);
+			SetTimerEx("UpdateQuestTimer", 2000, false, "ii", playerid, temp_quest_index);
 			in_progress_find = 1;
 		}
 	}
@@ -100,3 +105,9 @@ public IsPlayerHaveQuestInDB(playerid, quest_index){
 
 forward LastPlayerQuestInsert(playerid);
 public LastPlayerQuestInsert(playerid) { StartQuest:LoadPlayerStartQuests(playerid); }
+
+forward StartQuestTimer(playerid, quest_index);
+public StartQuestTimer(playerid, quest_index) { StartQuest:StartQuest(playerid, quest_index); }
+
+forward UpdateQuestTimer(playerid, quest_index);
+public UpdateQuestTimer(playerid, quest_index) { StartQuest:UpdateQuest(playerid, quest_index); }

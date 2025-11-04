@@ -1,5 +1,5 @@
 
-stock EnterExits:EnterPlayer(playerid, enter_exit_index){
+stock EnterExits_EnterPlayer(playerid, enter_exit_index){
 	if(enter_exit_index < 0 || enter_exit_index >= TOTAL_ENTER_EXITS) return false;
 
 	SetPlayerPos(playerid,
