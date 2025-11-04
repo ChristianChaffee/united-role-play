@@ -49,6 +49,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\job_system\job_gun_factory\job_gun_factory_new.inc"
 #include "..\library\systems\speedometr_system\speedometr_new.inc"
 #include "..\library\systems\licensing_center\licensing_center_new.inc"
+#include "..\library\systems\administration_system\administration_system_new.inc"
 
 public OnGameModeInit(){
 	EnableStuntBonusForAll(false);
@@ -425,6 +426,7 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\systems\actor_system\actor_system_publics.inc"
 #include "..\library\systems\quest_system\start_quest_system\start_quest_publics.inc"
 #include "..\library\systems\speedometr_system\speedometr_publics.inc"
+#include "..\library\systems\administration_system\administration_system_publics.inc"
 
 #include "..\library\systems\registration_system\registration_dialogs.inc"
 #include "..\library\systems\bank_system\bank_system_dialogs.inc"
@@ -435,6 +437,7 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\systems\job_system\job_dealler\job_dealler_dialogs.inc"
 #include "..\library\systems\job_system\job_gun_factory\job_gun_factory_dialogs.inc"
 #include "..\library\systems\licensing_center\licensing_center_dialogs.inc"
+#include "..\library\systems\administration_system\administration_system_dialogs.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_functions.inc"
 #include "..\library\systems\registration_system\registration_functions.inc"
@@ -453,6 +456,7 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\systems\job_system\job_gun_factory\job_gun_factory_functions.inc"
 #include "..\library\systems\speedometr_system\speedometr_functions.inc"
 #include "..\library\systems\licensing_center\licensing_center_functions.inc"
+#include "..\library\systems\administration_system\administration_system_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -470,6 +474,7 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\systems\job_system\job_gun_factory\job_gun_factory_hooks.inc"
 #include "..\library\systems\speedometr_system\speedometr_hooks.inc"
 #include "..\library\systems\licensing_center\licensing_center_hooks.inc"
+#include "..\library\systems\administration_system\administration_system_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 
