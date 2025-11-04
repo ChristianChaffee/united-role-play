@@ -308,6 +308,10 @@ public OnQueryError(errorid, const error[], const callback[], const query[], MyS
 	return 1;
 }
 
+public OnPlayerCommandReceived(playerid, cmd[], params[], flags){
+	return 1;
+}
+
 forward SecondTimer();
 public SecondTimer(){
 	SecondTimerStock();
@@ -477,6 +481,7 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\systems\administration_system\administration_system_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
+#include "..\library\systems\administration_system\administration_system_commands.inc"
 
 //==============================================================================
 #include "..\library\source\mapping\spawn.inc"
