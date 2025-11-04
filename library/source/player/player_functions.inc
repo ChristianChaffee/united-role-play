@@ -65,6 +65,7 @@ stock LoadPlayer(playerid, Cache:cache_id){
 }
 
 stock GiveMoney(playerid, money){
+	if(GetPlayerData(playerid, p_money) + money >= 99999999) money = 99999999 - GetPlayerData(playerid, p_money);
 	GivePlayerMoney(playerid, money);
 	AddPlayerData(playerid, p_money, money);
 
