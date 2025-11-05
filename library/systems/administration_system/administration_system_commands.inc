@@ -211,3 +211,9 @@ CMD:agivemoney(playerid, params[]){
 	small_string[0] = EOS;
 	return true;
 }
+
+CMD:gmx(playerid){
+	SendClientMessageToAll(COLOR_LIGHT_RED, "Рестарт сервера произойдёт через 5 секунд.");
+	SetTimer("ServerRestartTimer", 5000, false);
+	return true;
+}

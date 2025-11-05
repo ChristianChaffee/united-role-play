@@ -335,6 +335,9 @@ public MinuteTimer(){
 forward KickPlayerPublic(playerid);
 public KickPlayerPublic(playerid) { Kick(playerid); }
 
+forward ServerRestartTimer();
+public ServerRestartTimer() { SendRconCommand("gmx"); }
+
 stock OnPlayerSecondUpdate(playerid){
 	#pragma unused playerid
 	return 1;
