@@ -49,7 +49,7 @@ hook stock OnPlayerSecondUpdate(playerid){
 }
 
 hook stock OnPlayerMinuteUpdate(playerid){
-	if(player_logged[playerid] && (GetPlayerAdminData(playerid, pa_id) || !GetPlayerAdminData(playerid, pa_logged))){
+	if(player_logged[playerid] && !GetPlayerAdminData(playerid, pa_logged)){
 		for(new i; i < PLAYER_NEEDS_COUNT; i++){
 			
 			AddPlayerNeedValue(playerid, i, -GetNeedData(i, n_minus_per_minute));

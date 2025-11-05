@@ -37,6 +37,15 @@ CMD:a(playerid, params[]){
 	return true;
 }
 
+CMD:hp(playerid){
+	SendClientMessage(playerid, COLOR_LIME, "Вы восстановили себе здоровье и нужды.");
+
+	PlayerNeeds:ClearValues(playerid);
+	SetPlayerHealth(playerid, 100.0);
+	PlayerNeeds:SaveNeeds(playerid);
+	return true;
+}
+
 CMD:kick(playerid, params[]){
 	if(sscanf(params, "is[32]", params[0], params[1])) return SendErrorMessage(playerid, "Используйте '/kick [ID] [Причина]'.");
 

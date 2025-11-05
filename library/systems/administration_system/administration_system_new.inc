@@ -33,6 +33,7 @@ enum admin_command_info_struct
 }
 new const admin_command_info[][admin_command_info_struct] = {
 	{1, "a", "Отправить сообщение в чат администрации."},
+	{1, "hp", "Восстановить здоровье и нужды."},
 	
 	{2, "kick", "Отключить игрока от сервера."},
 
