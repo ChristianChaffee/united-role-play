@@ -21,11 +21,31 @@ hook OnPlayerDisconnect(playerid, reason){
 hook stock LoadPlayer(playerid, Cache:cache_id){
 	cache_set_active(cache_id);
 
-	new temp_string[128];
+	new temp_string[128], sscanf_string[32];
+	format(sscanf_string, sizeof(sscanf_string), "p<,>a<i>[%d]", PLAYER_NEEDS_COUNT);
+
 	cache_get_value_name(0, "needs", temp_string);
-	sscanf(temp_string, "p<,>a<i>["#PLAYER_NEEDS_COUNT"]", player_need_info[playerid]);
+	sscanf(temp_string, sscanf_string, player_need_info[playerid]);
 
 	return continue(playerid, _:cache_id);
+}
+
+hook stock OnPlayerSecondUpdate(playerid){
+	if(GetPVarType(playerid, "PlayerNeeds_PissingTime") && GetPVarInt(playerid, "PlayerNeeds_PissingTime") > 0){
+		SetPVarInt(playerid, "PlayerNeeds_PissingTime", GetPVarInt(playerid, "PlayerNeeds_PissingTime") - 1);
+		if(GetPVarInt(playerid, "PlayerNeeds_PissingTime") <= 0){
+			DeletePVar(playerid, "PlayerNeeds_PissingTime");
+			TogglePlayerControllable(playerid, true);
+
+			SendClientMessage(playerid, COLOR_LIME, "Вы справили нужду!");
+			SetPlayerNeedValue(playerid, PLAYER_NEED_URINE, 100);
+			PlayerNeeds:SaveNeeds(playerid);
+
+			ClearAnimations(playerid);
+			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
+		}
+	}
+	return continue(playerid);
 }
 
 hook stock OnPlayerMinuteUpdate(playerid){
