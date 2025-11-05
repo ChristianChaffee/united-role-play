@@ -23,6 +23,7 @@ stock SetPlayerSpawn(playerid, spawn_type){
 
 	SetPlayerScore(playerid, GetPlayerData(playerid, p_level));
 	SetPlayerHealth(playerid, GetPlayerData(playerid, p_health));
+	SetPlayerDrunkLevel(playerid, GetPlayerData(playerid, p_drunked_level));
 
 	CheckPlayerLicenses(playerid);
 
@@ -59,6 +60,7 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	cache_get_value_name_int(0, "exp", GetPlayerData(playerid, p_exp));
 
 	cache_get_value_name_float(0, "health", GetPlayerData(playerid, p_health));
+	cache_get_value_name_int(0, "drunked_level", GetPlayerData(playerid, p_drunked_level));
 
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);

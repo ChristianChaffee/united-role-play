@@ -328,7 +328,7 @@ stock Inventory:UseItem(playerid){
 				Inventory:SetPlayerSlotNull(playerid, slot_index);
 			}
 			case ITEM_TOMATO_ID, ITEM_ORANGE_ID, ITEM_RED_APPLE_ID, ITEM_GREEN_APPLE_ID, ITEM_CHEESBURGER_ID,
-				ITEM_HAMBURGER_ID, ITEM_KEBAB_ID, ITEM_BANAN_ID:{
+				ITEM_HAMBURGER_ID, ITEM_KEBAB_ID, ITEM_BANAN_ID, ITEM_PIZZA_ID:{
 
 				new 
 					give_satiety = GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_static_value_one),
@@ -346,6 +346,68 @@ stock Inventory:UseItem(playerid){
 				AddPlayerNeedValue(playerid, PLAYER_NEED_HUNGRY, give_satiety);
 				AddPlayerNeedValue(playerid, PLAYER_NEED_THIRST, give_thirst);
 
+				for(new i; i < PLAYER_NEEDS_COUNT; i++){
+					if(GetPlayerNeedValue(playerid, i) > PLAYER_NEED_MAX_VALUE) SetPlayerNeedValue(playerid, i, PLAYER_NEED_MAX_VALUE);
+					if(GetPlayerNeedValue(playerid, i) < 0) SetPlayerNeedValue(playerid, i, 0);
+				}
+				PlayerNeeds:SaveNeeds(playerid);
+
+				SetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count, GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) - 1);
+				if(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) <= 0){
+					Inventory:SetPlayerSlotNull(playerid, slot_index);
+				}
+				else{
+					Inventory:SaveItem(playerid, slot_index);
+				}
+			}
+			case ITEM_COFFEE_ID, ITEM_MILK_ID, ITEM_ORANGE_JUICE_ID, ITEM_APPLE_JUICE_ID:{
+				new 
+					give_satiety = GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_static_value_one),
+					give_thirst = GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_static_value_two);
+			
+				ApplyAnimation(playerid, "VENDING", "VEND_DRINK_P", 4.0, 0, 1, 1, 0, 0);
+
+				small_string[0] = EOS;
+				format(small_string, sizeof(small_string),
+					"выпил(-а) %s.",
+					GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_action_text));
+				SendMeAction(playerid, small_string, true);
+				small_string[0] = EOS;
+
+				AddPlayerNeedValue(playerid, PLAYER_NEED_HUNGRY, give_satiety);
+				AddPlayerNeedValue(playerid, PLAYER_NEED_THIRST, give_thirst);
+
+				for(new i; i < PLAYER_NEEDS_COUNT; i++){
+					if(GetPlayerNeedValue(playerid, i) > PLAYER_NEED_MAX_VALUE) SetPlayerNeedValue(playerid, i, PLAYER_NEED_MAX_VALUE);
+					if(GetPlayerNeedValue(playerid, i) < 0) SetPlayerNeedValue(playerid, i, 0);
+				}
+				PlayerNeeds:SaveNeeds(playerid);
+
+				SetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count, GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) - 1);
+				if(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) <= 0){
+					Inventory:SetPlayerSlotNull(playerid, slot_index);
+				}
+				else{
+					Inventory:SaveItem(playerid, slot_index);
+				}
+			}
+			case ITEM_BEER_ID, ITEM_WHISKEY_ID, ITEM_COGNAC_ID, ITEM_VODKA_ID:{
+				new 
+					give_drunkenness = GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_static_value_one),
+					give_satiety = GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_static_value_two);
+			
+				ApplyAnimation(playerid, "VENDING", "VEND_DRINK_P", 4.0, 0, 1, 1, 0, 0);
+
+				small_string[0] = EOS;
+				format(small_string, sizeof(small_string),
+					"выпил(-а) %s.",
+					GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_action_text));
+				SendMeAction(playerid, small_string, true);
+				small_string[0] = EOS;
+
+				SetPlayerDrunkLevel(playerid, GetPlayerData(playerid, p_drunked_level) + give_drunkenness);
+				AddPlayerNeedValue(playerid, PLAYER_NEED_HUNGRY, give_satiety);
+				
 				for(new i; i < PLAYER_NEEDS_COUNT; i++){
 					if(GetPlayerNeedValue(playerid, i) > PLAYER_NEED_MAX_VALUE) SetPlayerNeedValue(playerid, i, PLAYER_NEED_MAX_VALUE);
 					if(GetPlayerNeedValue(playerid, i) < 0) SetPlayerNeedValue(playerid, i, 0);

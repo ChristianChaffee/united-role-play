@@ -48,6 +48,7 @@ enum player_info_struct
 	p_start_quests_loaded,
 
 	Float:p_health,
+	p_drunked_level,
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -71,7 +72,8 @@ new const player_info_default[player_info_struct] = {
 	0,
 	false,
 
-	100.0
+	100.0,
+	0
 };
 
 //==============================================================================

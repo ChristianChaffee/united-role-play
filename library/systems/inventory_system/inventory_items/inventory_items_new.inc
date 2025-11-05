@@ -12,8 +12,18 @@
 #define ITEM_HAMBURGER_ID 						11
 #define ITEM_KEBAB_ID 							12
 #define ITEM_BANAN_ID 							13
+#define ITEM_PIZZA_ID 							14
+#define ITEM_COFFEE_ID 							15
+#define ITEM_MILK_ID 							16
+#define ITEM_ORANGE_JUICE_ID 					17
+#define ITEM_APPLE_JUICE_ID 					18
+#define ITEM_BEER_ID 							19
+#define ITEM_WHISKEY_ID 						20
+#define ITEM_COGNAC_ID 							21
+#define ITEM_VODKA_ID 							22
 
-#define MAX_INVENTORY_ITEMS 					13
+
+#define MAX_INVENTORY_ITEMS 					22
 #define MAX_INVENTORY_SLOTS  					75
 
 #define GetInventoryItemData(%0,%1) 			inventory_item_info[%0][%1]
