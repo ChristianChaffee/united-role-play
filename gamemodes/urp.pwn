@@ -60,6 +60,7 @@ public OnGameModeInit(){
 	Streamer_SetMaxItems(STREAMER_TYPE_OBJECT, 1000);
 
 	SetTimer("SecondTimer", 1000, true);
+	SetTimer("MinuteTimer", 60000, true);
 	return 1;
 }
 
@@ -323,10 +324,23 @@ public SecondTimer(){
 	return 1;
 }
 
+forward MinuteTimer();
+public MinuteTimer(){
+	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
+		OnPlayerMinuteUpdate(i);
+	}
+	return 1;
+}
+
 forward KickPlayerPublic(playerid);
 public KickPlayerPublic(playerid) { Kick(playerid); }
 
 stock OnPlayerSecondUpdate(playerid){
+	#pragma unused playerid
+	return 1;
+}
+
+stock OnPlayerMinuteUpdate(playerid){
 	#pragma unused playerid
 	return 1;
 }
@@ -489,6 +503,7 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 #include "..\library\systems\administration_system\administration_system_commands.inc"
+#include "..\library\systems\player_needs_system\player_needs_commands.inc"
 
 //==============================================================================
 #include "..\library\source\mapping\spawn.inc"

@@ -22,6 +22,7 @@ stock SetPlayerSpawn(playerid, spawn_type){
 	GivePlayerMoney(playerid, GetPlayerData(playerid, p_money));
 
 	SetPlayerScore(playerid, GetPlayerData(playerid, p_level));
+	SetPlayerHealth(playerid, GetPlayerData(playerid, p_health));
 
 	CheckPlayerLicenses(playerid);
 
@@ -56,6 +57,8 @@ stock LoadPlayer(playerid, Cache:cache_id){
 
 	cache_get_value_name_int(0, "level", GetPlayerData(playerid, p_level));
 	cache_get_value_name_int(0, "exp", GetPlayerData(playerid, p_exp));
+
+	cache_get_value_name_float(0, "health", GetPlayerData(playerid, p_health));
 
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
