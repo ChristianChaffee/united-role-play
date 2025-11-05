@@ -61,7 +61,7 @@ hook OnPlayerEnterCheckpoint(playerid){
 		small_string[0] = EOS;
 
 		SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
-		RemovePlayerAttachedObject(playerid, JOB_ATTACH_INDEX);
+		RemovePlayerAttachedObject(playerid, ATTACH_INDEX_JOB);
 		Job:SetLumberjackTreesCP(playerid);
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;

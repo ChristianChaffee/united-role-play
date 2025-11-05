@@ -10,7 +10,7 @@ hook OnPlayerEnterCheckpoint(playerid){
 	if(GetPlayerData(playerid, p_job) == JOB_LOADER){
 		switch(GetPVarInt(playerid, "JobLoader_Stage")){
 			case JOB_LOADER_STAGE_TO_BOX:{
-				SetPlayerAttachedObject(playerid, JOB_ATTACH_INDEX, 2969, 1, 0.1119, 0.3770, 0.0000, 0.0000, -94.0999, 0.0000, 1.0000, 1.0000, 1.0000, 0, 0);
+				SetPlayerAttachedObject(playerid, ATTACH_INDEX_JOB, 2969, 1, 0.1119, 0.3770, 0.0000, 0.0000, -94.0999, 0.0000, 1.0000, 1.0000, 1.0000, 0, 0);
 				SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY);
 				Job:GenerateLoaderUnload(playerid);
 			}
@@ -35,7 +35,7 @@ hook OnPlayerEnterCheckpoint(playerid){
 				small_string[0] = EOS;
 
 				SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
-				RemovePlayerAttachedObject(playerid, JOB_ATTACH_INDEX);
+				RemovePlayerAttachedObject(playerid, ATTACH_INDEX_JOB);
 				Job:GenerateLoaderLoad(playerid);
 			}
 		}

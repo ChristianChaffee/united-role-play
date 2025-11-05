@@ -24,7 +24,7 @@ hook OnPlayerEnterCheckpoint(playerid){
 			DisablePlayerCheckpoint(playerid);
 
 			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY);
-			SetPlayerAttachedObject(playerid, JOB_ATTACH_INDEX, 19843, 1, -0.0509, 0.4069, 0.0000, 0.0000, 88.7999, 1.2999, 0.5679, 0.4759, 1.0000, 0, 0);
+			SetPlayerAttachedObject(playerid, ATTACH_INDEX_JOB, 19843, 1, -0.0509, 0.4069, 0.0000, 0.0000, 88.7999, 1.2999, 0.5679, 0.4759, 1.0000, 0, 0);
 
 			SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Отправляйтесь к свободному станку.");
 			SetPVarInt(playerid, "JobGunFactory_Stage", JOB_GF_STAGE_TO_MACHINE);
@@ -51,7 +51,7 @@ hook OnPlayerEnterCheckpoint(playerid){
 			SendClientMessage(playerid, COLOR_YELLOW, small_string);
 			small_string[0] = EOS;
 
-			RemovePlayerAttachedObject(playerid, JOB_ATTACH_INDEX);
+			RemovePlayerAttachedObject(playerid, ATTACH_INDEX_JOB);
 			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
 
 			Job:GenerateMaterials(playerid);
@@ -81,7 +81,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 			SetPVarInt(playerid, "JobGunFactory_Timer", JOB_GUN_FACTORY_TIMER);
 
 			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
-			RemovePlayerAttachedObject(playerid, JOB_ATTACH_INDEX);
+			RemovePlayerAttachedObject(playerid, ATTACH_INDEX_JOB);
 
 			SetPlayerPos(playerid, job_gun_factory_machine_pos[i][0], job_gun_factory_machine_pos[i][1], job_gun_factory_machine_pos[i][2]);
 			SetPlayerFacingAngle(playerid, job_gun_factory_machine_pos[i][3]);
@@ -113,7 +113,7 @@ hook stock OnPlayerSecondUpdate(playerid){
 			DeletePVar(playerid, "JobGunFactory_Timer");
 			DeletePVar(playerid, "JobGunFactory_MachineIndex");
 
-			SetPlayerAttachedObject(playerid, JOB_ATTACH_INDEX, job_gun_factory_guns_model_id[random(sizeof(job_gun_factory_guns_model_id))], 1, -0.0109, 0.2750, -0.1949, -93.0999, 0.0000, -88.3000, 1.0000, 1.0000, 1.0000, 0, 0);
+			SetPlayerAttachedObject(playerid, ATTACH_INDEX_JOB, job_gun_factory_guns_model_id[random(sizeof(job_gun_factory_guns_model_id))], 1, -0.0109, 0.2750, -0.1949, -93.0999, 0.0000, -88.3000, 1.0000, 1.0000, 1.0000, 0, 0);
 			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY);
 
 			SetPlayerCheckpoint(playerid, JOB_GUN_FACTORY_WAREHOUSE_POS, 1.0);

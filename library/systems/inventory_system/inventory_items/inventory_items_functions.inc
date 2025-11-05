@@ -189,6 +189,24 @@ stock Inventory:SetPlayerSlotNull(playerid, slot_index){
 	return true;
 }
 
+stock Inventory:SaveItem(playerid, slot_index){
+	if(slot_index < 0 || slot_index >= MAX_INVENTORY_SLOTS) return false;
+
+	static const fmt_query[] = "UPDATE player_inventory_items SET item_id = %d, item_count = %d, item_slot = %d, value_one = %d, value_two = %d, value_str = '%s', can_drop = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11) + (-2 + 11) + (-2 + 11) + (-2 + 11) + (-2 + 11) + (-2 + 256) + (-2 + 11) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id),
+		GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count),
+		GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_slot),
+		GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one),
+		GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_two),
+		GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_str),
+		GetPlayerInventoryItemData(playerid, slot_index, inv_player_can_drop),
+		GetPlayerInventoryItemData(playerid, slot_index, inv_player_id));
+	mysql_tquery(mysql, query);
+	return true;
+}
+
 stock Inventory:ChangePlayerItemDTS(playerid, from_index, to_index){
 	if((from_index < 0 || from_index >= MAX_INVENTORY_SLOTS)
 		|| (to_index < 0 || to_index >= MAX_INVENTORY_SLOTS)) return false;
@@ -308,6 +326,39 @@ stock Inventory:UseItem(playerid){
 				small_string[0] = EOS;
 
 				Inventory:SetPlayerSlotNull(playerid, slot_index);
+			}
+			case ITEM_TOMATO_ID, ITEM_ORANGE_ID, ITEM_RED_APPLE_ID, ITEM_GREEN_APPLE_ID, ITEM_CHEESBURGER_ID,
+				ITEM_HAMBURGER_ID, ITEM_KEBAB_ID, ITEM_BANAN_ID:{
+
+				new 
+					give_satiety = GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_static_value_one),
+					give_thirst = GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_static_value_two);
+			
+				ApplyAnimation(playerid, "VENDING", "VEND_EAT1_P", 4.0, 0, 1, 1, 0, 0);
+
+				small_string[0] = EOS;
+				format(small_string, sizeof(small_string),
+					"סתוכ(-א) %s.",
+					GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_action_text));
+				SendMeAction(playerid, small_string, true);
+				small_string[0] = EOS;
+
+				AddPlayerNeedValue(playerid, PLAYER_NEED_HUNGRY, give_satiety);
+				AddPlayerNeedValue(playerid, PLAYER_NEED_THIRST, give_thirst);
+
+				for(new i; i < PLAYER_NEEDS_COUNT; i++){
+					if(GetPlayerNeedValue(playerid, i) > PLAYER_NEED_MAX_VALUE) SetPlayerNeedValue(playerid, i, PLAYER_NEED_MAX_VALUE);
+					if(GetPlayerNeedValue(playerid, i) < 0) SetPlayerNeedValue(playerid, i, 0);
+				}
+				PlayerNeeds:SaveNeeds(playerid);
+
+				SetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count, GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) - 1);
+				if(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) <= 0){
+					Inventory:SetPlayerSlotNull(playerid, slot_index);
+				}
+				else{
+					Inventory:SaveItem(playerid, slot_index);
+				}
 			}
 		}
 	}

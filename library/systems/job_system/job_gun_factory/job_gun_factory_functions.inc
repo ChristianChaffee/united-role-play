@@ -23,7 +23,7 @@ stock Job:ShowGunFactoryInvite(playerid){
 
 stock Job:GenerateMaterials(playerid){
 	DisablePlayerCheckpoint(playerid);
-	RemovePlayerAttachedObject(playerid, JOB_ATTACH_INDEX);
+	RemovePlayerAttachedObject(playerid, ATTACH_INDEX_JOB);
 
 	SetPlayerCheckpoint(playerid, JOB_GUN_FACTORY_MATERIALS_POS, 1.0);
 	SetPVarInt(playerid, "JobGunFactory_Stage", JOB_GF_STAGE_TO_MATERIALS);
@@ -35,7 +35,7 @@ stock Job:GenerateMaterials(playerid){
 stock Job:GunFactoryUninvite(playerid){
 	SetPlayerSkin(playerid, GetPlayerData(playerid, p_skin));
 
-	RemovePlayerAttachedObject(playerid, JOB_ATTACH_INDEX);
+	RemovePlayerAttachedObject(playerid, ATTACH_INDEX_JOB);
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
 
 	DeletePVar(playerid, "JobGunFactory_Stage");

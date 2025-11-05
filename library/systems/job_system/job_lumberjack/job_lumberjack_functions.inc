@@ -76,8 +76,8 @@ stock Job:ShowLumberjackDialog(playerid){
 stock Job:LumberjackGiveChainsaw(playerid){
 	if(GetPlayerData(playerid, p_job) != JOB_LUMBERJACK) return false;
 
-	RemovePlayerAttachedObject(playerid, JOB_ATTACH_INDEX);
-	SetPlayerAttachedObject(playerid, JOB_ATTACH_INDEX, 341, 14, 0.2019, 0.0170, 0.0000, 104.4000, 0.0000, 0.0000, 1.0000, 1.0000, 1.0000, 0, 0);
+	RemovePlayerAttachedObject(playerid, ATTACH_INDEX_JOB);
+	SetPlayerAttachedObject(playerid, ATTACH_INDEX_JOB, 341, 14, 0.2019, 0.0170, 0.0000, 104.4000, 0.0000, 0.0000, 1.0000, 1.0000, 1.0000, 0, 0);
 	return true;
 }
 
@@ -96,10 +96,10 @@ stock Job:SetLumberjackWarehouseCP(playerid){
 	if(GetPlayerData(playerid, p_job) != JOB_LUMBERJACK) return false;
 
 	SetPVarInt(playerid, "JobLumberjack_Stage", JOB_LUMBERJACK_STAGE_TO_WAREH);
-	RemovePlayerAttachedObject(playerid, JOB_ATTACH_INDEX);
+	RemovePlayerAttachedObject(playerid, ATTACH_INDEX_JOB);
 
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY);
-	SetPlayerAttachedObject(playerid, JOB_ATTACH_INDEX, 19793, 1, 0.1119, 0.3770, 0.0000, 0.0000, -94.0999, 0.0000, 1.0000, 1.0000, 1.0000, 0, 0);
+	SetPlayerAttachedObject(playerid, ATTACH_INDEX_JOB, 19793, 1, 0.1119, 0.3770, 0.0000, 0.0000, -94.0999, 0.0000, 1.0000, 1.0000, 1.0000, 0, 0);
 
 	SetPlayerCheckpoint(playerid, JOB_LUMBERJACK_WAREH_CP, 2.5);
 	SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Отнесите срубленое дерево на склад. Склад отмечен на Вашей мини-карте.");
@@ -109,7 +109,7 @@ stock Job:SetLumberjackWarehouseCP(playerid){
 stock Job:LumberjackUninvite(playerid){
 	SetPlayerSkin(playerid, GetPlayerData(playerid, p_skin));
 
-	RemovePlayerAttachedObject(playerid, JOB_ATTACH_INDEX);
+	RemovePlayerAttachedObject(playerid, ATTACH_INDEX_JOB);
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
 
 	DeletePVar(playerid, "JobLumberjack_Stage");

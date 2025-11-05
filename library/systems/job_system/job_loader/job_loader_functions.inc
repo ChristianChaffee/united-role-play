@@ -62,7 +62,7 @@ stock Job:GenerateLoaderUnload(playerid){
 stock Job:LoaderUninvite(playerid){
 	SetPlayerSkin(playerid, GetPlayerData(playerid, p_skin));
 
-	RemovePlayerAttachedObject(playerid, JOB_ATTACH_INDEX);
+	RemovePlayerAttachedObject(playerid, ATTACH_INDEX_JOB);
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
 
 	DeletePVar(playerid, "JobLoader_Stage");

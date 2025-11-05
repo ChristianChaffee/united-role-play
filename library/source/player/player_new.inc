@@ -15,6 +15,8 @@ enum
 	ATTACH_INDEX_ACC_4,
 	ATTACH_INDEX_ACC_5,
 	ATTACH_INDEX_ACC_6,
+	ATTACH_INDEX_JOB,
+	ATTACH_INDEX_INV
 }
 
 //==============================================================================

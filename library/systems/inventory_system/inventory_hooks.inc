@@ -1,6 +1,17 @@
 
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
+hook stock OnPlayerSecondUpdate(playerid){
+	if(GetPVarType(playerid, "Inventory_EatDrinkAnimationTimer") && GetPVarInt(playerid, "Inventory_EatDrinkAnimationTimer") > 0){
+		SetPVarInt(playerid, "Inventory_EatDrinkAnimationTimer", GetPVarInt(playerid, "Inventory_EatDrinkAnimationTimer") - 1);
+		if(GetPVarInt(playerid, "Inventory_EatDrinkAnimationTimer")){
+			
+			ClearAnimations(playerid);
+			DeletePVar(playerid, "Inventory_EatDrinkAnimationTimer");
+		}
+	}
+}
+
 hook OnPlayerClickTextDraw(playerid, Text:clickedid){
 	if(_:clickedid == INVALID_TEXT_DRAW && GetPVarType(playerid, "Inventory_Page")){
 		Inventory:Hide(playerid);

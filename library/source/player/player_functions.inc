@@ -169,6 +169,17 @@ stock SavePlayerLicenses(playerid){
 	return true;
 }
 
+stock SendMeAction(playerid, action[], is_automatic = false){
+	new temp_string[144];
+	format(temp_string, sizeof(temp_string),
+		"%s%s %s",
+		(is_automatic) ? ("* ") : (""),
+		GetPlayerData(playerid, p_name), action);
+
+	ProxDetector(playerid, 15.0, COLOR_ACTION, temp_string);
+	return true;
+}
+
 stock ProxDetector(playerid, Float:max_range, color, const string[], Float:max_ratio = 1.6){
     new
         Float:pos_x,
@@ -189,11 +200,7 @@ stock ProxDetector(playerid, Float:max_range, color, const string[], Float:max_r
     color_b = float(color >> 8 & 0xFF);
     range_with_ratio = max_range * max_ratio;
 
-#if defined foreach
-    foreach (new i : Player) {
-#else
-    for (new i = GetPlayerPoolSize(); i != -1; i--) {
-#endif
+	for (new i = GetPlayerPoolSize(); i != -1; i--) {
         if (!IsPlayerStreamedIn(playerid, i)) {
             continue;
         }

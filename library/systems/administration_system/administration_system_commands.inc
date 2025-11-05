@@ -184,6 +184,27 @@ CMD:setint(playerid, params[]){
 	return true;
 }
 
+CMD:giveinv(playerid, params[]){
+	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/giveinv [ID игрока]'");
+
+	if(!IsPlayerConnected(params[0])) return SendErrorMessage(playerid, "Игрок не в сети.");
+
+	SetPVarInt(playerid, "Admin_GiveItemID", params[0]);
+
+	big_string[0] = EOS;
+	for(new i = 1; i <= MAX_INVENTORY_ITEMS; i++){
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%d. "cl_white"%s",
+			big_string, i, GetInventoryItemData(i, item_name));
+	}
+	Dialog_Open(playerid, Dialog:D_ADMIN_GIVE_INV, DIALOG_STYLE_LIST,
+		"Выдать предмет", big_string,
+		"Выдать", "Закрыть");
+	big_string[0] = EOS;
+	return true;
+}
+
 CMD:agivemoney(playerid, params[]){
 	if(sscanf(params, "ii", params[0], params[1])) return SendErrorMessage(playerid, "Используйте '/agivemoney [ID игрока] [Кол-во денег]'");
 

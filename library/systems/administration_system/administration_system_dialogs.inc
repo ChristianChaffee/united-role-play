@@ -28,3 +28,39 @@ DialogResponse:D_ADMIN_LOGIN(playerid, response, listitem, inputtext[]){
 	mysql_tquery(mysql, query, "CheckPlayerAdminPassword", "i", playerid);
 	return true;
 }
+
+DialogResponse:D_ADMIN_GIVE_INV(playerid, response, listitem, inputtext[]){
+	if(!response){
+		DeletePVar(playerid, "Admin_GiveItemID");
+		return false;
+	}
+
+	new 
+		scdplayerid = GetPVarInt(playerid, "Admin_GiveItemID"),
+		slot_index = Inventory:GetFreeSlotIndex(scdplayerid);
+
+	if(slot_index == -1){
+		SendErrorMessage(playerid, "У данного игрока нет места в инвентаре.");
+		DeletePVar(playerid, "Admin_GiveItemID");
+		return false;
+	}
+
+	Inventory:GiveItem(scdplayerid, slot_index, listitem + 1);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"[A][%d] %s[%d] выдал(-а) предмет \"%s\" игроку %s[%d].",
+		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name), playerid,
+		GetInventoryItemData(listitem + 1, item_name),
+		GetPlayerData(scdplayerid, p_name), scdplayerid);
+	Admin:SendAdminMessage(COLOR_GREY, small_string);
+
+	format(small_string, sizeof(small_string),
+		"Администратор %s[%d] выдал(-а) Вам предмет \"%s\".",
+		GetPlayerData(playerid, p_name), playerid, GetInventoryItemData(listitem + 1, item_name));
+	SendClientMessage(scdplayerid, COLOR_LIME, small_string);
+	small_string[0] = EOS;
+
+	DeletePVar(playerid, "Admin_GiveItemID");
+	return true;
+}

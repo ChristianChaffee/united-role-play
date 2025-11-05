@@ -4,8 +4,16 @@
 #define ITEM_JOURNEY_BACKPACK 					3
 #define ITEM_BANK_CARD 							4
 #define ITEM_SUGAR_DRUG_ID 						5
+#define ITEM_TOMATO_ID 							6
+#define ITEM_ORANGE_ID 							7
+#define ITEM_RED_APPLE_ID 						8
+#define ITEM_GREEN_APPLE_ID 					9
+#define ITEM_CHEESBURGER_ID 					10
+#define ITEM_HAMBURGER_ID 						11
+#define ITEM_KEBAB_ID 							12
+#define ITEM_BANAN_ID 							13
 
-#define MAX_INVENTORY_ITEMS 					5
+#define MAX_INVENTORY_ITEMS 					13
 #define MAX_INVENTORY_SLOTS  					75
 
 #define GetInventoryItemData(%0,%1) 			inventory_item_info[%0][%1]
@@ -20,10 +28,13 @@ enum inventory_item_info_struct
 	item_name[32],
 	item_description[256],
 	item_model_id,
+	item_action_text[128],
 	Float:item_rot_x,
 	Float:item_rot_y,
 	Float:item_rot_z,
 	Float:item_scale,
+	item_static_value_one,
+	item_static_value_two
 }
 new inventory_item_info[MAX_INVENTORY_ITEMS + 1][inventory_item_info_struct];
 
