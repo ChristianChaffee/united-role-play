@@ -5,6 +5,8 @@
 #define GetVehicleData(%0,%1)  						vehicle_info[%0][%1]
 #define SetVehicleData(%0,%1,%2)  					vehicle_info[%0][%1] = %2
 
+#define GetVehicleParamsData(%0,%1) 				vehicle_params_info[%0][%1]			
+
 //==============================================================================
 enum
 {

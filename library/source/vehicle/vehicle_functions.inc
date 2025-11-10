@@ -163,6 +163,14 @@ stock SetVehicleStatus(vehicleid, status){
 	return true;
 }
 
+stock GetVehicleParamIndex(vehicleid){
+	if(!IsValidVehicle(vehicleid)) return 0;
+	for(new i; i < VEHICLE_MODELS_COUNT; i++){
+		if(GetVehicleParamsData(i, vp_model_id) == GetVehicleModel(vehicleid)) return i;
+	}
+	return 0;
+}
+
 //==============================================================================
 stock ShowVehicleMenu(playerid){
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER || !GetPlayerVehicleID(playerid)) return false;
