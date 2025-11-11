@@ -201,6 +201,15 @@ stock DestroyVehicleText3D(vehicleid){
 	return true;
 }
 
+stock CreatePlayerVehicle(playerid, id, Float:pos_x = 0.0, Float:pos_y = 0.0, Float:pos_z = 0.0, Float:pos_angle = 0.0, vw = 0, int = 0){
+	static const fmt_query[] = "SELECT * FROM vehicles WHERE id = %d AND owner = %d AND status = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 3)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		id, GetPlayerData(playerid, p_id), VEHICLE_STATUS_PLAYER);
+	mysql_tquery(mysql, query, "LoadPlayerVehicle", "iffffii", playerid, pos_x, pos_y, pos_z, pos_angle, vw, int);
+	return true;
+}
+
 //==============================================================================
 stock ShowVehicleMenu(playerid){
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER || !GetPlayerVehicleID(playerid)) return false;

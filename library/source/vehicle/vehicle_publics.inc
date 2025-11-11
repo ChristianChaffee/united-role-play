@@ -49,14 +49,15 @@ public ShowPlayerCars(playerid){
 	return true;
 }
 
-forward LoadPlayerVehicle(playerid);
-public LoadPlayerVehicle(playerid){
+forward CheckPlayerVehicle(playerid);
+public CheckPlayerVehicle(playerid){
 	new rows;
 	cache_get_row_count(rows);
 
 	if(!rows) return SendErrorMessage(playerid, "При загрузке транспорта произошла ошибка.");
 
-	new Float:temp_pos[4];
+	new Float:temp_pos[4], temp_id;
+	cache_get_value_name_int(0, "id", temp_id);
 	cache_get_value_name_float(0, "pos_x", temp_pos[0]);
 	cache_get_value_name_float(0, "pos_y", temp_pos[1]);
 	cache_get_value_name_float(0, "pos_z", temp_pos[2]);
@@ -66,6 +67,56 @@ public LoadPlayerVehicle(playerid){
 		SendClientMessage(playerid, COLOR_LIGHT_RED, "Данный транспорт находится на штраф-стоянке.");
 		return false;
 	}
+	
+	CreatePlayerVehicle(playerid, temp_id);
+	return true;
+}
 
+forward LoadPlayerVehicle(playerid, Float:pos_x, Float:pos_y, Float:pos_z, Float:pos_angle, vw, int);
+public LoadPlayerVehicle(playerid, Float:pos_x, Float:pos_y, Float:pos_z, Float:pos_angle, vw, int){
+	new rows;
+	cache_get_row_count(rows);
+
+	if(!rows) return SendErrorMessage(playerid, "При загрузке транспорта произошла ошибка.");
+
+	new temp_vehicle_data[vehicle_info_struct];
+
+	cache_get_value_name_int(0, "id", temp_vehicle_data[v_id]);
+	cache_get_value_name_int(0, "model_id", temp_vehicle_data[v_model_id]);
+	cache_get_value_name_int(0, "status", temp_vehicle_data[v_status]);
+	cache_get_value_name_int(0, "owner", temp_vehicle_data[v_owner]);
+	cache_get_value_name_int(0, "price", temp_vehicle_data[v_price]);
+	cache_get_value_name_int(0, "color_1", temp_vehicle_data[v_color_1]);
+	cache_get_value_name_int(0, "color_2", temp_vehicle_data[v_color_2]);
+
+	cache_get_value_name_float(0, "pos_x", temp_vehicle_data[v_pos_spawn_x]);
+	cache_get_value_name_float(0, "pos_y", temp_vehicle_data[v_pos_spawn_y]);
+	cache_get_value_name_float(0, "pos_z", temp_vehicle_data[v_pos_spawn_z]);
+	cache_get_value_name_float(0, "pos_angle", temp_vehicle_data[v_pos_spawn_angle]);
+	cache_get_value_name_int(0, "pos_vw", temp_vehicle_data[v_vw]);
+	cache_get_value_name_int(0, "pos_int", temp_vehicle_data[v_int]);
+
+	cache_get_value_name_float(0, "fuel", temp_vehicle_data[v_fuel]);
+
+	if(pos_x != 0.0 && pos_y != 0.0 && pos_z != 0.0 && pos_angle != 0.0){
+		temp_vehicle_data[v_pos_spawn_x] = pos_x;
+		temp_vehicle_data[v_pos_spawn_y] = pos_y;
+		temp_vehicle_data[v_pos_spawn_z] = pos_z;
+		temp_vehicle_data[v_pos_spawn_angle] = pos_angle;
+		temp_vehicle_data[v_vw] = vw;
+		temp_vehicle_data[v_int] = int;
+	}
+
+	new vehicleid = CreateVehicle(temp_vehicle_data[v_model_id], 
+		temp_vehicle_data[v_pos_spawn_x], 
+		temp_vehicle_data[v_pos_spawn_y], 
+		temp_vehicle_data[v_pos_spawn_z], 
+		temp_vehicle_data[v_pos_spawn_angle], 
+		temp_vehicle_data[v_color_1], 
+		temp_vehicle_data[v_color_2], -1, 0);
+
+	vehicle_info[vehicleid] = temp_vehicle_data;
+
+	SetVehicleStatus(vehicleid, VEHICLE_STATUS_PLAYER);
 	return true;
 }

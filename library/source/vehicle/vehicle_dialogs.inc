@@ -33,7 +33,7 @@ DialogResponse:D_PLAYER_CARS_LIST(playerid, response, listitem, inputtext[]){
 		new query[sizeof(fmt_query) + ((-2 + 11) * 3)];
 		mysql_format(mysql, query, sizeof(query), fmt_query,
 			player_listitems[playerid][listitem], GetPlayerData(playerid, p_id), VEHICLE_STATUS_PLAYER);
-		mysql_tquery(mysql, query, "LoadPlayerVehicle", "i", playerid);
+		mysql_tquery(mysql, query, "CheckPlayerVehicle", "i", playerid);
 	}
 	return true;
 }

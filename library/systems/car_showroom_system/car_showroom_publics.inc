@@ -18,6 +18,7 @@ public BuyPlayerVehicle(playerid, vehicleid){
 		CarShowroom:GetVehiclePrice(vehicleid));
 	SendClientMessage(playerid, COLOR_LIME, small_string);
 	small_string[0] = EOS;
+	SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: "cl_white"Чтобы Ваш транспорт не забрали на штраф-стоянку, припаркуйте его "cl_grey"('/park')"cl_white".");
 
 	new car_showroom_index = CarShowroom:GetVehicleShowroom(vehicleid);
 	for(new i, j = CarShowroom:GetMaxSlots(car_showroom_index); i < j; i++){
