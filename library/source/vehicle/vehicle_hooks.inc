@@ -57,6 +57,10 @@ hook function DestroyVehicle(vehicleid){
 
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 	if(newkeys == KEY_SUBMISSION && GetPlayerState(playerid) == PLAYER_STATE_DRIVER){
+		switch(GetVehicleData(GetPlayerVehicleID(playerid), v_status)){
+			case VEHICLE_STATUS_CAR_SHOWROOM: return Y_HOOKS_CONTINUE_RETURN_1;
+		}
+
 		if(!GetVehicleEngine(GetPlayerVehicleID(playerid)) && GetVehicleData(GetPlayerVehicleID(playerid), v_fuel) <= 0.0){
 			SendErrorMessage(playerid, "В транспорте закончилось топливо.");
 			return Y_HOOKS_CONTINUE_RETURN_1;
@@ -64,6 +68,10 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 		SetVehicleEngine(GetPlayerVehicleID(playerid), !GetVehicleEngine(GetPlayerVehicleID(playerid)));
 	}
 	if(newkeys == KEY_ACTION && GetPlayerState(playerid) == PLAYER_STATE_DRIVER){
+		switch(GetVehicleData(GetPlayerVehicleID(playerid), v_status)){
+			case VEHICLE_STATUS_CAR_SHOWROOM: return Y_HOOKS_CONTINUE_RETURN_1;
+		}
+		
 		ShowVehicleMenu(playerid);
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;

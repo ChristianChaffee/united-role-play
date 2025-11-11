@@ -14,7 +14,8 @@ enum
 	FUEL_TYPE_92,
 	FUEL_TYPE_95,
 	FUEL_TYPE_98,
-	FUEL_TYPE_DISEL
+	FUEL_TYPE_DISEL,
+	FUEL_TYPES_COUNT
 }
 
 enum
@@ -36,9 +37,20 @@ enum
 {
 	VEHICLE_STATUS_NONE,
 	VEHICLE_STATUS_DRIVING_SCHOOL,
+	VEHICLE_STATUS_CAR_SHOWROOM,
+	VEHICLE_STATUS_PLAYER,
 
 	VEHICLE_STATUS_MAX
 }
+
+//==============================================================================
+new const fuel_type_names[FUEL_TYPES_COUNT][32] = {
+	"None",
+	"¿»-92",
+	"¿»-95",
+	"¿»-98",
+	"ƒ“"
+};
 
 //==============================================================================
 enum vehicle_params_info_struct
@@ -284,7 +296,11 @@ enum vehicle_info_struct
 	v_respawn_delay,
 	Float:v_health,
 	Float:v_fuel,
+
 	v_status,
+	Text3D:v_text,
+
+	v_owner[MAX_PLAYER_NAME],
 }
 new vehicle_info[MAX_VEHICLES][vehicle_info_struct];
 new const vehicle_info_empty[vehicle_info_struct] = {
@@ -307,5 +323,8 @@ new const vehicle_info_empty[vehicle_info_struct] = {
 	0.0,
 	0.0,
 
-	VEHICLE_STATUS_NONE
+	VEHICLE_STATUS_NONE,
+	Text3D:-1,
+
+	""
 };

@@ -171,6 +171,22 @@ stock GetVehicleParamIndex(vehicleid){
 	return 0;
 }
 
+stock Text3D:CreateVehicle3DText(vehicleid, const text[], color, Float:drawdistance){
+	if(!IsValidVehicle(vehicleid)) return Text3D:-1;
+	
+	GetVehicleData(vehicleid, v_text) = CreateDynamic3DTextLabel(text, color, 0.0, 0.0, 0.0, drawdistance, _, vehicleid);
+	return GetVehicleData(vehicleid, v_text);
+}
+
+stock DestroyVehicleText3D(vehicleid){
+	if(!IsValidVehicle(vehicleid)) return false;
+	if(GetVehicleData(vehicleid, v_text) == Text3D:-1) return false;
+
+	DestroyDynamic3DTextLabel(GetVehicleData(vehicleid, v_text));
+	GetVehicleData(vehicleid, v_text) = Text3D:-1;
+	return true;
+}
+
 //==============================================================================
 stock ShowVehicleMenu(playerid){
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER || !GetPlayerVehicleID(playerid)) return false;
