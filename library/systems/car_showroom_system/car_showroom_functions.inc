@@ -4,7 +4,8 @@ stock CarShowroom:GetOnSaleCount(car_showroom_index){
 
 	new count;
 	for(new i; i < CAR_SHOWROOMS_MAX_POS_COUNT; i++){
-		if(car_showroom_info[car_showroom_index][cs_vehicle_on_sale][i] != -1) count++;
+		if(car_showroom_info[car_showroom_index][cs_vehicle_on_sale][i] == -1 || !IsValidVehicle(car_showroom_info[car_showroom_index][cs_vehicle_on_sale][i])) continue;
+		count++;
 	}
 	return count;
 }
@@ -14,7 +15,7 @@ stock CarShowroom:GetMaxSlots(car_showroom_index){
 	
 	new count;
 	for(new i; i < CAR_SHOWROOMS_MAX_POS_COUNT; i++){
-		if(car_showroom_veh_pos[car_showroom_index][i][0] == 0.0 && car_showroom_veh_pos[car_showroom_index][i][1] && car_showroom_veh_pos[car_showroom_index][i][2] == 0.0 && car_showroom_veh_pos[car_showroom_index][i][3] == 0.0) continue;
+		if(car_showroom_veh_pos[car_showroom_index][i][0] == 0.0 && car_showroom_veh_pos[car_showroom_index][i][1] == 0.0 && car_showroom_veh_pos[car_showroom_index][i][2] == 0.0 && car_showroom_veh_pos[car_showroom_index][i][3] == 0.0) continue;
 		count++;
 	}
 	return count;
@@ -111,6 +112,27 @@ stock CarShowroom:AddRandomVehicle(car_showroom_index){
 		car_showroom_info[car_showroom_index][cs_vehicle_prices][random_vehicle_index]);
 
 	CreateVehicle3DText(car_showroom_info[car_showroom_index][cs_vehicle_on_sale][random_pos_index], big_string, -1, 20.0);
+	big_string[0] = EOS;
+	return true;
+}
+
+stock CarShowroom:UpdateText(car_showroom_index){
+	if(car_showroom_index < 0 || car_showroom_index >= CAR_SHOWROOMS_COUNT) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_lime"%s\n\
+		"cl_grey"Всего машин на продаже: "cl_white"%d шт",
+		car_showroom_info[car_showroom_index][cs_name], CarShowroom:GetOnSaleCount(car_showroom_index));
+
+	if(!IsValidDynamic3DTextLabel(car_showroom_info[car_showroom_index][cs_text])){
+		car_showroom_info[car_showroom_index][cs_text] = CreateDynamic3DTextLabel(big_string, -1, 
+			car_showroom_info[car_showroom_index][cs_pos][0], 
+			car_showroom_info[car_showroom_index][cs_pos][1], 
+			car_showroom_info[car_showroom_index][cs_pos][2], 
+			25.0, _, _, 1, 0, 0);
+	}
+	else UpdateDynamic3DTextLabelText(car_showroom_info[car_showroom_index][cs_text], -1, big_string);
 	big_string[0] = EOS;
 	return true;
 }

@@ -32,5 +32,7 @@ public BuyPlayerVehicle(playerid, vehicleid){
 
 	format(GetVehicleData(vehicleid, v_owner), MAX_PLAYER_NAME, "%s", GetPlayerData(playerid, p_name));
 	DestroyVehicleText3D(vehicleid);
+
+	CarShowroom:UpdateText(car_showroom_index);
 	return true;
 }
