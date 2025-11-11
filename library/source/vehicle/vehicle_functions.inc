@@ -160,6 +160,7 @@ stock SetVehicleStatus(vehicleid, status){
 	if(status < 0 || status >= VEHICLE_STATUS_MAX) return false;
 
 	SetVehicleData(vehicleid, v_status, status);
+	if(status == VEHICLE_STATUS_PLAYER) SetVehicleDoors(vehicleid, 1);
 	return true;
 }
 
@@ -199,6 +200,24 @@ stock DestroyVehicleText3D(vehicleid){
 	DestroyDynamic3DTextLabel(GetVehicleData(vehicleid, v_text));
 	GetVehicleData(vehicleid, v_text) = Text3D:-1;
 	return true;
+}
+
+stock GetNearestVehicleByRadius(playerid, Float:radius){
+
+	new 
+		Float:pos[3], 
+		Float:distance = radius * 10.0,
+		return_vehicleid = INVALID_VEHICLE_ID;
+
+	for(new vehicleid, j = GetVehiclePoolSize(); vehicleid <= j; vehicleid++){
+		GetVehiclePos(vehicleid, pos[0], pos[1], pos[2]);
+		if(!IsPlayerInRangeOfPoint(playerid, radius, pos[0], pos[1], pos[2])) continue;
+		if(distance < GetPlayerDistanceFromPoint(playerid, pos[0], pos[1], pos[2])) continue;
+
+		distance = GetPlayerDistanceFromPoint(playerid, pos[0], pos[1], pos[2]);
+		return_vehicleid = vehicleid;
+	}
+	return return_vehicleid;
 }
 
 stock CreatePlayerVehicle(playerid, id, Float:pos_x = 0.0, Float:pos_y = 0.0, Float:pos_z = 0.0, Float:pos_angle = 0.0, vw = 0, int = 0){

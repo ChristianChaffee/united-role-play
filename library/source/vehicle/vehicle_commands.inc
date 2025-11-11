@@ -33,3 +33,17 @@ CMD:park(playerid){
 	SendClientMessage(playerid, COLOR_LIME, "¬ы успешно припарковали транспорт.");
 	return true;
 }
+
+CMD:lock(playerid){
+	if(!player_logged[playerid]) return false;
+	new vehicleid = GetNearestVehicleByRadius(playerid, 10.0);
+	if(vehicleid == INVALID_VEHICLE_ID
+		|| GetVehicleData(vehicleid, v_owner) != GetPlayerData(playerid, p_id)
+		|| GetVehicleData(vehicleid, v_status) != VEHICLE_STATUS_PLAYER){
+
+		return SendErrorMessage(playerid, "¬ы должны находитьс€ около личного транспорта.");
+	}
+
+	ChangePlayerVehicleDoors(playerid, vehicleid);
+	return true;
+}
