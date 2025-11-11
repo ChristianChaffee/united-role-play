@@ -171,6 +171,20 @@ stock GetVehicleParamIndex(vehicleid){
 	return 0;
 }
 
+stock GetVehicleParamIndexByModel(modelid){
+	for(new i; i < VEHICLE_MODELS_COUNT; i++){
+		if(GetVehicleParamsData(i, vp_model_id) == modelid) return i;
+	}
+	return 0;
+}
+
+stock FindVehicleById(id){
+	for(new vehicleid, j = GetVehiclePoolSize(); vehicleid <= j; vehicleid++){
+		if(IsValidVehicle(vehicleid) && GetVehicleData(vehicleid, v_id) == id) return vehicleid;
+	}
+	return INVALID_VEHICLE_ID;
+}
+
 stock Text3D:CreateVehicle3DText(vehicleid, const text[], color, Float:drawdistance){
 	if(!IsValidVehicle(vehicleid)) return Text3D:-1;
 	

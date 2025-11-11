@@ -7,6 +7,20 @@ hook OnGameModeInit(){
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
+hook OnPlayerDisconnect(playerid, reason){
+	for(new i, j = GetVehiclePoolSize(); i <= j; i++){
+		if(GetVehicleData(i, v_owner) == GetPlayerData(playerid, p_id) && GetVehicleData(i, v_status) == VEHICLE_STATUS_PLAYER){
+			DestroyVehicle(i);
+		}
+	}
+	return Y_HOOKS_CONTINUE_RETURN_1;
+}
+
+hook OnVehicleDeath(vehicleid, killerid){
+	if(GetVehicleData(vehicleid, v_status) == VEHICLE_STATUS_PLAYER) DestroyVehicle(vehicleid);
+	return Y_HOOKS_CONTINUE_RETURN_1;
+}
+
 hook function CreateVehicle(vehicletype, Float:x, Float:y, Float:z, Float:rotation, color1, color2, respawn_delay, addsiren=0){
 	new vehicleid = continue(vehicletype, x, y, z, rotation, color1, color2, respawn_delay, addsiren);
 

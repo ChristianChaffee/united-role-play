@@ -300,7 +300,7 @@ enum vehicle_info_struct
 	v_status,
 	Text3D:v_text,
 
-	v_owner[MAX_PLAYER_NAME],
+	v_owner,
 }
 new vehicle_info[MAX_VEHICLES][vehicle_info_struct];
 new const vehicle_info_empty[vehicle_info_struct] = {
@@ -326,5 +326,5 @@ new const vehicle_info_empty[vehicle_info_struct] = {
 	VEHICLE_STATUS_NONE,
 	Text3D:-1,
 
-	""
+	0
 };
