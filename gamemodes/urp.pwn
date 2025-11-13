@@ -525,3 +525,4 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\source\mapping\gun_factory.inc"
 #include "..\library\source\mapping\licensing_center_ext.inc"
 #include "..\library\source\mapping\licensing_center_int.inc"
+#include "..\library\source\mapping\car_showroom_sf.inc"
