@@ -1,6 +1,7 @@
 #pragma warning disable 239
 
 #include <a_samp>
+#include <crashdetect>
 #include <a_mysql>
 #include <mdialog>
 #include <Pawn.Regex>
