@@ -94,6 +94,10 @@ stock CarShowroom:AddRandomVehicle(car_showroom_index){
 
 	if(random_pos_index == -1) return false;
 
+	while(car_showroom_info[car_showroom_index][cs_vehicle_possible_models][random_vehicle_index] == -1){
+		random_vehicle_index = random(CarShowroom:GetRandomModelsCount(car_showroom_index) - 1);
+	}
+
 	car_showroom_info[car_showroom_index][cs_vehicle_on_sale][random_pos_index] = CreateVehicle(car_showroom_info[car_showroom_index][cs_vehicle_possible_models][random_vehicle_index], 
 		car_showroom_veh_pos[car_showroom_index][random_pos_index][0], 
 		car_showroom_veh_pos[car_showroom_index][random_pos_index][1],
