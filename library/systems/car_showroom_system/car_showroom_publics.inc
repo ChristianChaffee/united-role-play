@@ -31,7 +31,7 @@ public BuyPlayerVehicle(playerid, vehicleid){
 	GetVehicleData(vehicleid, v_id) = cache_insert_id();
 	SetVehicleStatus(vehicleid, VEHICLE_STATUS_PLAYER);
 
-	format(GetVehicleData(vehicleid, v_owner), MAX_PLAYER_NAME, "%s", GetPlayerData(playerid, p_name));
+	SetVehicleData(vehicleid, v_owner, GetPlayerData(playerid, p_id));
 	DestroyVehicleText3D(vehicleid);
 
 	CarShowroom:UpdateText(car_showroom_index);
