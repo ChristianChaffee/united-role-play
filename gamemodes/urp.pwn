@@ -31,6 +31,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\vehicle\vehicle_dialogs.inc"
 
 #include "..\library\source\vehicle\vehicle_commands.inc"
+#include "..\library\source\player\player_commands.inc"
 //==============================================================================
 
 #include "..\library\systems\skin_select_system\skin_select_new.inc"
