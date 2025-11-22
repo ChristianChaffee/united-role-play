@@ -28,6 +28,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\player\player_hooks.inc"
 #include "..\library\source\vehicle\vehicle_hooks.inc"
 
+#include "..\library\source\player\player_dialogs.inc"
 #include "..\library\source\vehicle\vehicle_dialogs.inc"
 
 #include "..\library\source\vehicle\vehicle_commands.inc"
@@ -67,6 +68,8 @@ public OnGameModeInit(){
 
 	SetTimer("SecondTimer", 1000, true);
 	SetTimer("MinuteTimer", 60000, true);
+
+
 	return 1;
 }
 
@@ -528,3 +531,24 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 #include "..\library\source\mapping\licensing_center_ext.inc"
 #include "..\library\source\mapping\licensing_center_int.inc"
 #include "..\library\source\mapping\car_showroom_sf.inc"
+
+//=============================================================== ДРУГИЕ ФУНКЦИИ
+stock ShowStats(playerid, forplayerid){
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"ID аккаунта: "cl_white"%d\n\
+		"cl_blue"Ник-нейм: "cl_white"%s "cl_grey"[%d]\n\
+		"cl_blue"Игровой уровень: "cl_white"%d "cl_grey"[%d/%d exp]\n\n\
+		"cl_blue"Наличиные денежные средства: "cl_white"%d$\n\
+		"cl_blue"Денежные средства на счету в банке: "cl_white"%d$",
+		GetPlayerData(playerid, p_id), GetPlayerData(playerid, p_name), playerid,
+		GetPlayerData(playerid, p_level), GetPlayerData(playerid, p_exp),
+		GetExpToNextLevel(GetPlayerData(playerid, p_level) + 1),
+		GetPlayerData(playerid, p_money), GetPlayerBankCardData(playerid, pbc_balance));
+
+	Dialog_Open(forplayerid, Dialog:D_NULL, DIALOG_STYLE_MSGBOX,
+		"Статистика персонажа", big_string,
+		"Закрыть", "");
+	big_string[0] = EOS;
+	return true;
+}

@@ -256,3 +256,45 @@ stock GetExpToNextLevel(level){
 }
 
 stock KickPlayer(playerid, time_ms = 50) { SetTimerEx("KickPlayerPublic", time_ms, false, "i", playerid); }
+
+stock ShowMainMenu(playerid){
+	Dialog_Open(playerid, Dialog:D_MAIN_MENU, DIALOG_STYLE_LIST,
+		"Главное меню",
+		""cl_blue"1. "cl_white"Статистика персонажа\n\
+		"cl_blue"2. "cl_white"Помощь по серверу\n\
+		"cl_blue"3. "cl_white"Связь с администрацией\n\
+		"cl_blue"4. "cl_white"Настройки\n\
+		"cl_blue"5. "cl_white"Донат-услуги",
+		"Выбрать", "Закрыть");
+	return true;
+}
+
+stock ShowHelpMenu(playerid){
+	Dialog_Open(playerid, Dialog:D_HELP_MENU, DIALOG_STYLE_LIST,
+		"Главное меню",
+		""cl_blue"1. "cl_white"Общие команды\n\
+		"cl_blue"2. "cl_white"Команды для транспорта",
+		"Выбрать", "Назад");
+	return true;
+}
+
+stock ShowHelp(playerid, commands_type){
+	if(commands_type < 0 || commands_type >= COMMAND_TYPE_MAX) return false;
+
+	big_string[0] = EOS;
+	for(new i; i < sizeof(command_info); i++){
+		if(command_info[i][ci_type] != commands_type) continue;
+
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%s "cl_grey"- "cl_white"%s",
+			big_string, command_info[i][ci_command], command_info[i][ci_description]);
+	}
+
+	Dialog_Open(playerid, Dialog:D_HELP, DIALOG_STYLE_MSGBOX,
+		"Помощь по командам", big_string,
+		"Назад", "");
+
+	big_string[0] = EOS;
+	return true;
+}
