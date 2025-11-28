@@ -1,0 +1,89 @@
+
+forward LoadBusinesses();
+public LoadBusinesses(){
+	new rows,
+		tick_time = GetTickCount();
+
+	cache_get_row_count(rows);
+
+	if(rows >= MAX_BUSINESS){
+		printf("[LoadBusinesses - ERROR]: Количество записей в базе данных превышает размер массива (%d >= %d)", rows, MAX_BUSINESS);
+		return false;
+	}
+
+	for(new i; i < rows; i++){
+		cache_get_value_name_int(i, "id", GetBusinessData(i, b_id));
+		cache_get_value_name_int(i, "type", GetBusinessData(i, b_type));
+		cache_get_value_name(i, "name", GetBusinessData(i, b_name));
+		cache_get_value_name_int(i, "owner_id", GetBusinessData(i, b_owner_id));
+
+		cache_get_value_name_float(i, "pos_x", GetBusinessData(i, b_pos_x));
+		cache_get_value_name_float(i, "pos_y", GetBusinessData(i, b_pos_y));
+		cache_get_value_name_float(i, "pos_z", GetBusinessData(i, b_pos_z));
+		cache_get_value_name_int(i, "vw", GetBusinessData(i, b_vw));
+		cache_get_value_name_int(i, "int", GetBusinessData(i, b_int));
+
+		if(GetBusinessData(i, b_type) >= BUSINESS_TYPES_COUNT){
+			printf("[LoadBusinesses - WARNING]: Тип бизнеса (ID: %d, type: %d) превышает максимальное количество типов бизнеса (%d >= %d)", 
+				GetBusinessData(i, b_id), GetBusinessData(i, b_type),
+				GetBusinessData(i, b_type), BUSINESS_TYPES_COUNT);
+			continue;
+		}
+
+		//-------------------
+		
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			""cl_lime"[%s]\n"cl_white"%s\n"cl_grey"'Left ALT'",
+			business_type_names[GetBusinessData(i, b_type)], GetBusinessData(i, b_name));
+
+		GetBusinessData(i, b_enter_text) = CreateDynamic3DTextLabel(small_string, -1, 
+			GetBusinessData(i, b_pos_x), GetBusinessData(i, b_pos_y), GetBusinessData(i, b_pos_z), 
+			15.0, _, _, 1, 
+			GetBusinessData(i, b_vw), GetBusinessData(i, b_int));
+		small_string[0] = EOS;
+
+		GetBusinessData(i, b_enter_pickup) = CreateDynamicPickup(BUSINESS_ENTER_PICKUP_MODEL_ID, 23, 
+			GetBusinessData(i, b_pos_x), GetBusinessData(i, b_pos_y), GetBusinessData(i, b_pos_z), 
+			GetBusinessData(i, b_vw), GetBusinessData(i, b_int));
+		
+		//-------------------
+
+		GetBusinessData(i, b_exit_text) = CreateDynamic3DTextLabel(""cl_white"Выход\n"cl_grey"'Left ALT'", -1, 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_exit_pos_x), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_exit_pos_y), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_exit_pos_z), 
+			15.0, _, _, 1, 
+			GetBusinessData(i, b_id), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_int));
+
+		GetBusinessData(i, b_exit_pickup) = CreateDynamicPickup(BUSINESS_ENTER_PICKUP_MODEL_ID, 23, 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_exit_pos_x), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_exit_pos_y), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_exit_pos_z), 
+			GetBusinessData(i, b_id), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_int));
+		
+		//-------------------
+
+		GetBusinessData(i, b_cashbox_text) = CreateDynamic3DTextLabel(GetBusinessInteriorData(GetBusinessData(i, b_type), bi_cashbox_text), -1, 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_cashbox_pos_x), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_cashbox_pos_y), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_cashbox_pos_z), 
+			15.0, _, _, 1, 
+			GetBusinessData(i, b_id), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_int));
+
+		GetBusinessData(i, b_cashbox_pickup) = CreateDynamicPickup(GetBusinessInteriorData(GetBusinessData(i, b_type), bi_cashbox_pickup_model_id), 23, 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_cashbox_pos_x), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_cashbox_pos_y), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_cashbox_pos_z), 
+			GetBusinessData(i, b_id), 
+			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_int));
+
+		//-------------------
+	}
+
+	printf("[LoadBusinesses]: Бизнесы загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+	return true;
+}
