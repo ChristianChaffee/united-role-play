@@ -59,6 +59,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\car_showroom_system\car_showroom_new.inc"
 #include "..\library\systems\parking_fine_system\parking_fine_new.inc"
 #include "..\library\systems\report_system\report_system_new.inc"
+#include "..\library\systems\business_system\business_new.inc"
 
 public OnGameModeInit(){
 	EnableStuntBonusForAll(false);
@@ -470,6 +471,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\car_showroom_system\car_showroom_publics.inc"
 #include "..\library\systems\parking_fine_system\parking_fine_publics.inc"
 #include "..\library\systems\report_system\report_system_publics.inc"
+#include "..\library\systems\business_system\business_publics.inc"
 
 #include "..\library\systems\registration_system\registration_dialogs.inc"
 #include "..\library\systems\bank_system\bank_system_dialogs.inc"
@@ -485,6 +487,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\car_showroom_system\car_showroom_dialogs.inc"
 #include "..\library\systems\parking_fine_system\parking_fine_dialogs.inc"
 #include "..\library\systems\report_system\report_system_dialogs.inc"
+#include "..\library\systems\business_system\business_dialogs.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_functions.inc"
 #include "..\library\systems\registration_system\registration_functions.inc"
@@ -507,6 +510,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\player_needs_system\player_needs_functions.inc"
 #include "..\library\systems\car_showroom_system\car_showroom_functions.inc"
 #include "..\library\systems\report_system\report_system_functions.inc"
+#include "..\library\systems\business_system\business_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -529,11 +533,13 @@ stock OnMySQLConnect(){
 #include "..\library\systems\car_showroom_system\car_showroom_hooks.inc"
 #include "..\library\systems\parking_fine_system\parking_fine_hooks.inc"
 #include "..\library\systems\report_system\report_system_hooks.inc"
+#include "..\library\systems\business_system\business_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 #include "..\library\systems\administration_system\administration_system_commands.inc"
 #include "..\library\systems\player_needs_system\player_needs_commands.inc"
 #include "..\library\systems\report_system\report_system_commands.inc"
+#include "..\library\systems\business_system\business_commands.inc"
 
 //==============================================================================
 #include "..\library\source\mapping\spawn.inc"
