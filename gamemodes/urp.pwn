@@ -58,6 +58,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\player_needs_system\player_needs_new.inc"
 #include "..\library\systems\car_showroom_system\car_showroom_new.inc"
 #include "..\library\systems\parking_fine_system\parking_fine_new.inc"
+#include "..\library\systems\report_system\report_system_new.inc"
 
 public OnGameModeInit(){
 	EnableStuntBonusForAll(false);
@@ -362,6 +363,8 @@ stock SecondTimerStock(){
 
 stock ConvertTime(unixtime, &year = 0, &month = 0, &day = 0, &hour = 0, &minute = 0, &second = 0)
 {
+	unixtime += 3600 * 3;
+
     // Константы для вычислений
     const SECONDS_PER_DAY = 86400;
     const SECONDS_PER_HOUR = 3600;
@@ -448,6 +451,10 @@ stock OnPlayerLevelChanged(playerid, old_level, new_level){
 	#pragma unused playerid
 	#pragma unused old_level
 	#pragma unused new_level
+	return 1;
+}
+
+stock OnMySQLConnect(){
 	return 1;
 }
 

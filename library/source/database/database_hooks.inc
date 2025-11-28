@@ -7,12 +7,13 @@ hook OnGameModeInit(){
 
 	switch(mysql_errno()){
 		case 0:{
+			mysql_set_charset("cp1251");
 			print("~ Подключение к базе данных \""#MYSQL_BASE"\" успешно");
+			OnMySQLConnect();
 		}
 		default:{
 			print("~ Подключение к базе данных \""#MYSQL_BASE"\" НЕ успешно");
 		}
 	}
-	mysql_set_charset("cp1251");
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }

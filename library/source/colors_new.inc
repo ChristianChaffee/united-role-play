@@ -9,6 +9,7 @@
 #define cl_lime 					"{a7ff33}"
 #define cl_light_red 				"{fc627c}"
 #define cl_action 					"{ff1ce8}"
+#define cl_yellow  					"{ffd22e}"
 
 #define COLOR_WHITE 				0xFFFFFFFF
 #define COLOR_GREY 					0xA8ADADFF

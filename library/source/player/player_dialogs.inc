@@ -4,6 +4,7 @@ DialogResponse:D_MAIN_MENU(playerid, response, listitem, inputtext[]){
 		switch(listitem){
 			case 0: ShowStats(playerid, playerid);
 			case 1: ShowHelpMenu(playerid);
+			case 2: callcmd::rep(playerid);
 		}
 	}
 	return true;

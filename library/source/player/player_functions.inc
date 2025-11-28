@@ -298,3 +298,10 @@ stock ShowHelp(playerid, commands_type){
 	big_string[0] = EOS;
 	return true;
 }
+
+stock GetPlayerId(const name[]){
+	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
+		if(!strcmp(name, GetPlayerData(i, p_name))) return i;
+	}
+	return INVALID_PLAYER_ID;
+}
