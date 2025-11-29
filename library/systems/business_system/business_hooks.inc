@@ -19,8 +19,29 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 					GetBusinessInteriorData(GetBusinessData(i, b_type), bi_int));
 				SetPlayerVirtualWorld(playerid,
 					GetBusinessData(i, b_id));
-				break;
+				SetCameraBehindPlayer(playerid);
+				return Y_HOOKS_CONTINUE_RETURN_1;
 			}
+		}
+
+		for(new i, business_index; i < BUSINESS_TYPES_COUNT; i++){
+			if(!IsPlayerInRangeOfPoint(playerid, 2.0, GetBusinessInteriorData(i, bi_exit_pos_x), GetBusinessInteriorData(i, bi_exit_pos_y), GetBusinessInteriorData(i, bi_exit_pos_z))) continue;
+			if(GetPlayerInterior(playerid) != GetBusinessInteriorData(i, bi_int)) continue;
+
+			business_index = Business:GetBusinessIndexByVW(GetPlayerVirtualWorld(playerid));
+			if(business_index == -1) continue;
+
+			SetPlayerPos(playerid,
+				GetBusinessData(business_index, b_pos_x),
+				GetBusinessData(business_index, b_pos_y),
+				GetBusinessData(business_index, b_pos_z));
+			SetPlayerVirtualWorld(playerid,
+				GetBusinessData(business_index, b_vw));
+			SetPlayerInterior(playerid,
+				GetBusinessData(business_index, b_int));
+			SetCameraBehindPlayer(playerid);
+
+			return Y_HOOKS_CONTINUE_RETURN_1;
 		}
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
