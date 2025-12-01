@@ -11,7 +11,7 @@ public LoadBusinesses(){
 		return false;
 	}
 
-	for(new i; i < rows; i++){
+	for(new i, temp_string[256]; i < rows; i++){
 		cache_get_value_name_int(i, "id", GetBusinessData(i, b_id));
 		cache_get_value_name_int(i, "type", GetBusinessData(i, b_type));
 		cache_get_value_name(i, "name", GetBusinessData(i, b_name));
@@ -22,6 +22,12 @@ public LoadBusinesses(){
 		cache_get_value_name_float(i, "pos_z", GetBusinessData(i, b_pos_z));
 		cache_get_value_name_int(i, "vw", GetBusinessData(i, b_vw));
 		cache_get_value_name_int(i, "int", GetBusinessData(i, b_int));
+
+		cache_get_value_name_int(i, "products", GetBusinessData(i, b_products));
+		cache_get_value_name_int(i, "balance", GetBusinessData(i, b_balance));
+
+		cache_get_value_name(i, "products_prices", temp_string);
+		sscanf(temp_string, "p<,>a<i>["#MAX_BUSINESS_MENU_POSITIONS"]", business_info[i][b_products_prices]);
 
 		if(GetBusinessData(i, b_type) >= BUSINESS_TYPES_COUNT){
 			printf("[LoadBusinesses - WARNING]: Тип бизнеса (ID: %d, type: %d) превышает максимальное количество типов бизнеса (%d >= %d)", 

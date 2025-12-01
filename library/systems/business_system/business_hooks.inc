@@ -43,6 +43,17 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 
 			return Y_HOOKS_CONTINUE_RETURN_1;
 		}
+
+		for(new i, business_index; i < BUSINESS_TYPES_COUNT; i++){
+			if(!IsPlayerInRangeOfPoint(playerid, 2.0, GetBusinessInteriorData(i, bi_cashbox_pos_x), GetBusinessInteriorData(i, bi_cashbox_pos_y), GetBusinessInteriorData(i, bi_cashbox_pos_z))) continue;
+			if(GetPlayerInterior(playerid) != GetBusinessInteriorData(i, bi_int)) continue;
+
+			business_index = Business:GetBusinessIndexByVW(GetPlayerVirtualWorld(playerid));
+			if(business_index == -1) continue;
+
+			Business:ShowMenu(playerid, business_index);
+			return Y_HOOKS_CONTINUE_RETURN_1;
+		}
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }

@@ -8,9 +8,13 @@
 
 #define GetBusinessInteriorData(%0,%1) 		business_interior_info[%0][%1]
 
+#define GetBusinessMenuData(%0,%1,%2)		business_menu_info[%0][%1][%2]
+
 //==============================================================================
 #define MAX_BUSINESS 						1000
 #define BUSINESS_ENTER_PICKUP_MODEL_ID		19132
+#define MAX_BUSINESS_MENU_POSITIONS 		10
+#define PLAYER_PAYMENT_METHOD_LISTITEM 		777
 
 //==============================================================================
 enum
@@ -23,6 +27,30 @@ enum
 new const business_type_names[BUSINESS_TYPES_COUNT][32] = {
 	"None",
 	"Пиццерия"
+};
+//==============================================================================
+enum business_menu_info_struct
+{
+	bm_name[128],
+	bm_item_id,
+	bm_products_price
+}
+new const business_menu_info[BUSINESS_TYPES_COUNT][MAX_BUSINESS_MENU_POSITIONS][business_menu_info_struct] = {
+	{
+		{"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}
+	},
+	{ /* Пиццерия */
+		{"Пицца \"Маргарита\"", ITEM_PIZZA_ID, 2},
+		{"Пицца \"Пепперони\"", ITEM_PIZZA_ID, 2},
+		{"Пицца \"Гавайская\"", ITEM_PIZZA_ID, 2},
+		{"Пицца \"Четыре сыра\"", ITEM_PIZZA_ID, 2},
+		{"Пицца \"Карбонара\"", ITEM_PIZZA_ID, 2},
+		{"Пицца \"Мясная\"", ITEM_PIZZA_ID, 2},
+		{"Пицца \"Дьябло\"", ITEM_PIZZA_ID, 2},
+		{"Безалкогольный газированный напиток \"Sprunk\"", ITEM_SPRUNK_ID, 1},
+		{"Безалкогольный газированный напиток \"eCola\"", ITEM_ECOLA_ID, 1},
+		{"Кофе", ITEM_COFFEE_ID, 1}
+	}
 };
 
 //==============================================================================
@@ -63,6 +91,9 @@ enum business_info_struct
 	Float:b_pos_z,
 	b_vw,
 	b_int,
+	b_products_prices[MAX_BUSINESS_MENU_POSITIONS],
+	b_products,
+	b_balance,
 
 	Text3D:b_enter_text,
 	b_enter_pickup,

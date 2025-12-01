@@ -21,9 +21,11 @@
 #define ITEM_WHISKEY_ID 						20
 #define ITEM_COGNAC_ID 							21
 #define ITEM_VODKA_ID 							22
+#define ITEM_SPRUNK_ID 							23
+#define ITEM_ECOLA_ID 							24
 
 
-#define MAX_INVENTORY_ITEMS 					22
+#define MAX_INVENTORY_ITEMS 					24
 #define MAX_INVENTORY_SLOTS  					75
 
 #define GetInventoryItemData(%0,%1) 			inventory_item_info[%0][%1]
