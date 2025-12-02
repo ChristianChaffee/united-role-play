@@ -1,4 +1,51 @@
 
+forward LoadVehicles();
+public LoadVehicles(){
+	new rows,
+		tick_time = GetTickCount();
+
+	cache_get_row_count(rows);
+
+	if(rows >= MAX_VEHICLES){
+		printf("[LoadVehicles - ERROR]: Количество записей в базе данных превышает размер массива (%d >= %d)", rows, MAX_VEHICLES);
+		return false;
+	}
+
+	for(new i, temp_vehicle_data[vehicle_info_struct], vehicleid; i < rows; i++){
+		cache_get_value_name_int(i, "id", temp_vehicle_data[v_id]);
+		cache_get_value_name_int(i, "model_id", temp_vehicle_data[v_model_id]);
+		cache_get_value_name_int(i, "status", temp_vehicle_data[v_status]);
+		cache_get_value_name_int(i, "owner", temp_vehicle_data[v_owner]);
+		cache_get_value_name_int(i, "price", temp_vehicle_data[v_price]);
+		cache_get_value_name_int(i, "color_1", temp_vehicle_data[v_color_1]);
+		cache_get_value_name_int(i, "color_2", temp_vehicle_data[v_color_2]);
+
+		cache_get_value_name_float(i, "pos_x", temp_vehicle_data[v_pos_spawn_x]);
+		cache_get_value_name_float(i, "pos_y", temp_vehicle_data[v_pos_spawn_y]);
+		cache_get_value_name_float(i, "pos_z", temp_vehicle_data[v_pos_spawn_z]);
+		cache_get_value_name_float(i, "pos_angle", temp_vehicle_data[v_pos_spawn_angle]);
+		cache_get_value_name_int(i, "pos_vw", temp_vehicle_data[v_vw]);
+		cache_get_value_name_int(i, "pos_int", temp_vehicle_data[v_int]);
+
+		cache_get_value_name_float(i, "fuel", temp_vehicle_data[v_fuel]);
+
+		vehicleid = CreateVehicle(temp_vehicle_data[v_model_id], 
+			temp_vehicle_data[v_pos_spawn_x], 
+			temp_vehicle_data[v_pos_spawn_y], 
+			temp_vehicle_data[v_pos_spawn_z], 
+			temp_vehicle_data[v_pos_spawn_angle], 
+			temp_vehicle_data[v_color_1], temp_vehicle_data[v_color_2], 1000);
+
+		SetVehicleVirtualWorld(vehicleid, temp_vehicle_data[v_vw]);
+		LinkVehicleToInterior(vehicleid, temp_vehicle_data[v_int]);
+
+		vehicle_info[vehicleid] = temp_vehicle_data;
+	}
+
+	printf("[LoadVehicles]: Транспорт загружен <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+	return true;
+}
+
 forward VehicleFuelTimer();
 public VehicleFuelTimer(){
 	for(new i, j = GetVehiclePoolSize(); i <= j; i++){

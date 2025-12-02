@@ -90,3 +90,12 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
+
+hook stock OnMySQLConnect(){
+	static const fmt_query[] = "SELECT * FROM vehicles WHERE status != %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query, 
+		VEHICLE_STATUS_PLAYER);
+	mysql_tquery(mysql, query, "LoadVehicles");
+	return continue();
+}
