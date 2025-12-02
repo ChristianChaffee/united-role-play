@@ -146,3 +146,29 @@ DialogResponse:D_BUSINESS_INFO(playerid, response, listitem, inputtext[]){
 	mysql_tquery(mysql, query);
 	return true;
 }
+
+DialogResponse:D_BUSINESS_PLAYER_SELECT(playerid, response, listitem, inputtext[]){
+	if(!response) return false;
+
+	SetPVarInt(playerid, "Business_Index", player_listitems[playerid][listitem]);
+	Business:ShowBusinessPanel(playerid, GetPVarInt(playerid, "Business_Index"));
+	return true;
+}
+
+DialogResponse:D_BUSINESS_PANEL(playerid, response, listitem, inputtext[]){
+	if(!response){
+		DeletePVar(playerid, "Business_Index");
+		return false;
+	}
+
+	switch(listitem){
+		case 0:{ // - Информация
+
+		}
+		case 1:{ // - Заказать продукты
+
+		}
+	}
+
+	return true;
+}

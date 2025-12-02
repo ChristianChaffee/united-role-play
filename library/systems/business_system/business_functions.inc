@@ -151,6 +151,52 @@ stock Business:ShowInfo(playerid, business_index){
 	return true;
 }
 
+stock Business:ShowPlayerSelectBusiness(playerid){
+	new counter;
+
+	big_string[0] = EOS;
+	for(new i; i < MAX_BUSINESS; i++){
+		if(!GetBusinessData(i, b_id)) continue;
+		if(GetBusinessData(i, b_owner_id) != GetPlayerData(playerid, p_id)) continue;
+
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%d. "cl_white"%s",
+			big_string, counter + 1, GetBusinessData(i, b_name));
+
+		player_listitems[playerid][counter] = i;
+		counter++;
+	}
+
+	if(!counter){
+		SendErrorMessage(playerid, "У Вас нет бизнесов во владении.");
+		return false;
+	}
+
+	Dialog_Open(playerid, Dialog:D_BUSINESS_PLAYER_SELECT, DIALOG_STYLE_LIST,
+		"Выберите бизнес", big_string,
+		"Выбрать", "Закрыть");
+
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Business:ShowBusinessPanel(playerid, business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"1. "cl_white"Информация о бизнесе\n\
+		"cl_blue"2. "cl_white"Заказать продукты "cl_grey"[%d шт]",
+		GetBusinessData(business_index, b_products));
+
+	Dialog_Open(playerid, Dialog:D_BUSINESS_PANEL, DIALOG_STYLE_LIST,
+		GetBusinessData(business_index, b_name), big_string,
+		"Далее", "Закрыть");
+	big_string[0] = EOS;
+	return true;
+}
+
 //==============================================================================
 stock Business:GetBusinessIndexByVW(vw){
 	for(new i; i < MAX_BUSINESS; i++){
