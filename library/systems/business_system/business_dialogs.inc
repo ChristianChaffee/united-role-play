@@ -79,3 +79,70 @@ DialogResponse:D_BUSINESS_MENU(playerid, response, listitem, inputtext[]){
 	}
 	return true;
 }
+
+DialogResponse:D_BUSINESS_INFO_MENU(playerid, response, listitem, inputtext[]){
+	if(!response) return false;
+
+	switch(listitem){
+		case 0: Business:ShowInfoAllBusinesses(playerid);
+		case 1: Business:ShowInfoFreeBusinesses(playerid);
+	}
+	return true;
+}
+
+DialogResponse:D_BUSINESS_INFO_LIST(playerid, response, listitem, inputtext[]){
+	if(!response){
+		Business:ShowInfoMenu(playerid);
+		return true;
+	}
+
+	SetPVarInt(playerid, "Business_Index", player_listitems[playerid][listitem]);
+	Business:ShowInfo(playerid, GetPVarInt(playerid, "Business_Index"));
+	return true;
+}
+
+DialogResponse:D_BUSINESS_INFO(playerid, response, listitem, inputtext[]){
+	if(!response){
+		DeletePVar(playerid, "Business_Index");
+		Business:ShowInfoMenu(playerid);
+		return false;
+	}
+
+	new business_index = GetPVarInt(playerid, "Business_Index");
+	DeletePVar(playerid, "Business_Index");
+
+	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
+	if(GetBusinessData(business_index, b_owner_id) > 0){
+		SendErrorMessage(playerid, "У данного бизнеса уже есть владелец.");
+		Business:ShowInfoMenu(playerid);
+		return false;
+	}
+	if(GetPlayerData(playerid, p_money) < GetBusinessData(business_index, b_price) && GetPlayerBankCardData(playerid, pbc_balance) < GetBusinessData(business_index, b_price)){
+		SendErrorMessage(playerid, "У Вас недостаточно средств для покупки данного бизнеса.");
+		Business:ShowInfoMenu(playerid);
+		return false;
+	}
+
+	if(GetPlayerData(playerid, p_money) < GetBusinessData(business_index, b_price)){
+		Bank:GiveMoney(playerid, -GetBusinessData(business_index, b_price));
+	}
+	else GiveMoney(playerid, -GetBusinessData(business_index, b_price));
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы приобрели бизнес "cl_white"%s "cl_lime"за %d$.",
+		GetBusinessData(business_index, b_name), GetBusinessData(business_index, b_price));
+	SendClientMessage(playerid, COLOR_LIME, small_string);
+	small_string[0] = EOS;
+
+	SendClientMessage(playerid, COLOR_GREY, "- Чтобы открыть панель управления бизнесом введите '/bpanel'");
+
+	SetBusinessData(business_index, b_owner_id, GetPlayerData(playerid, p_id));
+
+	static const fmt_query[] = "UPDATE business SET owner_id = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetBusinessData(business_index, b_owner_id), GetBusinessData(business_index, b_id));
+	mysql_tquery(mysql, query);
+	return true;
+}

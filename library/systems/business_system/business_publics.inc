@@ -25,6 +25,7 @@ public LoadBusinesses(){
 
 		cache_get_value_name_int(i, "products", GetBusinessData(i, b_products));
 		cache_get_value_name_int(i, "balance", GetBusinessData(i, b_balance));
+		cache_get_value_name_int(i, "price", GetBusinessData(i, b_price));
 
 		cache_get_value_name(i, "products_prices", temp_string);
 		sscanf(temp_string, "p<,>a<i>["#MAX_BUSINESS_MENU_POSITIONS"]", business_info[i][b_products_prices]);

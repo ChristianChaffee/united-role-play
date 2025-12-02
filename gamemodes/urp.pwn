@@ -570,3 +570,14 @@ stock ShowStats(playerid, forplayerid){
 	big_string[0] = EOS;
 	return true;
 }
+
+stock GetNameBySqlID(id){
+	static const fmt_query[] = "SELECT name FROM accounts WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query, id);
+	mysql_query(mysql, query);
+
+	new owner_name[MAX_PLAYER_NAME];
+	cache_get_value_name(0, "name", owner_name);
+	return owner_name;
+}

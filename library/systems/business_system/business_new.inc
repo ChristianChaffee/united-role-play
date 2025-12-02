@@ -1,4 +1,10 @@
 
+/*
+Используемые PVar`ы:
+	Business_Index
+
+*/
+
 #define Business:%0(%1) 					Bsnss_%0(%1)
 
 //==============================================================================
@@ -15,6 +21,10 @@
 #define BUSINESS_ENTER_PICKUP_MODEL_ID		19132
 #define MAX_BUSINESS_MENU_POSITIONS 		10
 #define PLAYER_PAYMENT_METHOD_LISTITEM 		777
+
+#define BUSINESS_INFO_PICKUP_POS 			1157.83, -1751.56, 13.58
+#define BUSINESS_INFO_PICKUP_VW 			0
+#define BUSINESS_INFO_PICKUP_INT 			0
 
 //==============================================================================
 enum
@@ -94,6 +104,7 @@ enum business_info_struct
 	b_products_prices[MAX_BUSINESS_MENU_POSITIONS],
 	b_products,
 	b_balance,
+	b_price,
 
 	Text3D:b_enter_text,
 	b_enter_pickup,
