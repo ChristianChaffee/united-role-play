@@ -10,6 +10,7 @@
 #define cl_light_red 				"{fc627c}"
 #define cl_action 					"{ff1ce8}"
 #define cl_yellow  					"{ffd22e}"
+#define cl_brown 					"{c9632c}"
 
 #define COLOR_WHITE 				0xFFFFFFFF
 #define COLOR_GREY 					0xA8ADADFF
@@ -22,3 +23,4 @@
 #define COLOR_LIME 					0xA7FF33FF
 #define COLOR_LIGHT_RED 			0xFC627CFF
 #define COLOR_ACTION 				0xFF1CE8FF
+#define COLOR_BROWN 				0xC9632CFF

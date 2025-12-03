@@ -2,7 +2,8 @@
 /*
 Используемые PVar`ы:
 
-	
+	JobProductsDelivery_RentVehicleID
+	JobProductsDelivery_ProductsCount
 
 */
 
@@ -10,6 +11,9 @@
 #define JOB_PD_MIN_PRICE 				1
 #define JOB_PD_MAX_PRICE				5
 #define JOB_PD_CHANGE_PRICE_TIME 		600
+#define JOB_PD_ACTOR_ID 				14
+#define JOB_PD_CAR_RENT_PRICE 			10
+#define JOB_PD_MAX_TRUCK_PRODUCTS 		1000
 
 #define JOB_PD_LOAD_POS 				-23.04, -272.87, 5.43
 

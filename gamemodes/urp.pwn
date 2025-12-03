@@ -544,6 +544,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\player_needs_system\player_needs_commands.inc"
 #include "..\library\systems\report_system\report_system_commands.inc"
 #include "..\library\systems\business_system\business_commands.inc"
+#include "..\library\systems\job_system\job_products_delivery\job_products_delivery_commands.inc"
 
 //==============================================================================
 #include "..\library\source\mapping\spawn.inc"
