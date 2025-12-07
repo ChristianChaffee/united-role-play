@@ -166,7 +166,13 @@ DialogResponse:D_BUSINESS_PANEL(playerid, response, listitem, inputtext[]){
 
 		}
 		case 1:{ // - Заказать продукты
-
+			if(Job:IsBusinessHaveDeliveryOrder(GetPVarInt(playerid, "Business_Index"))){
+				SendErrorMessage(playerid, "У Вашего бизнеса уже есть активный заказ на доставку продуктов.");
+				Business:ShowBusinessPanel(playerid, GetPVarInt(playerid, "Business_Index"));
+				return false;
+			}
+			
+			Job:ShowBusinessEnterDelivery(playerid);
 		}
 	}
 

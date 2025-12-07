@@ -111,7 +111,8 @@ stock GPSDisable(playerid){
 }
 
 stock GPSIsBlocked(playerid){
-	if(GetPlayerData(playerid, p_job) > 0) return true;
+	if(GetPlayerData(playerid, p_job) > 0 && GetPlayerData(playerid, p_job) != 6) return true;
+	if(GetPlayerData(playerid, p_job) == 6 && GetPVarType(playerid, "JobProductsDelivery_OrderIndex")) return true;
 	return false;
 }
 

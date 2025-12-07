@@ -292,9 +292,19 @@ stock OnPlayerAccountLoaded(playerid)
 }
 
 public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ){
-	SetPlayerPos(playerid, fX, fY, fZ);
-	SetPlayerInterior(playerid, 0);
-	SetPlayerVirtualWorld(playerid, 0);
+	if(!IsPlayerInAnyVehicle(playerid)){
+		SetPlayerPos(playerid, fX, fY, fZ);
+		SetPlayerInterior(playerid, 0);
+		SetPlayerVirtualWorld(playerid, 0);
+	}
+	else{
+		SetVehiclePos(GetPlayerVehicleID(playerid), fX, fY, fZ);
+		LinkVehicleToInterior(GetPlayerVehicleID(playerid), 0);
+		SetVehicleVirtualWorld(GetPlayerVehicleID(playerid), 0);
+
+		SetPlayerInterior(playerid, 0);
+		SetPlayerVirtualWorld(playerid, 0);
+	}	
 	return 1;
 }
 
