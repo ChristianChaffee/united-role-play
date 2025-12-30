@@ -253,3 +253,29 @@ CMD:payday(playerid){
 	PayDay(global_hour);
 	return true;
 }
+
+CMD:gotobiz(playerid, params[]){
+	if(sscanf(params, "i", params[0]) || !params[0]) return SendErrorMessage(playerid, "Используйте '/gotobiz [ID бизнеса]'");
+	
+	new business_index = -1;
+	for(new i; i < MAX_BUSINESS; i++){
+		if(GetBusinessData(i, b_id) != params[0]) continue;
+		business_index = i;
+		break;
+	}
+
+	if(business_index == -1) return SendErrorMessage(playerid, "Данного бизнеса не существует.");
+
+	if(IsPlayerInAnyVehicle(playerid)){
+		SetVehiclePos(GetPlayerVehicleID(playerid), GetBusinessData(business_index, b_pos_x), GetBusinessData(business_index, b_pos_y), GetBusinessData(business_index, b_pos_z));
+		SetVehicleVirtualWorld(GetPlayerVehicleID(playerid), GetBusinessData(business_index, b_vw));
+		LinkVehicleToInterior(GetPlayerVehicleID(playerid), GetBusinessData(business_index, b_int));
+	}
+	else{
+		SetPlayerPos(playerid, GetBusinessData(business_index, b_pos_x), GetBusinessData(business_index, b_pos_y), GetBusinessData(business_index, b_pos_z));
+	}
+
+	SetPlayerVirtualWorld(playerid, GetBusinessData(business_index, b_vw));
+	SetPlayerInterior(playerid, GetBusinessData(business_index, b_int));
+	return true;
+}
