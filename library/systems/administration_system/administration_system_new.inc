@@ -54,5 +54,6 @@ new const admin_command_info[][admin_command_info_struct] = {
 
 	{6, "agivemoney", "Выдать игроку игровую валюту ($)."},
 	{6, "giveinv", "Выдать предмет в инвентарь игроку."},
+	{6, "payday", "Внеплановый PayDay."},
 	{6, "gmx", "Произвести рестарт сервера через 5 секунд."}
 };

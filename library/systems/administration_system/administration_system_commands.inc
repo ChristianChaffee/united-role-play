@@ -247,3 +247,9 @@ CMD:gmx(playerid){
 	SetTimer("ServerRestartTimer", 5000, false);
 	return true;
 }
+
+CMD:payday(playerid){
+	gettime(global_hour);
+	PayDay(global_hour);
+	return true;
+}
