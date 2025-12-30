@@ -174,6 +174,9 @@ DialogResponse:D_BUSINESS_PANEL(playerid, response, listitem, inputtext[]){
 			
 			Job:ShowBusinessEnterDelivery(playerid);
 		}
+		case 2:{ // - Управление ценами
+			Business:ShowPricesList(playerid, GetPVarInt(playerid, "Business_Index"));
+		}
 	}
 
 	return true;
@@ -182,5 +185,64 @@ DialogResponse:D_BUSINESS_PANEL(playerid, response, listitem, inputtext[]){
 DialogResponse:D_BUSINESS_INFO_BPANEL(playerid, response, listitem, inputtext[]){
 	if(!GetPVarType(playerid, "Business_Index")) return false;
 	Business:ShowBusinessPanel(playerid, GetPVarInt(playerid, "Business_Index"));
+	return true;
+}
+
+DialogResponse:D_BUSINESS_PANEL_PRICES(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Business_Index")) return false;
+	if(!response){
+		Business:ShowBusinessPanel(playerid, GetPVarInt(playerid, "Business_Index"));
+		return false;
+	}
+
+	SetPVarInt(playerid, "Business_MenuPositionIndex", player_listitems[playerid][listitem]);
+	Business:ShowChangePrice(playerid, GetPVarInt(playerid, "Business_Index"), GetPVarInt(playerid, "Business_MenuPositionIndex"));
+	return true;
+}
+
+DialogResponse:D_BUSINESS_CHANGE_PRICE(playerid, response, listitem, inputtext[]){
+	if(!response){
+		DeletePVar(playerid, "Business_MenuPositionIndex");
+		return false;
+	}
+	if(strval(inputtext) < BUSINESS_MIN_PRODUCT_PRICE){
+		SendErrorMessage(playerid, "Цена должна быть от "#BUSINESS_MIN_PRODUCT_PRICE"$.");
+		Business:ShowChangePrice(playerid, GetPVarInt(playerid, "Business_Index"), GetPVarInt(playerid, "Business_MenuPositionIndex"));
+		return false;
+	}
+	if(strval(inputtext) > BUSINESS_MAX_PRODUCT_PRICE){
+		SendErrorMessage(playerid, "Цена должна быть до "#BUSINESS_MAX_PRODUCT_PRICE"$.");
+		Business:ShowChangePrice(playerid, GetPVarInt(playerid, "Business_Index"), GetPVarInt(playerid, "Business_MenuPositionIndex"));
+		return false;
+	}
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы изменили цену товара \"%s\" с %d$ на %d$.",
+		GetBusinessMenuData(GetBusinessData(GetPVarInt(playerid, "Business_Index"), b_type), GetPVarInt(playerid, "Business_MenuPositionIndex"), bm_name),
+		business_info[GetPVarInt(playerid, "Business_Index")][b_products_prices][GetPVarInt(playerid, "Business_MenuPositionIndex")],
+		strval(inputtext));
+	SendClientMessage(playerid, COLOR_GREEN, small_string);
+
+	business_info[GetPVarInt(playerid, "Business_Index")][b_products_prices][GetPVarInt(playerid, "Business_MenuPositionIndex")] = strval(inputtext);
+
+	small_string[0] = EOS;
+	for(new i; i < MAX_BUSINESS_MENU_POSITIONS; i++){
+		format(small_string, sizeof(small_string),
+			"%s%d%s",
+			small_string,
+			business_info[GetPVarInt(playerid, "Business_Index")][b_products_prices][i],
+			(i == MAX_BUSINESS_MENU_POSITIONS - 1) ? ("") : (", "));
+	}
+
+	static const fmt_query[] = "UPDATE business SET products_prices = '%s' WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + sizeof(small_string)) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		small_string, GetBusinessData(GetPVarInt(playerid, "Business_Index"), b_id));
+	mysql_tquery(mysql, query);
+	small_string[0] = EOS;
+
+	DeletePVar(playerid, "Business_Index");
+	DeletePVar(playerid, "Business_MenuPositionIndex");
 	return true;
 }

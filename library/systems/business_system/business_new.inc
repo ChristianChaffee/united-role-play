@@ -2,6 +2,7 @@
 /*
 Используемые PVar`ы:
 	Business_Index
+	Business_MenuPositionIndex
 
 */
 
@@ -28,6 +29,9 @@
 #define BUSINESS_INFO_PICKUP_POS 			1157.83, -1751.56, 13.58
 #define BUSINESS_INFO_PICKUP_VW 			0
 #define BUSINESS_INFO_PICKUP_INT 			0
+
+#define BUSINESS_MIN_PRODUCT_PRICE 			0
+#define BUSINESS_MAX_PRODUCT_PRICE 			100
 
 //==============================================================================
 enum

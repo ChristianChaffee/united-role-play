@@ -187,7 +187,8 @@ stock Business:ShowBusinessPanel(playerid, business_index){
 	big_string[0] = EOS;
 	format(big_string, sizeof(big_string),
 		""cl_blue"1. "cl_white"Информация о бизнесе\n\
-		"cl_blue"2. "cl_white"Заказать продукты "cl_grey"[%d шт]",
+		"cl_blue"2. "cl_white"Заказать продукты "cl_grey"[%d шт]\n\
+		"cl_blue"3. "cl_white"Управление ценами",
 		GetBusinessData(business_index, b_products));
 
 	Dialog_Open(playerid, Dialog:D_BUSINESS_PANEL, DIALOG_STYLE_LIST,
@@ -222,6 +223,73 @@ stock Business:ShowInfoBpanel(playerid, business_index){
 		GetBusinessData(business_index, b_name), big_string,
 		"Назад", "");
 
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Business:ShowPricesList(playerid, business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS){
+		DeletePVar(playerid, "Business_Index");
+		return false;
+	}
+
+	new count;
+	big_string[0] = EOS;
+
+	format(big_string, sizeof(big_string),
+		""cl_grey"Наименование позиции\t"cl_grey"Цена");
+
+	for(new i; i < MAX_BUSINESS_MENU_POSITIONS; i++){
+		if(!strcmp("-", GetBusinessMenuData(GetBusinessData(business_index, b_type), i, bm_name))) continue;
+
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%d. "cl_white"%s\t"cl_white"%d$",
+			big_string, count + 1, 
+			GetBusinessMenuData(GetBusinessData(business_index, b_type), i, bm_name),
+			business_info[business_index][b_products_prices][i]);
+
+		player_listitems[playerid][count] = i;
+		count++;
+	}
+
+	if(!count){
+		SendErrorMessage(playerid, "Произошла ошибка. Попробуйте позже.");
+		DeletePVar(playerid, "Business_Index");
+		return false;
+	}
+
+	Dialog_Open(playerid, Dialog:D_BUSINESS_PANEL_PRICES, DIALOG_STYLE_TABLIST_HEADERS,
+		GetBusinessData(business_index, b_name), big_string,
+		"Изменить", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Business:ShowChangePrice(playerid, business_index, menu_postition_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS){
+		DeletePVar(playerid, "Business_Index");
+		DeletePVar(playerid, "Business_MenuPositionIndex");
+		return false;
+	}
+	if(menu_postition_index < 0 || menu_postition_index >= MAX_BUSINESS_MENU_POSITIONS){
+		DeletePVar(playerid, "Business_Index");
+		DeletePVar(playerid, "Business_MenuPositionIndex");
+		return false;
+	}
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите новую цену для товара "cl_grey"\"%s\""cl_white".\n\
+		"cl_grey"Текущая цена: "cl_white"%d$.\n\
+		"cl_grey"Цена должна быть от %d$ до %d$.",
+		GetBusinessMenuData(GetBusinessData(business_index, b_type), menu_postition_index, bm_name),
+		business_info[business_index][b_products_prices][menu_postition_index],
+		BUSINESS_MIN_PRODUCT_PRICE, BUSINESS_MAX_PRODUCT_PRICE);
+
+	Dialog_Open(playerid, Dialog:D_BUSINESS_CHANGE_PRICE, DIALOG_STYLE_INPUT,
+		GetBusinessData(business_index, b_name), big_string,
+		"Изменить", "Назад");
 	big_string[0] = EOS;
 	return true;
 }
