@@ -23,7 +23,7 @@ stock Business:ShowMenu(playerid, business_index){
 				counter++;
 			}
 
-			player_listitems[playerid][counter + 1] = PLAYER_PAYMENT_METHOD_LISTITEM;
+			player_listitems[playerid][counter] = PLAYER_PAYMENT_METHOD_LISTITEM;
 
 			format(big_string, sizeof(big_string),
 				"%s\n\
