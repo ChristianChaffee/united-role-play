@@ -49,6 +49,7 @@ DialogResponse:D_BANK_MENU(playerid, response, listitem, inputtext[]){
 			Bank:ShowDepositMenu(playerid);
 			return true;
 		}
+		case 5: return Bank:ShowBusinessList(playerid);
 	}
 	return true;
 }
@@ -296,4 +297,113 @@ DialogResponse:D_BANK_RECOVERY_PASS(playerid, response, listitem, inputtext[]){
 		GetPlayerBankCardData(playerid, pbc_id));
 	mysql_tquery(mysql, query);
 	return true;
-} 
+}
+
+DialogResponse:D_BANK_SELECT_BUSINESS(playerid, response, listitem, inputtext[]){
+	if(!response){
+		Bank:ShowBankMenu(playerid);
+		return false;
+	}
+
+	SetPVarInt(playerid, "Bank_BusinessIndex", player_listitems[playerid][listitem]);
+	Bank:ShowBusinessMenu(playerid, player_listitems[playerid][listitem]);
+	return true;
+}
+
+DialogResponse:D_BANK_BUSINESS_MENU(playerid, response, listitem, inputtext[]){
+	if(!response){
+		DeletePVar(playerid, "Bank_BusinessIndex");
+		Bank:ShowBusinessList(playerid);
+		return false;
+	}
+
+	if(!GetPVarType(playerid, "Bank_BusinessIndex")) return SendErrorMessage(playerid, "Произошла ошибка. Попробуйте позже.");
+
+	switch(listitem){
+		case 0: return Bank:ShowBusinessMenu(playerid, GetPVarInt(playerid, "Bank_BusinessIndex"));
+		case 1: return Bank:ShowBusinessPut(playerid, GetPVarInt(playerid, "Bank_BusinessIndex"));
+		case 2: return Bank:ShowBusinessTake(playerid, GetPVarInt(playerid, "Bank_BusinessIndex"));
+	}
+
+	return true;
+}
+
+DialogResponse:D_BANK_BUSINESS_PUT(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Bank_BusinessIndex")) return SendErrorMessage(playerid, "Произошла ошибка. Попробуйте позже.");
+	if(!response){
+		Bank:ShowBusinessMenu(playerid, GetPVarInt(playerid, "Bank_BusinessIndex"));
+		return false;
+	}
+
+	if(strval(inputtext) <= 0){
+		SendErrorMessage(playerid, "Корректно введите сумму.");
+		Bank:ShowBusinessPut(playerid, GetPVarInt(playerid, "Bank_BusinessIndex"));
+		return false;
+	}
+	if(strval(inputtext) > GetPlayerBankCardData(playerid, pbc_balance)){
+		SendErrorMessage(playerid, "У Вас недостаточно средств на счету.");
+		Bank:ShowBusinessPut(playerid, GetPVarInt(playerid, "Bank_BusinessIndex"));
+		return false;
+	}
+
+	AddBusinessData(GetPVarInt(playerid, "Bank_BusinessIndex"), b_balance, strval(inputtext));
+	Bank:GiveMoney(playerid, -strval(inputtext));
+
+	static const fmt_query[] = "UPDATE business SET balance = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetBusinessData(GetPVarInt(playerid, "Bank_BusinessIndex"), b_balance),
+		GetBusinessData(GetPVarInt(playerid, "Bank_BusinessIndex"), b_id));
+	mysql_tquery(mysql, query);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы положили на баланс бизнеса %d$ (на счету бизнеса: %d$, на счету банковской карты: %d$)",
+		strval(inputtext), GetBusinessData(GetPVarInt(playerid, "Bank_BusinessIndex"), b_balance),
+		GetPlayerBankCardData(playerid, pbc_balance));
+	SendClientMessage(playerid, COLOR_GREEN, small_string);
+	small_string[0] = EOS;
+
+	DeletePVar(playerid, "Bank_BusinessIndex");
+	return true;
+}
+
+DialogResponse:D_BANK_BUSINESS_TAKE(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Bank_BusinessIndex")) return SendErrorMessage(playerid, "Произошла ошибка. Попробуйте позже.");
+	if(!response){
+		Bank:ShowBusinessMenu(playerid, GetPVarInt(playerid, "Bank_BusinessIndex"));
+		return false;
+	}
+
+	if(strval(inputtext) <= 0){
+		SendErrorMessage(playerid, "Корректно введите сумму.");
+		Bank:ShowBusinessTake(playerid, GetPVarInt(playerid, "Bank_BusinessIndex"));
+		return false;
+	}
+	if(strval(inputtext) > GetBusinessData(GetPVarInt(playerid, "Bank_BusinessIndex"), b_balance)){
+		SendErrorMessage(playerid, "У Вас недостаточно средств на балансе бизнеса.");
+		Bank:ShowBusinessTake(playerid, GetPVarInt(playerid, "Bank_BusinessIndex"));
+		return false;
+	}
+
+	AddBusinessData(GetPVarInt(playerid, "Bank_BusinessIndex"), b_balance, -strval(inputtext));
+	Bank:GiveMoney(playerid, strval(inputtext));
+
+	static const fmt_query[] = "UPDATE business SET balance = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetBusinessData(GetPVarInt(playerid, "Bank_BusinessIndex"), b_balance),
+		GetBusinessData(GetPVarInt(playerid, "Bank_BusinessIndex"), b_id));
+	mysql_tquery(mysql, query);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы сняли с баланса бизнеса %d$ (на счету бизнеса: %d$, на счету банковской карты: %d$)",
+		strval(inputtext), GetBusinessData(GetPVarInt(playerid, "Bank_BusinessIndex"), b_balance),
+		GetPlayerBankCardData(playerid, pbc_balance));
+	SendClientMessage(playerid, COLOR_GREEN, small_string);
+	small_string[0] = EOS;
+
+	DeletePVar(playerid, "Bank_BusinessIndex");
+	return true;
+}

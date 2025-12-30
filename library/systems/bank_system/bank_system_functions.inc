@@ -124,7 +124,8 @@ stock Bank:ShowBankMenu(playerid){
 		"cl_blue"2. "cl_white"Управление статусом карты\n\
 		"cl_blue"3. "cl_white"Пополнить баланс\n\
 		"cl_blue"4. "cl_white"Снять с баланса\n\
-		"cl_blue"5. "cl_white"Управление депозитом",
+		"cl_blue"5. "cl_white"Управление депозитом\n\
+		"cl_blue"6. "cl_white"Управление бизнесами",
 		"Далее", "Закрыть");
 	return true;
 }
@@ -317,5 +318,105 @@ stock Bank:ShowRecoveryMenu(playerid){
 		""cl_blue"- "cl_white"Стоимость восстановления пин-кода от банковской карты составляет "#BANK_CARD_RECOVERY_PRICE"$\n\
 		"cl_dark_red"[Вы действительно хотите восстановить пин-код?]",
 		"Да", "Нет");
+	return true;
+}
+
+stock Bank:ShowBusinessList(playerid){
+	if(!GetPlayerBankCardData(playerid, pbc_is_loaded) || !GetPlayerBankCardData(playerid, pbc_id)){
+		SendErrorMessage(playerid, "У Вас нет банковской карты.");
+		return false;
+	}
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_grey"Название бизнеса\t"cl_grey"Тип бизнеса\t"cl_grey"Баланс бизнеса");
+
+	new count;
+	for(new i; i < MAX_BUSINESS; i++){
+		if(!GetBusinessData(i, b_id)) continue;
+		if(GetBusinessData(i, b_owner_id) != GetPlayerData(playerid, p_id)) continue;
+
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%d. "cl_white"%s "cl_grey"(ID: %d)\t"cl_white"%s\t"cl_white"%d$",
+			big_string, count + 1,
+			GetBusinessData(i, b_name), GetBusinessData(i, b_id),
+			business_type_names[GetBusinessData(i, b_type)],
+			GetBusinessData(i, b_balance));
+
+		player_listitems[playerid][count] = i;
+		count++;
+	}
+
+	if(!count){
+		SendErrorMessage(playerid, "У Вас нет бизнесов.");
+		Bank:ShowBankMenu(playerid);
+		return false;
+	}
+
+	Dialog_Open(playerid, Dialog:D_BANK_SELECT_BUSINESS, DIALOG_STYLE_TABLIST_HEADERS,
+		"Выберите бизнес", big_string,
+		"Выбрать", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Bank:ShowBusinessMenu(playerid, business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS){
+		DeletePVar(playerid, "Bank_BusinessIndex");
+		return false;
+	}
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Баланс бизнеса: "cl_grey"%d$\n\
+		"cl_blue"1. "cl_white"Пополнить счёт бизнеса\n\
+		"cl_blue"2. "cl_white"Снять со счёта бизнеса",
+		GetBusinessData(business_index, b_balance));
+
+	Dialog_Open(playerid, Dialog:D_BANK_BUSINESS_MENU, DIALOG_STYLE_LIST,
+		GetBusinessData(business_index, b_name), big_string,
+		"Выбрать", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Bank:ShowBusinessPut(playerid, business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS){
+		DeletePVar(playerid, "Bank_BusinessIndex");
+		return false;
+	}
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите сумму, которую хотите положить на счёт бизнеса с банковской карты\n\n\
+		"cl_grey"На счету бизнеса: "cl_white"%d$\n\
+		"cl_grey"На счету банковской карты: "cl_white"%d$",
+		GetBusinessData(business_index, b_balance), GetPlayerBankCardData(playerid, pbc_balance));
+
+	Dialog_Open(playerid, Dialog:D_BANK_BUSINESS_PUT, DIALOG_STYLE_INPUT,
+		GetBusinessData(business_index, b_name), big_string,
+		"Далее", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Bank:ShowBusinessTake(playerid, business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS){
+		DeletePVar(playerid, "Bank_BusinessIndex");
+		return false;
+	}
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите сумму, которую хотите снять со счёта бизнеса на банковскую карту\n\n\
+		"cl_grey"На счету бизнеса: "cl_white"%d$\n\
+		"cl_grey"На счету банковской карты: "cl_white"%d$",
+		GetBusinessData(business_index, b_balance), GetPlayerBankCardData(playerid, pbc_balance));
+
+	Dialog_Open(playerid, Dialog:D_BANK_BUSINESS_TAKE, DIALOG_STYLE_INPUT,
+		GetBusinessData(business_index, b_name), big_string,
+		"Далее", "Назад");
+	big_string[0] = EOS;
 	return true;
 }
