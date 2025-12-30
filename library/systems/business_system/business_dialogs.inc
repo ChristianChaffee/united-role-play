@@ -163,7 +163,7 @@ DialogResponse:D_BUSINESS_PANEL(playerid, response, listitem, inputtext[]){
 
 	switch(listitem){
 		case 0:{ // - Информация
-			
+			Business:ShowInfoBpanel(playerid, GetPVarInt(playerid, "Business_Index"));
 		}
 		case 1:{ // - Заказать продукты
 			if(Job:IsBusinessHaveDeliveryOrder(GetPVarInt(playerid, "Business_Index"))){
@@ -176,5 +176,11 @@ DialogResponse:D_BUSINESS_PANEL(playerid, response, listitem, inputtext[]){
 		}
 	}
 
+	return true;
+}
+
+DialogResponse:D_BUSINESS_INFO_BPANEL(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Business_Index")) return false;
+	Business:ShowBusinessPanel(playerid, GetPVarInt(playerid, "Business_Index"));
 	return true;
 }

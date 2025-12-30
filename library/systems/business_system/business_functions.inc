@@ -197,6 +197,35 @@ stock Business:ShowBusinessPanel(playerid, business_index){
 	return true;
 }
 
+stock Business:ShowInfoBpanel(playerid, business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"ID бизнеса: "cl_white"%d\n\
+		"cl_blue"Название бизнеса: "cl_white"%s\n\
+		"cl_blue"Тип бизнеса: "cl_white"%s\n\n\
+		"cl_blue"Продуктов в бизнесе: "cl_white"%d ед\n\
+		"cl_blue"Баланс бизнеса: "cl_white"%d$\n\
+		"cl_blue"Гос. стоимость бизнеса: "cl_white"%d$\n\n\
+		\\c"cl_grey"[Налог на бизнес составляет %d$ в сутки. Он снимается с баланса бизнеса в 5:00.\n\
+		\\cВ случае отрицательного баланса бизнес будет продан государству за %d процентов от стоимости (%d$).\n\
+		\\cПополнить/снять с баланса бизнеса можно в банке]",
+		GetBusinessData(business_index, b_id), GetBusinessData(business_index, b_name),
+		business_type_names[GetBusinessData(business_index, b_type)],
+		GetBusinessData(business_index, b_products), GetBusinessData(business_index, b_balance),
+		GetBusinessData(business_index, b_price),
+		BUSINESS_DAY_TAX, floatround(BUSINESS_SELL_PERCENT * 100.0),
+		floatround(BUSINESS_SELL_PERCENT * float(GetBusinessData(business_index, b_price))));
+
+	Dialog_Open(playerid, Dialog:D_BUSINESS_INFO_BPANEL, DIALOG_STYLE_MSGBOX,
+		GetBusinessData(business_index, b_name), big_string,
+		"Назад", "");
+
+	big_string[0] = EOS;
+	return true;
+}
+
 //==============================================================================
 stock Business:GetBusinessIndexByVW(vw){
 	for(new i; i < MAX_BUSINESS; i++){
