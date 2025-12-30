@@ -7,6 +7,13 @@ stock PayDay(hour){
 		if(!player_logged[i]) continue;
 		PlayerPayDay(i);
 	}
+
+	switch(hour){
+		case 5:{
+			GameTextForAll("~r~RESTART", 5000, 0);
+			SendRconCommand("gmx");
+		}
+	}
 	return true;
 }
 

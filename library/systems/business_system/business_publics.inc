@@ -37,6 +37,24 @@ public LoadBusinesses(){
 			continue;
 		}
 
+		if(GetBusinessData(i, b_owner_id) != 0 && GetBusinessData(i, b_balance) < 0){
+			static const fmt_query_1[] = "UPDATE `accounts` SET `money` = `money` + '%d' WHERE id = %d";
+			new query_1[sizeof(fmt_query_1) + ((-2 + 11) * 2)];
+			mysql_format(mysql, query_1, sizeof(query_1), fmt_query_1,
+				floatround(float(GetBusinessData(i, b_price)) * BUSINESS_SELL_PERCENT),
+				GetBusinessData(i, b_owner_id));
+			mysql_tquery(mysql, query_1);
+
+			SetBusinessData(i, b_owner_id, 0);
+			SetBusinessData(i, b_balance, 0);
+
+			static const fmt_query_2[] = "UPDATE business SET owner_id = 0, balance = 0 WHERE id = %d";
+			new query_2[sizeof(fmt_query_2) + (-2 + 11)];
+			mysql_format(mysql, query_2, sizeof(query_2), fmt_query_2,
+				GetBusinessData(i, b_id));
+			mysql_tquery(mysql, query_2);
+		}
+
 		//-------------------
 		
 		small_string[0] = EOS;

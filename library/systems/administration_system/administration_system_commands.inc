@@ -254,6 +254,11 @@ CMD:payday(playerid){
 	return true;
 }
 
+CMD:paydayres(playerid){
+	PayDay(5);
+	return true;
+}
+
 CMD:gotobiz(playerid, params[]){
 	if(sscanf(params, "i", params[0]) || !params[0]) return SendErrorMessage(playerid, "Используйте '/gotobiz [ID бизнеса]'");
 	

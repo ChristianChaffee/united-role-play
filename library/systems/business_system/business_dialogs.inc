@@ -163,7 +163,7 @@ DialogResponse:D_BUSINESS_PANEL(playerid, response, listitem, inputtext[]){
 
 	switch(listitem){
 		case 0:{ // - Информация
-
+			
 		}
 		case 1:{ // - Заказать продукты
 			if(Job:IsBusinessHaveDeliveryOrder(GetPVarInt(playerid, "Business_Index"))){

@@ -81,3 +81,10 @@ hook stock OnMySQLConnect(){
 	mysql_tquery(mysql, "SELECT * FROM business", "LoadBusinesses");
 	return continue();
 }
+
+hook stock PayDay(hour){
+	if(hour == 5){
+		mysql_tquery(mysql, "UPDATE `business` SET `balance` = `balance` - '"#BUSINESS_DAY_TAX"' WHERE `owner_id` != '0'");
+	}
+	return continue(hour);
+}
