@@ -18,6 +18,7 @@ public LoadStartQuests(){
 	}
 
 	printf("[LoadStartQuests]: Стартовые квесты загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+	load_info[loaded_start_quests] = true;
 	return true;
 }
 

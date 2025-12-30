@@ -36,3 +36,19 @@ new command_info[][command_info_struct] = {
 	{"/park", "припарковать личное транспортное средство", COMMAND_TYPE_VEHICLE},
 	{"/lock", "открыть/закрыть транспортное средство", COMMAND_TYPE_VEHICLE}
 };
+
+//==============================================================================
+enum load_info_struct
+{
+	loaded_vehicles,
+	loaded_businesses,
+	loaded_inventory_items,
+	loaded_start_quests,
+}
+
+new load_info[load_info_struct] = {
+	false,
+	false,
+	false,
+	false
+};

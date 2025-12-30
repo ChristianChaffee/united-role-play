@@ -43,6 +43,7 @@ public LoadVehicles(){
 	}
 
 	printf("[LoadVehicles]: Транспорт загружен <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+	load_info[loaded_vehicles] = true;
 	return true;
 }
 

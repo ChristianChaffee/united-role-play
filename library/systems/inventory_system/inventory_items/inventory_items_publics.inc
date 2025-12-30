@@ -21,6 +21,7 @@ public LoadInventoryItems(){
 	}
 
 	printf("[LoadInventoryItems]: Предметы инвентаря загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+	load_info[loaded_inventory_items] = true;
 	return true;
 }
 

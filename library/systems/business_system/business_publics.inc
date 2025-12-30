@@ -110,5 +110,6 @@ public LoadBusinesses(){
 	}
 
 	printf("[LoadBusinesses]: Бизнесы загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+	load_info[loaded_businesses] = true;
 	return true;
 }

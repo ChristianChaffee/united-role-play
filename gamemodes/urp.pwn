@@ -91,6 +91,12 @@ public OnPlayerRequestClass(playerid, classid)
 
 public OnPlayerConnect(playerid)
 {
+	if(!IsDataBaseLoaded()){
+		SendClientMessage(playerid, COLOR_DARK_RED, "Сервер не загружен. Попробуйте позже.");
+		KickPlayer(playerid);
+		return 0;
+	}
+
 	ApplyAnimation(playerid, "DEALER", "_", 4.1, 1, 1, 1, 1, 1);
 	ApplyAnimation(playerid, "PED", "_", 4.1, 1, 1, 1, 1, 1);
 	ApplyAnimation(playerid, "SWORD", "_", 4.1, 1, 1, 1, 1, 1);
@@ -598,4 +604,12 @@ stock GetNameBySqlID(id){
 	new owner_name[MAX_PLAYER_NAME];
 	cache_get_value_name(0, "name", owner_name);
 	return owner_name;
+}
+
+stock IsDataBaseLoaded(){
+	if(!load_info[loaded_vehicles]) return false;
+	if(!load_info[loaded_businesses]) return false;
+	if(!load_info[loaded_inventory_items]) return false;
+	if(!load_info[loaded_start_quests]) return false;
+	return true;
 }
