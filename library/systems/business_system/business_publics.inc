@@ -62,6 +62,10 @@ public LoadBusinesses(){
 				Business:SavePerks(i);
 			}
 		}
+		
+		if(GetBusinessData(i, b_owner_id) != 0){
+			Business:CheckStartEvents(i);
+		}
 
 		//-------------------
 		

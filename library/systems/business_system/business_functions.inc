@@ -409,3 +409,29 @@ stock Business:SavePerks(business_index){
 	Business:LoadBusinessPerks(business_index);
 	return true;
 }
+
+stock Business:CheckStartEvents(business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
+
+	//------------------- Ограбление
+
+	new chance = random(100);
+
+	if((business_info[business_index][b_perks][BUSINESS_PERK_SECURITY] && chance <= BUSINESS_ROBBERY_SEC_PERCENT)
+		|| (!business_info[business_index][b_perks][BUSINESS_PERK_SECURITY] && chance <= BUSINESS_ROBBERY_DEF_PERCENT)){
+
+		new robbery_sum = RandomEx(BUSINESS_ROBBERY_MIN_SUM, BUSINESS_ROBBERY_MAX_SUM);
+
+		AddBusinessData(business_index, b_balance, -robbery_sum);
+		if(business_info[business_index][b_balance] < 0) SetBusinessData(business_index, b_balance, 0);
+
+		static const fmt_query[] = "UPDATE business SET balance = %d WHERE id = %d";
+		new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+		mysql_format(mysql, query, sizeof(query), fmt_query,
+			GetBusinessData(business_index, b_balance), GetBusinessData(business_index, b_id));
+		mysql_tquery(mysql, query);
+	}
+
+	//------------------------------
+	return true;
+}

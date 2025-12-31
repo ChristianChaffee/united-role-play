@@ -38,6 +38,12 @@
 
 #define BUSINESS_PERKS_COUNT  				2
 
+#define BUSINESS_ROBBERY_DEF_PERCENT 		15
+#define BUSINESS_ROBBERY_SEC_PERCENT		5
+
+#define BUSINESS_ROBBERY_MIN_SUM 			1000
+#define BUSINESS_ROBBERY_MAX_SUM 			5000
+
 //==============================================================================
 enum
 {
