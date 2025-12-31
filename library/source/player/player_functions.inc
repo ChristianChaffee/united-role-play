@@ -310,10 +310,10 @@ stock GetPlayerId(const name[]){
 }
 
 stock AddPlayerNotification(account_id, text[]){
-	static const fmt_query[] = "INSERT INTO notifications (account_id, text) VALUES ('%s', '%d')";
+	static const fmt_query[] = "INSERT INTO notifications (account_id, text) VALUES ('%d', '%s')";
 	new query[sizeof(fmt_query) + (-2 + 256) + (-2 + 11)];
 	mysql_format(mysql, query, sizeof(query), fmt_query,
-		text, account_id);
+		account_id, text);
 	mysql_tquery(mysql, query);
 	return true;
 }

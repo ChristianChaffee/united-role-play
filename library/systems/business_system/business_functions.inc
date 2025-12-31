@@ -430,6 +430,15 @@ stock Business:CheckStartEvents(business_index){
 		mysql_format(mysql, query, sizeof(query), fmt_query,
 			GetBusinessData(business_index, b_balance), GetBusinessData(business_index, b_id));
 		mysql_tquery(mysql, query);
+
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			""cl_dark_red"Бизнес \"%s\" был ограблен на сумму %d$!",
+			GetBusinessData(business_index, b_name), robbery_sum);
+		
+		AddPlayerNotification(GetBusinessData(business_index, b_owner_id), small_string);
+		small_string[0] = EOS;
+
 	}
 
 	//------------------------------
