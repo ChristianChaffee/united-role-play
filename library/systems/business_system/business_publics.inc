@@ -30,6 +30,9 @@ public LoadBusinesses(){
 		cache_get_value_name(i, "products_prices", temp_string);
 		sscanf(temp_string, "p<,>a<i>["#MAX_BUSINESS_MENU_POSITIONS"]", business_info[i][b_products_prices]);
 
+		cache_get_value_name(i, "perks", temp_string);
+		sscanf(temp_string, "p<,>a<i>["#BUSINESS_PERKS_COUNT"]", business_info[i][b_perks]);
+
 		if(GetBusinessData(i, b_type) >= BUSINESS_TYPES_COUNT){
 			printf("[LoadBusinesses - WARNING]: Тип бизнеса (ID: %d, type: %d) превышает максимальное количество типов бизнеса (%d >= %d)", 
 				GetBusinessData(i, b_id), GetBusinessData(i, b_type),
@@ -53,6 +56,11 @@ public LoadBusinesses(){
 			mysql_format(mysql, query_2, sizeof(query_2), fmt_query_2,
 				GetBusinessData(i, b_id));
 			mysql_tquery(mysql, query_2);
+
+			for(new perk_index; perk_index < BUSINESS_PERKS_COUNT; perk_index++){
+				business_info[i][b_perks][perk_index] = 0;
+				Business:SavePerks(i);
+			}
 		}
 
 		//-------------------
@@ -107,6 +115,8 @@ public LoadBusinesses(){
 			GetBusinessInteriorData(GetBusinessData(i, b_type), bi_int));
 
 		//-------------------
+
+		Business:LoadBusinessPerks(i);
 	}
 
 	printf("[LoadBusinesses]: Бизнесы загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);

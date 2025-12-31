@@ -188,7 +188,8 @@ stock Business:ShowBusinessPanel(playerid, business_index){
 	format(big_string, sizeof(big_string),
 		""cl_blue"1. "cl_white"Информация о бизнесе\n\
 		"cl_blue"2. "cl_white"Заказать продукты "cl_grey"[%d шт]\n\
-		"cl_blue"3. "cl_white"Управление ценами",
+		"cl_blue"3. "cl_white"Управление ценами\n\
+		"cl_blue"4. "cl_white"Улучшения бизнеса",
 		GetBusinessData(business_index, b_products));
 
 	Dialog_Open(playerid, Dialog:D_BUSINESS_PANEL, DIALOG_STYLE_LIST,
@@ -294,6 +295,56 @@ stock Business:ShowChangePrice(playerid, business_index, menu_postition_index){
 	return true;
 }
 
+stock Business:ShowPerksList(playerid, business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string), ""cl_grey"Название улучшения\tЦена\tНаличие");
+
+	for(new perk_index; perk_index < BUSINESS_PERKS_COUNT; perk_index++){
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%d. "cl_white"%s\t"cl_white"%d$\t%s",
+			big_string, perk_index + 1,
+			GetBusinessPerkData(perk_index, bp_name), GetBusinessPerkData(perk_index, bp_price),
+			(business_info[business_index][b_perks][perk_index]) ? (""cl_green"Есть") : (""cl_light_red"Отсутствует"));
+	}
+
+	Dialog_Open(playerid, Dialog:D_BUSINESS_PERKS_LIST, DIALOG_STYLE_TABLIST_HEADERS,
+		"Список улучшения", big_string,
+		"Далее", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Business:ShowPerk(playerid, business_index, perk_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
+	if(perk_index < 0 || perk_index >= BUSINESS_PERKS_COUNT) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"Название улучшения: "cl_white"%s\n\
+		"cl_blue"Описание улучшения: "cl_white"%s\n\
+		"cl_blue"Стоимость улучшения: "cl_white"%d$",
+		GetBusinessPerkData(perk_index, bp_name), GetBusinessPerkData(perk_index, bp_description),
+		GetBusinessPerkData(perk_index, bp_price));
+
+	if(!business_info[business_index][b_perks][perk_index]){
+		format(big_string, sizeof(big_string),
+			"%s\n\n\
+			\\c"cl_grey"[Вы желаете купить улучшение?]",
+			big_string);
+	}
+
+	Dialog_Open(playerid, Dialog:D_BUSINESS_PERK_INFO, DIALOG_STYLE_MSGBOX,
+		GetBusinessPerkData(perk_index, bp_name), big_string,
+		(!business_info[business_index][b_perks][perk_index]) ? ("Купить") : ("Назад"),
+		(!business_info[business_index][b_perks][perk_index]) ? ("Назад") : (""));
+
+	big_string[0] = EOS;
+	return true;
+}
+
 //==============================================================================
 stock Business:GetBusinessIndexByVW(vw){
 	for(new i; i < MAX_BUSINESS; i++){
@@ -301,4 +352,60 @@ stock Business:GetBusinessIndexByVW(vw){
 		if(GetBusinessData(i, b_id) == vw) return i;
 	}
 	return -1;
+}
+
+stock Business:LoadBusinessPerks(business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
+	if(!GetBusinessData(business_index, b_id)) return false;
+
+	for(new perk_index = 0; perk_index < BUSINESS_PERKS_COUNT; perk_index++){
+		if(IsValidDynamicActor(business_info[business_index][b_perks_actors_id][perk_index])){
+			DestroyDynamicActor(business_info[business_index][b_perks_actors_id][perk_index]);
+			business_info[business_index][b_perks_actors_id][perk_index] = 0;
+		}
+
+		if(!business_info[business_index][b_perks][perk_index]) continue;
+
+		switch(perk_index){
+			case BUSINESS_PERK_SECURITY, BUSINESS_PERK_CASHBOX:{
+
+				business_info[business_index][b_perks_actors_id][perk_index] = CreateDynamicActor(business_interior_info[GetBusinessData(business_index, b_type)][bi_perks_skins][perk_index], 
+					business_interior_info[GetBusinessData(business_index, b_type)][bi_perks_x][perk_index], 
+					business_interior_info[GetBusinessData(business_index, b_type)][bi_perks_y][perk_index], 
+					business_interior_info[GetBusinessData(business_index, b_type)][bi_perks_z][perk_index], 
+					business_interior_info[GetBusinessData(business_index, b_type)][bi_perks_angle][perk_index], 
+					_, _, 
+					GetBusinessData(business_index, b_id), 
+					GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_int));
+
+				if(!strcmp("", GetBusinessPerkData(perk_index, bp_anim_lib)) && !strcmp("", GetBusinessPerkData(perk_index, bp_anim_name))){
+					ApplyDynamicActorAnimation(business_info[business_index][b_perks_actors_id][perk_index], GetBusinessPerkData(perk_index, bp_anim_lib), GetBusinessPerkData(perk_index, bp_anim_name), 4.1, true, true, true, false, 0);
+				}
+			}
+		}
+	}
+	return true;
+}
+
+stock Business:SavePerks(business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
+
+	small_string[0] = EOS;
+	for(new perk_index; perk_index < BUSINESS_PERKS_COUNT; perk_index++){
+		format(small_string, sizeof(small_string),
+			"%s%d%s",
+			small_string, business_info[business_index][b_perks][perk_index],
+			(perk_index == BUSINESS_PERKS_COUNT - 1) ? ("") : (", "));
+	}
+
+	static const fmt_query[] = "UPDATE business SET perks = '%s' WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + sizeof(small_string)) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		small_string, GetBusinessData(business_index, b_id));
+	mysql_tquery(mysql, query);
+
+	small_string[0] = EOS;
+
+	Business:LoadBusinessPerks(business_index);
+	return true;
 }

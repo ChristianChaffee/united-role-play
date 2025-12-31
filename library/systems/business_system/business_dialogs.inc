@@ -177,6 +177,9 @@ DialogResponse:D_BUSINESS_PANEL(playerid, response, listitem, inputtext[]){
 		case 2:{ // - Управление ценами
 			Business:ShowPricesList(playerid, GetPVarInt(playerid, "Business_Index"));
 		}
+		case 3:{ // - Улучшения бизнеса
+			Business:ShowPerksList(playerid, GetPVarInt(playerid, "Business_Index"));
+		}
 	}
 
 	return true;
@@ -244,5 +247,51 @@ DialogResponse:D_BUSINESS_CHANGE_PRICE(playerid, response, listitem, inputtext[]
 
 	DeletePVar(playerid, "Business_Index");
 	DeletePVar(playerid, "Business_MenuPositionIndex");
+	return true;
+}
+
+DialogResponse:D_BUSINESS_PERKS_LIST(playerid, response, listitem, inputtext[]){
+	if(!response){
+		Business:ShowBusinessPanel(playerid, GetPVarInt(playerid, "Business_Index"));
+		return false;
+	}
+
+	SetPVarInt(playerid, "Business_PerkIndex", listitem);
+	Business:ShowPerk(playerid, GetPVarInt(playerid, "Business_Index"), GetPVarInt(playerid, "Business_PerkIndex"));
+	return true;
+}
+
+DialogResponse:D_BUSINESS_PERK_INFO(playerid, response, listitem, inputtext[]){
+	if(!response && business_info[GetPVarInt(playerid, "Business_Index")][b_perks][GetPVarInt(playerid, "Business_PerkIndex")]){
+		DeletePVar(playerid, "Business_PerkIndex");
+		Business:ShowPerksList(playerid, GetPVarInt(playerid, "Business_Index"));
+		return true;
+	}
+
+	new business_index = GetPVarInt(playerid, "Business_Index"),
+		perk_index = GetPVarInt(playerid, "Business_PerkIndex");
+
+	if(response && !business_info[business_index][b_perks][perk_index]){
+		if(GetBusinessData(business_index, b_balance) < GetBusinessPerkData(perk_index, bp_price)){
+			SendErrorMessage(playerid, "На балансе бизнеса недостаточно средств.");
+			Business:ShowPerk(playerid, business_index, perk_index);
+			return false;
+		}
+
+		business_info[business_index][b_perks][perk_index] = 1;
+		Business:SavePerks(business_index);
+
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			"Вы купили улучшения \"%s\" за %d$.",
+			GetBusinessPerkData(perk_index, bp_name),
+			GetBusinessPerkData(perk_index, bp_price));
+		SendClientMessage(playerid, COLOR_GREEN, small_string);
+		small_string[0] = EOS;
+	}
+	else{
+		DeletePVar(playerid, "Business_PerkIndex");
+		Business:ShowPerksList(playerid, GetPVarInt(playerid, "Business_Index"));
+	}
 	return true;
 }
