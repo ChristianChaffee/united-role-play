@@ -189,7 +189,8 @@ stock Business:ShowBusinessPanel(playerid, business_index){
 		""cl_blue"1. "cl_white"Информация о бизнесе\n\
 		"cl_blue"2. "cl_white"Заказать продукты "cl_grey"[%d шт]\n\
 		"cl_blue"3. "cl_white"Управление ценами\n\
-		"cl_blue"4. "cl_white"Улучшения бизнеса",
+		"cl_blue"4. "cl_white"Улучшения бизнеса\n\
+		"cl_light_red"- Продать бизнес",
 		GetBusinessData(business_index, b_products));
 
 	Dialog_Open(playerid, Dialog:D_BUSINESS_PANEL, DIALOG_STYLE_LIST,
@@ -345,6 +346,51 @@ stock Business:ShowPerk(playerid, business_index, perk_index){
 	return true;
 }
 
+stock Business:ShowSellSelectType(playerid){
+	if(!GetPVarType(playerid, "Business_Index")) return false;
+
+	Dialog_Open(playerid, Dialog:D_BUSINESS_SELL_TYPE, DIALOG_STYLE_LIST,
+		"Продать бизнес",
+		""cl_blue"- "cl_white"Продать бизнес государству\n\
+		"cl_blue"- "cl_white"Продать бизнес игроку",
+		"Далее", "Назад");
+	return true;
+}
+
+stock Business:ShowAcceptSellGov(playerid, business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Вы действительно хотите продать бизнес "cl_grey"\"%s\" "cl_white"за "cl_grey"%d процентов "cl_white"от гос. стоимости "cl_grey"(%d$)"cl_white"?",
+		GetBusinessData(business_index, b_name), 
+		floatround(BUSINESS_SELL_PERCENT * 100.0),
+		floatround(BUSINESS_SELL_PERCENT * float(GetBusinessData(business_index, b_price))));
+
+	Dialog_Open(playerid, Dialog:D_BUSINESS_SELL_ACCEPT_GOV, DIALOG_STYLE_MSGBOX,
+		"Продажа бизнеса", big_string,
+		"Да", "Нет");
+
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Business:ShowAcceptSellPlayer(playerid, business_index){
+	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите ID игрока и цену, за которую хотите продать бизнес \"%s\"\n\
+		"cl_grey"Пример: "cl_white"5, 100000",
+		GetBusinessData(business_index, b_name));
+
+	Dialog_Open(playerid, Dialog:D_BUSINESS_SELL_ACC_PLAYER, DIALOG_STYLE_INPUT,
+		"Продажа бизнеса", big_string,
+		"Далее", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
 //==============================================================================
 stock Business:GetBusinessIndexByVW(vw){
 	for(new i; i < MAX_BUSINESS; i++){
@@ -442,5 +488,13 @@ stock Business:CheckStartEvents(business_index){
 	}
 
 	//------------------------------
+	return true;
+}
+
+stock Business:DeleteSellPVars(playerid){
+	DeletePVar(playerid, "Business_BuyIndex");
+	DeletePVar(playerid, "Business_SellPrice");
+	DeletePVar(playerid, "Business_BuyPlayerid");
+	DeletePVar(playerid, "Business_BuyTime");
 	return true;
 }

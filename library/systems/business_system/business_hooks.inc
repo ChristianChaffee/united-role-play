@@ -88,3 +88,13 @@ hook stock PayDay(hour){
 	}
 	return continue(hour);
 }
+
+hook stock OnPlayerSecondUpdate(playerid){
+	if(GetPVarType(playerid, "Business_BuyTime") && GetPVarInt(playerid, "Business_BuyTime") > 0){
+		SetPVarInt(playerid, "Business_BuyTime", GetPVarInt(playerid, "Business_BuyTime") - 1);
+		if(GetPVarInt(playerid, "Business_BuyTime") == 0){
+			Business:DeleteSellPVars(playerid);
+		}
+	}
+	return continue(playerid);
+}

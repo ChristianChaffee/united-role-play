@@ -59,8 +59,8 @@ public LoadBusinesses(){
 
 			for(new perk_index; perk_index < BUSINESS_PERKS_COUNT; perk_index++){
 				business_info[i][b_perks][perk_index] = 0;
-				Business:SavePerks(i);
 			}
+			Business:SavePerks(i);
 		}
 		
 		if(GetBusinessData(i, b_owner_id) != 0){

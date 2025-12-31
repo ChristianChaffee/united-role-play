@@ -5,6 +5,10 @@
 	Business_MenuPositionIndex
 	Business_PerkIndex
 
+	Business_BuyIndex
+	Business_SellPrice
+	Business_BuyPlayerid
+	Business_BuyTime
 */
 
 #define Business:%0(%1) 					Bsnss_%0(%1)
