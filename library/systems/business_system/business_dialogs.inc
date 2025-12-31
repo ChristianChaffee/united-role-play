@@ -58,6 +58,15 @@ DialogResponse:D_BUSINESS_MENU(playerid, response, listitem, inputtext[]){
 				Bank:GiveMoney(playerid, -price);
 			}
 
+			if(GetPlayerData(playerid, p_id) != GetBusinessData(business_index, b_owner_id)){
+				new tips_chance = random(100);
+				if((business_info[business_index][b_perks][BUSINESS_PERK_CASHBOX] && tips_chance <= BUSINESS_TIPS_CASH_PERCENT)
+					|| (!business_info[business_index][b_perks][BUSINESS_PERK_CASHBOX] && tips_chance <= BUSINESS_TIPS_DEF_PERCENT)){
+
+					AddBusinessData(business_index, b_balance, RandomEx(BUSINESS_TIPS_MIN_SUM, BUSINESS_TIPS_MAX_SUM));
+				}
+			}
+
 			AddBusinessData(business_index, b_balance, price);
 			AddBusinessData(business_index, b_products, -GetBusinessMenuData(business_type, selected_position, bm_products_price));
 

@@ -44,6 +44,12 @@
 #define BUSINESS_ROBBERY_MIN_SUM 			1000
 #define BUSINESS_ROBBERY_MAX_SUM 			5000
 
+#define BUSINESS_TIPS_DEF_PERCENT 			5
+#define BUSINESS_TIPS_CASH_PERCENT 			10
+
+#define BUSINESS_TIPS_MIN_SUM 				1
+#define BUSINESS_TIPS_MAX_SUM 				5
+
 //==============================================================================
 enum
 {
