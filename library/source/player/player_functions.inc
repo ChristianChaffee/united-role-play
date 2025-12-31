@@ -34,6 +34,8 @@ stock SetPlayerSpawn(playerid, spawn_type){
 	SetPlayerInterior(playerid, spawn_int);
 	SetCameraBehindPlayer(playerid);
 	TogglePlayerControllable(playerid, true);
+
+	CheckPlayerNotifications(playerid);
 	return true;
 }
 
@@ -305,4 +307,22 @@ stock GetPlayerId(const name[]){
 		if(!strcmp(name, GetPlayerData(i, p_name))) return i;
 	}
 	return INVALID_PLAYER_ID;
+}
+
+stock AddPlayerNotification(account_id, text[]){
+	static const fmt_query[] = "INSERT INTO notifications (account_id, text) VALUES ('%s', '%d')";
+	new query[sizeof(fmt_query) + (-2 + 256) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		text, account_id);
+	mysql_tquery(mysql, query);
+	return true;
+}
+
+stock CheckPlayerNotifications(playerid){
+	static const fmt_query[] = "SELECT text FROM notifications WHERE account_id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerData(playerid, p_id));
+	mysql_tquery(mysql, query, "CheckPlayerNotificationsPublic", "i", playerid);
+	return true;
 }
