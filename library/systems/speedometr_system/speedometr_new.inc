@@ -14,9 +14,3 @@
 #define SPEEDOMETR_COLOR_OFF 						-1061109660
 
 #define SPEEDOMETR_TIMER 							50
-
-//==============================================================================
-new Text:TDEditor_TD[33];
-new PlayerText:TDEditor_PTD[MAX_PLAYERS][11];
-new speed_string[16];
-new health_string[32];
