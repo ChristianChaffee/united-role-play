@@ -1,0 +1,6 @@
+
+enum
+{
+	CEF_BROWSER_NONE,
+	CEF_BROWSER_LOGO
+}

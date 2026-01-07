@@ -20,6 +20,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\player\player_new.inc"
 #include "..\library\source\vehicle\vehicle_new.inc"
 #include "..\library\source\payday\payday_new.inc"
+#include "..\library\source\cef\cef_new.inc"
 
 #include "..\library\source\player\player_functions.inc"
 #include "..\library\source\vehicle\vehicle_functions.inc"
@@ -68,6 +69,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\parking_fine_system\parking_fine_new.inc"
 #include "..\library\systems\report_system\report_system_new.inc"
 #include "..\library\systems\business_system\business_new.inc"
+#include "..\library\systems\logo_system\logo_system_new.inc"
 
 public OnGameModeInit(){
 	EnableStuntBonusForAll(false);
@@ -496,6 +498,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\parking_fine_system\parking_fine_publics.inc"
 #include "..\library\systems\report_system\report_system_publics.inc"
 #include "..\library\systems\business_system\business_publics.inc"
+#include "..\library\systems\logo_system\logo_system_publics.inc"
 
 #include "..\library\systems\registration_system\registration_dialogs.inc"
 #include "..\library\systems\bank_system\bank_system_dialogs.inc"
@@ -537,6 +540,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\car_showroom_system\car_showroom_functions.inc"
 #include "..\library\systems\report_system\report_system_functions.inc"
 #include "..\library\systems\business_system\business_functions.inc"
+#include "..\library\systems\logo_system\logo_system_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -561,6 +565,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\parking_fine_system\parking_fine_hooks.inc"
 #include "..\library\systems\report_system\report_system_hooks.inc"
 #include "..\library\systems\business_system\business_hooks.inc"
+#include "..\library\systems\logo_system\logo_system_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 #include "..\library\systems\administration_system\administration_system_commands.inc"
