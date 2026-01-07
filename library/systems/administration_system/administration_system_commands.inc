@@ -284,3 +284,20 @@ CMD:gotobiz(playerid, params[]){
 	SetPlayerInterior(playerid, GetBusinessData(business_index, b_int));
 	return true;
 }
+
+CMD:addbiz(playerid){
+	big_string[0] = EOS;
+	for(new i = 1; i < BUSINESS_TYPES_COUNT; i++){
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%d. "cl_white"%s",
+			big_string, i,
+			business_type_names[i]);
+	}
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_BIZ_CREATE_TYPE, DIALOG_STYLE_LIST,
+		"Выберите тип бизнеса", big_string,
+		"Далее", "Закрыть");
+	big_string[0] = EOS;
+	return true;
+}

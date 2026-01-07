@@ -78,7 +78,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 
 //==============================================================================
 hook stock OnMySQLConnect(){
-	mysql_tquery(mysql, "SELECT * FROM business", "LoadBusinesses");
+	mysql_tquery(mysql, "SELECT * FROM business", "LoadBusinesses", "i", -1);
 	return continue();
 }
 
