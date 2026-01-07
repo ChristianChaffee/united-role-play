@@ -103,19 +103,7 @@ stock Registration:FinishRegistration(playerid){
 }
 
 stock Registration:ShowLogPassword(playerid){
-	big_string[0] = EOS;
-
-	format(big_string, sizeof(big_string),
-		"\\c"cl_grey"=========================================\n\
-		"cl_grey"- "cl_white"Аккаунт "cl_blue"%s "cl_white"зарегистрирован на проекте\n\n\
-		"cl_grey"\\cВведите пароль для авторизации\n\
-		\\c"cl_grey"=========================================",
-		GetPlayerData(playerid, p_name));
-
-	Dialog_Open(playerid, Dialog:D_LOGIN_PASSWORD, DIALOG_STYLE_PASSWORD, 
-		"Авторизация", big_string,
-		"Далее", "Выйти");
-	big_string[0] = EOS;
+	cef_emit_event(playerid, "showAuthWindow", CEFSTR(GetPlayerData(playerid, p_name)));
 }
 
 //==============================================================================

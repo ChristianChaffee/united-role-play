@@ -33,6 +33,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\player\player_hooks.inc"
 #include "..\library\source\vehicle\vehicle_hooks.inc"
 #include "..\library\source\payday\payday_hooks.inc"
+#include "..\library\source\cef\cef_hooks.inc"
 
 #include "..\library\source\cef\cef_publics.inc"
 

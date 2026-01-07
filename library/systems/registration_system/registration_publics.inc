@@ -23,6 +23,7 @@ public CheckAccountPassword(playerid){
 		return false;
 	}
 	else{
+		cef_emit_event(playerid, "hideAuthWindow");
 		LoadPlayer(playerid, cache_save());
 		return true;
 	}
@@ -65,4 +66,34 @@ public CreatePlayerAccount(playerid){
 	small_string[0] = EOS;
 
 	SetPlayerSpawn(playerid, SPAWN_TYPE_STANDART);
+}
+
+forward OnPlayerCefAuthorization(playerid, const arguments[]);
+public OnPlayerCefAuthorization(playerid, const arguments[]){
+	new response, password[32];
+	
+	if(!sscanf(arguments, "is[32]", response, password)){
+		if(!response){
+			KickPlayer(playerid);
+			return false;
+		}
+
+		static const fmt_query[] = "SELECT * FROM accounts WHERE name = '%s' AND password = MD5('%s')";
+		new query[sizeof(fmt_query) - 2 + 24 - 2 + 32];
+		mysql_format(mysql, query, sizeof(query), fmt_query,
+			GetPlayerData(playerid, p_name), password);
+		mysql_tquery(mysql, query, "CheckAccountPassword", "i", playerid);
+	}
+	return true;
+}
+
+forward RegistrationTimer(playerid);
+public RegistrationTimer(playerid){
+	GetPlayerName(playerid, GetPlayerData(playerid, p_name), MAX_PLAYER_NAME);
+	static const fmt_query[] = "SELECT * FROM accounts WHERE name = '%s' LIMIT 1";
+
+	new query[sizeof(fmt_query) - 2 + 24];
+	mysql_format(mysql, query, sizeof(query), fmt_query, GetPlayerData(playerid, p_name));
+	mysql_tquery(mysql, query, "CheckPlayerRegistration", "i", playerid);
+	return true;
 }
