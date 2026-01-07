@@ -8,6 +8,7 @@
 #include <Pawn.CMD>
 #include <streamer>
 #include <sscanf2>
+#include <cef>
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
 native IsValidVehicle(vehicleid);
@@ -31,6 +32,8 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\player\player_hooks.inc"
 #include "..\library\source\vehicle\vehicle_hooks.inc"
 #include "..\library\source\payday\payday_hooks.inc"
+
+#include "..\library\source\cef\cef_publics.inc"
 
 #include "..\library\source\player\player_dialogs.inc"
 #include "..\library\source\vehicle\vehicle_dialogs.inc"
