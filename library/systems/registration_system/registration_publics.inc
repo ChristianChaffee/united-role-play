@@ -124,6 +124,12 @@ public Registration_SendAge(playerid, const arguments[]){
 	return true;
 }
 
+forward Registration_SendGender(playerid, const arguments[]);
+public Registration_SendGender(playerid, const arguments[]){
+	sscanf(arguments, "i", GetPlayerData(playerid, p_sex));
+	return true;
+}
+
 forward Registration_Next(playerid, const arguments[]);
 public Registration_Next(playerid, const arguments[]){
 	if(strlen(GetPlayerData(playerid, p_password)) <= 0){

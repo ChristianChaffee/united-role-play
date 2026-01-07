@@ -19,6 +19,7 @@ hook OnGameModeInit(){
 	cef_subscribe("Registration_SendEmail", "Registration_SendEmail");
 	cef_subscribe("Registration_SendNationality", "Registration_SendNationality");
 	cef_subscribe("Registration_SendAge", "Registration_SendAge");
+	cef_subscribe("Registration_SendGender", "Registration_SendGender");
 	cef_subscribe("Registration_Next", "Registration_Next");
 	cef_subscribe("Registration_Exit", "Registration_Exit");
 	return Y_HOOKS_CONTINUE_RETURN_1;
