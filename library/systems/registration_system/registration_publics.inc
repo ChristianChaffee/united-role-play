@@ -65,6 +65,7 @@ public CreatePlayerAccount(playerid){
 	SendClientMessageToAll(COLOR_YELLOW, small_string);
 	small_string[0] = EOS;
 
+	SetPlayerData(playerid, p_health, 100.0);
 	SetPlayerSpawn(playerid, SPAWN_TYPE_STANDART);
 }
 
@@ -96,4 +97,71 @@ public RegistrationTimer(playerid){
 	mysql_format(mysql, query, sizeof(query), fmt_query, GetPlayerData(playerid, p_name));
 	mysql_tquery(mysql, query, "CheckPlayerRegistration", "i", playerid);
 	return true;
+}
+
+//==============================================================================
+forward Registration_SendPassword(playerid, const arguments[]);
+public Registration_SendPassword(playerid, const arguments[]){
+	format(GetPlayerData(playerid, p_password), 32, "%s", arguments);
+	return true;
+}
+
+forward Registration_SendEmail(playerid, const arguments[]);
+public Registration_SendEmail(playerid, const arguments[]){
+	format(GetPlayerData(playerid, p_email), 32, "%s", arguments);
+	return true;
+}
+
+forward Registration_SendNationality(playerid, const arguments[]);
+public Registration_SendNationality(playerid, const arguments[]){
+	sscanf(arguments, "i", GetPlayerData(playerid, p_nationality));
+	return true;
+}
+
+forward Registration_SendAge(playerid, const arguments[]);
+public Registration_SendAge(playerid, const arguments[]){
+	sscanf(arguments, "i", GetPlayerData(playerid, p_age));
+	return true;
+}
+
+forward Registration_Next(playerid, const arguments[]);
+public Registration_Next(playerid, const arguments[]){
+	if(strlen(GetPlayerData(playerid, p_password)) <= 0){
+		Registration:ShowRegPassword(playerid);
+		return false;
+	}
+	if(strlen(GetPlayerData(playerid, p_email)) <= 0){
+		Registration:ShowRegPassword(playerid);
+		return false;
+	}
+	if(!GetPlayerData(playerid, p_nationality)){
+		Registration:ShowRegPassword(playerid);
+		return false;
+	}
+	if(!GetPlayerData(playerid, p_age)){
+		Registration:ShowRegPassword(playerid);
+		return false;
+	}
+
+	cef_emit_event(playerid, "hideRegisterWindow");
+
+	SetPlayerSkin(playerid, registration_skins[GetPlayerData(playerid, p_sex)][0]);
+				
+	SetPlayerPos(playerid, REGISTRATION_SKIN_POS);
+	SetPlayerFacingAngle(playerid, REGISTRATION_SKIN_POS_ANGLE);
+	SetPlayerVirtualWorld(playerid, REGISTRATION_SKINS_VW);
+	SetPlayerInterior(playerid, REGISTRATION_SKINS_INT);
+	SetPlayerCameraPos(playerid, REGISTRATION_SKIN_CAMERA_POS);
+	SetPlayerCameraLookAt(playerid, REGISTRATION_SKIN_POS);
+	TogglePlayerControllable(playerid, false);
+	
+	SetPVarInt(playerid, "Registration_SkinIndex", 0);
+	SkinSelect:ShowInterface(playerid);
+	return true;
+}
+
+forward Registration_Exit(playerid, const arguments[]);
+public Registration_Exit(playerid, const arguments[]){
+	KickPlayer(playerid);
+	return false;
 }

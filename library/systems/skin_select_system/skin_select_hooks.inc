@@ -137,17 +137,13 @@ hook OnPlayerClickTextDraw(playerid, Text:clickedid){
 			SetPlayerData(playerid, p_skin, registration_skins[GetPlayerData(playerid, p_sex)][GetPVarInt(playerid, "Registration_SkinIndex")]);
 			DeletePVar(playerid, "Registration_SkinIndex");
 			Registration:SetCamera(playerid);
-			Registration:ShowRegCharacter(playerid);
 			SkinSelect:HideInterface(playerid);
+			Registration:FinishRegistration(playerid);
 		}
 	}
 	else if(_:clickedid == INVALID_TEXT_DRAW){
 		if(GetPVarType(playerid, "Registration_SkinIndex")){
-			SetPlayerData(playerid, p_skin, registration_skins[GetPlayerData(playerid, p_sex)][GetPVarInt(playerid, "Registration_SkinIndex")]);
-			DeletePVar(playerid, "Registration_SkinIndex");
-			Registration:SetCamera(playerid);
-			Registration:ShowRegCharacter(playerid);
-			SkinSelect:HideInterface(playerid);
+			SelectTextDraw(playerid, COLOR_BLUE);
 		}
 	}
 }

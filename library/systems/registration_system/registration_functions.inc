@@ -1,19 +1,6 @@
 
 stock Registration:ShowRegPassword(playerid){
-	big_string[0] = EOS;
-
-	format(big_string, sizeof(big_string),
-		"\\c"cl_grey"=========================================\n\
-		"cl_grey"- "cl_white"Аккаунт "cl_blue"%s "cl_white"не зарегистрирован на проекте\n\n\
-		"cl_grey"\\cПридумайте пароль для прохождения \n\
-		\\cдальнейшей регистрации на проекте\n\
-		\\c"cl_grey"=========================================",
-		GetPlayerData(playerid, p_name));
-
-	Dialog_Open(playerid, Dialog:D_REGISTRATION_PASSWORD, DIALOG_STYLE_INPUT, 
-		"Регистрация", big_string,
-		"Далее", "Выйти");
-	big_string[0] = EOS;
+	cef_emit_event(playerid, "showRegisterWindow", CEFSTR(GetPlayerData(playerid, p_name)));
 	return true;
 }
 
