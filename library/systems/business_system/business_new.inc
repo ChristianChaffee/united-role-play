@@ -105,7 +105,7 @@ new const business_menu_info[BUSINESS_TYPES_COUNT][MAX_BUSINESS_MENU_POSITIONS][
 		{"Чили-бургер", ITEM_PIZZA_ID, 2},
 		{"Дабл Чизбургер", ITEM_PIZZA_ID, 2},
 		{"Веганский бургер", ITEM_PIZZA_ID, 2},
-		{"ПФишбургер ", ITEM_PIZZA_ID, 2},
+		{"Фишбургер ", ITEM_PIZZA_ID, 2},
 		{"Безалкогольный газированный напиток \"Sprunk\"", ITEM_SPRUNK_ID, 1},
 		{"Безалкогольный газированный напиток \"eCola\"", ITEM_ECOLA_ID, 1},
 		{"Кофе", ITEM_COFFEE_ID, 1}
@@ -153,7 +153,7 @@ new const business_interior_info[BUSINESS_TYPES_COUNT][business_interior_info_st
 		362.8493, -75.1439, 1001.5078, 315.6623,
 		10,
 		376.4931, -67.4347, 1001.5078,
-		1582,
+		2703,
 		""cl_lime"[Меню бургерной]\n"cl_grey"'Left ALT'",
 
 		{379.4852, 376.4754},
