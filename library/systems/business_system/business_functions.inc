@@ -3,7 +3,7 @@ stock Business:ShowMenu(playerid, business_index){
 	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
 
 	switch(GetBusinessData(business_index, b_type)){
-		case BUSINESS_TYPE_PIZZA:{
+		case BUSINESS_TYPE_PIZZA, BUSINESS_TYPE_BURGER:{
 			big_string[0] = EOS;
 			format(big_string, sizeof(big_string),
 				""cl_grey"Название\t"cl_grey"Цена");

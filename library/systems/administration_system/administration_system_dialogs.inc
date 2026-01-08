@@ -129,7 +129,7 @@ DialogResponse:D_ADMIN_BIZ_CREATE_ACCEPT(playerid, response, listitem, inputtext
 	new query[sizeof(fmt_query) + ((-2 + 11) * 7) + (-2 + 64)];
 	mysql_format(mysql, query, sizeof(query), fmt_query,
 		GetPVarInt(playerid, "Admin_BusinessCreateType"),
-		GetPVarInt(playerid, "Admin_BusinessCreateName"), business_name,
+		business_name,
 		pos[0], pos[1], pos[2], 
 		GetPlayerVirtualWorld(playerid), GetPlayerInterior(playerid),
 		GetPVarInt(playerid, "Admin_BusinessCreatePrice"));

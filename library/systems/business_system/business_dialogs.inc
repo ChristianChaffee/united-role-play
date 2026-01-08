@@ -25,7 +25,7 @@ DialogResponse:D_BUSINESS_MENU(playerid, response, listitem, inputtext[]){
 	new price = business_info[business_index][b_products_prices][selected_position];
 
 	switch(business_type){
-		case BUSINESS_TYPE_PIZZA:{
+		case BUSINESS_TYPE_PIZZA, BUSINESS_TYPE_BURGER:{
 			if(GetPlayerData(playerid, p_money) < price && !GetPVarType(playerid, "PaymentMethodCard")){
 				SendErrorMessage(playerid, "У Вас недостаточно наличных денежных средств.");
 				Business:ShowMenu(playerid, business_index);

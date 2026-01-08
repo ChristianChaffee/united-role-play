@@ -59,6 +59,7 @@ enum
 {
 	BUSINESS_TYPE_NONE,
 	BUSINESS_TYPE_PIZZA,
+	BUSINESS_TYPE_BURGER,
 	BUSINESS_TYPES_COUNT
 }
 
@@ -71,7 +72,8 @@ enum
 //==============================================================================
 new const business_type_names[BUSINESS_TYPES_COUNT][32] = {
 	"None",
-	"Пиццерия"
+	"Пиццерия",
+	"Бургерная"
 };
 //==============================================================================
 enum business_menu_info_struct
@@ -92,6 +94,18 @@ new const business_menu_info[BUSINESS_TYPES_COUNT][MAX_BUSINESS_MENU_POSITIONS][
 		{"Пицца \"Карбонара\"", ITEM_PIZZA_ID, 2},
 		{"Пицца \"Мясная\"", ITEM_PIZZA_ID, 2},
 		{"Пицца \"Дьябло\"", ITEM_PIZZA_ID, 2},
+		{"Безалкогольный газированный напиток \"Sprunk\"", ITEM_SPRUNK_ID, 1},
+		{"Безалкогольный газированный напиток \"eCola\"", ITEM_ECOLA_ID, 1},
+		{"Кофе", ITEM_COFFEE_ID, 1}
+	},
+	{ /* Бургерная */
+		{"Чизбургер", ITEM_PIZZA_ID, 2},
+		{"Гамбургер", ITEM_PIZZA_ID, 2},
+		{"Бургер с беконом", ITEM_PIZZA_ID, 2},
+		{"Чили-бургер", ITEM_PIZZA_ID, 2},
+		{"Дабл Чизбургер", ITEM_PIZZA_ID, 2},
+		{"Веганский бургер", ITEM_PIZZA_ID, 2},
+		{"ПФишбургер ", ITEM_PIZZA_ID, 2},
 		{"Безалкогольный газированный напиток \"Sprunk\"", ITEM_SPRUNK_ID, 1},
 		{"Безалкогольный газированный напиток \"eCola\"", ITEM_ECOLA_ID, 1},
 		{"Кофе", ITEM_COFFEE_ID, 1}
@@ -133,6 +147,20 @@ new const business_interior_info[BUSINESS_TYPES_COUNT][business_interior_info_st
 		{1001.4922, 1001.4922},
 		{352.9149, 180.0},
 		{164, 155}
+	},
+
+	{ /* Бургерная */
+		362.8493, -75.1439, 1001.5078, 315.6623,
+		10,
+		376.4931, -67.4347, 1001.5078,
+		1582,
+		""cl_lime"[Меню бургерной]\n"cl_grey"'Left ALT'",
+
+		{379.4852, 376.4754},
+		{-67.4879, -65.8490},
+		{1001.5078, 1001.5078},
+		{86.6623, 180.0},
+		{164, 205}
 	}
 };
 
