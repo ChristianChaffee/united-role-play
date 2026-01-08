@@ -60,6 +60,7 @@ enum
 	BUSINESS_TYPE_NONE,
 	BUSINESS_TYPE_PIZZA,
 	BUSINESS_TYPE_BURGER,
+	BUSINESS_TYPE_FASTFOOD,
 	BUSINESS_TYPES_COUNT
 }
 
@@ -73,7 +74,8 @@ enum
 new const business_type_names[BUSINESS_TYPES_COUNT][32] = {
 	"None",
 	"Пиццерия",
-	"Бургерная"
+	"Бургерная",
+	"Фастфуд-ресторан"
 };
 //==============================================================================
 enum business_menu_info_struct
@@ -98,6 +100,7 @@ new const business_menu_info[BUSINESS_TYPES_COUNT][MAX_BUSINESS_MENU_POSITIONS][
 		{"Безалкогольный газированный напиток \"eCola\"", ITEM_ECOLA_ID, 1},
 		{"Кофе", ITEM_COFFEE_ID, 1}
 	},
+
 	{ /* Бургерная */
 		{"Чизбургер", ITEM_PIZZA_ID, 2},
 		{"Гамбургер", ITEM_PIZZA_ID, 2},
@@ -105,7 +108,20 @@ new const business_menu_info[BUSINESS_TYPES_COUNT][MAX_BUSINESS_MENU_POSITIONS][
 		{"Чили-бургер", ITEM_PIZZA_ID, 2},
 		{"Дабл Чизбургер", ITEM_PIZZA_ID, 2},
 		{"Веганский бургер", ITEM_PIZZA_ID, 2},
-		{"Фишбургер ", ITEM_PIZZA_ID, 2},
+		{"Фишбургер", ITEM_PIZZA_ID, 2},
+		{"Безалкогольный газированный напиток \"Sprunk\"", ITEM_SPRUNK_ID, 1},
+		{"Безалкогольный газированный напиток \"eCola\"", ITEM_ECOLA_ID, 1},
+		{"Кофе", ITEM_COFFEE_ID, 1}
+	},
+
+	{ /* Фастфуд-ресторан */
+		{"Чизбургер", ITEM_PIZZA_ID, 2},
+		{"Гамбургер", ITEM_PIZZA_ID, 2},
+		{"Картофель фри", ITEM_PIZZA_ID, 2},
+		{"Пицца \"Пепперони\"", ITEM_PIZZA_ID, 2},
+		{"Куриные наггетсы", ITEM_PIZZA_ID, 2},
+		{"Шаурма", ITEM_PIZZA_ID, 2},
+		{"Хот-дог", ITEM_PIZZA_ID, 2},
 		{"Безалкогольный газированный напиток \"Sprunk\"", ITEM_SPRUNK_ID, 1},
 		{"Безалкогольный газированный напиток \"eCola\"", ITEM_ECOLA_ID, 1},
 		{"Кофе", ITEM_COFFEE_ID, 1}
@@ -161,6 +177,20 @@ new const business_interior_info[BUSINESS_TYPES_COUNT][business_interior_info_st
 		{1001.5078, 1001.5078},
 		{86.6623, 180.0},
 		{164, 205}
+	},
+
+	{ /* Фастфуд-ресторан */
+		364.9359, -11.8011, 1001.8516, 0.0,
+		9,
+		368.1276, -6.0168, 1001.8516,
+		2769,
+		""cl_lime"[Меню фастфуд-ресторана]\n"cl_grey"'Left ALT'",
+
+		{363.8204, 368.0962},
+		{-7.4535, -4.4925},
+		{1001.8516, 1001.8516},
+		{270.0, 180.0},
+		{164, 167}
 	}
 };
 

@@ -3,7 +3,7 @@ stock Business:ShowMenu(playerid, business_index){
 	if(business_index < 0 || business_index >= MAX_BUSINESS) return false;
 
 	switch(GetBusinessData(business_index, b_type)){
-		case BUSINESS_TYPE_PIZZA, BUSINESS_TYPE_BURGER:{
+		case BUSINESS_TYPE_PIZZA, BUSINESS_TYPE_BURGER, BUSINESS_TYPE_FASTFOOD:{
 			new counter;
 
 			cef_emit_event(playerid, "clearShopItems");
