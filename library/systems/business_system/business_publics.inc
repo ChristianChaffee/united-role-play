@@ -149,3 +149,86 @@ public NewBusinessCreated(){
 	mysql_format(mysql, query, sizeof(query), fmt_query, insert_id);
 	mysql_tquery(mysql, query, "LoadBusinesses", "i", business_index);
 }
+
+forward Shop_BuyItem(playerid, const arguments[]);
+public Shop_BuyItem(playerid, const arguments[]){
+	new item_index, money_type;
+	sscanf(arguments, "ii", item_index, money_type);
+
+	new business_index = Business:GetBusinessIndexByVW(GetPlayerVirtualWorld(playerid)),
+		selected_position = player_listitems[playerid][item_index],
+		price = business_info[business_index][b_products_prices][selected_position],
+		business_type = GetBusinessData(business_index, b_type);
+
+	if(business_index == -1){
+		cef_emit_event(playerid, "hideShopWindow");
+		return false;
+	}
+
+	if(GetBusinessData(business_index, b_products) - GetBusinessMenuData(business_type, selected_position, bm_products_price) < 0){
+		cef_emit_event(playerid, "showShopNotification",
+			CEFSTR("В бизнесе недостаточно продуктов."));
+		return false;
+	}
+	if(GetPlayerData(playerid, p_money) < price && !money_type){
+		cef_emit_event(playerid, "showShopNotification",
+			CEFSTR("У Вас недостаточно наличных денежных средств."));
+		return false;
+	}
+	if(!GetPlayerBankCardData(playerid, pbc_id) && money_type){
+		cef_emit_event(playerid, "showShopNotification",
+			CEFSTR("У Вас нет банковской карты."));
+		return false;
+	}
+	if(GetPlayerBankCardData(playerid, pbc_balance) < price && money_type){
+		cef_emit_event(playerid, "showShopNotification",
+			CEFSTR("У Вас недостаточно денежных средств на банковской карте."));
+		return false;
+	}
+
+	new slot_index = Inventory:GetFreeSlotIndex(playerid);
+	if(slot_index == -1){
+		SendErrorMessage(playerid, "У Вас в инвнтаре недостаточно места.");
+		Business:ShowMenu(playerid, business_index);
+		return false;
+	}
+
+	Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(business_type, selected_position, bm_item_id));
+
+	if(!money_type){
+		GiveMoney(playerid, -price);
+	}
+	else{
+		Bank:GiveMoney(playerid, -price);
+	}
+
+	if(GetPlayerData(playerid, p_id) != GetBusinessData(business_index, b_owner_id)){
+		new tips_chance = random(100);
+		if((business_info[business_index][b_perks][BUSINESS_PERK_CASHBOX] && tips_chance <= BUSINESS_TIPS_CASH_PERCENT)
+			|| (!business_info[business_index][b_perks][BUSINESS_PERK_CASHBOX] && tips_chance <= BUSINESS_TIPS_DEF_PERCENT)){
+
+			AddBusinessData(business_index, b_balance, RandomEx(BUSINESS_TIPS_MIN_SUM, BUSINESS_TIPS_MAX_SUM));
+		}
+	}
+
+	AddBusinessData(business_index, b_balance, price);
+	AddBusinessData(business_index, b_products, -GetBusinessMenuData(business_type, selected_position, bm_products_price));
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		""cl_lime"Вы купили: "cl_white"%s.",
+		GetBusinessMenuData(business_type, selected_position, bm_name));
+	SendClientMessage(playerid, -1, small_string);
+	SendClientMessage(playerid, COLOR_GREY, "- Предмет помещён в инвентарь (/inv).");
+	small_string[0] = EOS;
+
+	static const fmt_query[] = "UPDATE business SET products = %d, balance = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 3)];
+	mysql_format(mysql, query, sizeof(query), fmt_query, 
+		GetBusinessData(business_index, b_products), GetBusinessData(business_index, b_balance),
+		GetBusinessData(business_index, b_id));
+	mysql_tquery(mysql, query);
+
+	cef_emit_event(playerid, "hideShopWindow");
+	return true;
+}

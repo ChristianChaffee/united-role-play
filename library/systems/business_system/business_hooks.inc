@@ -3,6 +3,8 @@
 
 //==============================================================================
 hook OnGameModeInit(){
+	cef_subscribe("Shop_BuyItem", "Shop_BuyItem");
+
 	CreateDynamicPickup(1239, 23, BUSINESS_INFO_PICKUP_POS, BUSINESS_INFO_PICKUP_VW, BUSINESS_INFO_PICKUP_INT);
 	CreateDynamic3DTextLabel(""cl_lime"Информация по бизнесам\n"cl_grey"'Left ALT'", -1, 
 		BUSINESS_INFO_PICKUP_POS, 15.0, _, _, 1, 
