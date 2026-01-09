@@ -335,6 +335,31 @@ stock Inventory:UseItem(playerid, slot_index){
 
 				Inventory:SetPlayerSlotNull(playerid, slot_index);
 			}
+			case ITEM_MASK_ID:{
+				if(GetPVarType(playerid, "Mask")){
+					Inventory:ShowError(playerid, "У Вас уже надета маска. Чтобы снять её, введите '/maskoff'.");
+					return false;
+				}
+
+				SetPVarInt(playerid, "Mask", 1);
+				SetPVarInt(playerid, "Mask_Timer", 600);
+
+				SendMeAction(playerid, "надел(-а) маску.");
+
+				SetPlayerColor(playerid, GetPlayerColorEx(playerid));
+				GameTextForPlayer(playerid, "~b~Invisible ~g~ON", 5000, 3);
+				ApplyAnimation(playerid, "shop","ROB_Shifty",4.0,0,0,0,0,0,1);
+
+				SetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count, GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) - 1);
+				if(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) <= 0){
+					Inventory:SetPlayerSlotNull(playerid, slot_index);
+				}
+				else{
+					Inventory:SaveItem(playerid, slot_index);
+				}
+
+				SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: Чтобы снять маску используйте '/maskoff'");
+			}
 		}
 	}
 

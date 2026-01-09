@@ -44,3 +44,18 @@ hook function SetPlayerDrunkLevel(playerid, level){
 	SetPlayerData(playerid, p_drunked_level, level);
 	continue (playerid, level);
 }
+
+//==============================================================================
+hook stock OnPlayerSecondUpdate(playerid){
+	if(GetPVarType(playerid, "Mask") && GetPVarType(playerid, "Mask_Timer") && GetPVarInt(playerid, "Mask_Timer") > 0){
+		SetPVarInt(playerid, "Mask_Timer", GetPVarInt(playerid, "Mask_Timer") - 1);
+		if(GetPVarInt(playerid, "Mask_Timer") <= 0){
+			DeletePVar(playerid, "Mask");
+			DeletePVar(playerid, "Mask_Timer");
+		
+			SetPlayerColor(playerid, GetPlayerColorEx(playerid));
+			GameTextForPlayer(playerid, "~b~Invisible ~r~OFF", 5000, 3);
+		}
+	}
+	return continue(playerid);
+}

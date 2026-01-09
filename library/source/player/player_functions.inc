@@ -36,6 +36,7 @@ stock SetPlayerSpawn(playerid, spawn_type){
 	TogglePlayerControllable(playerid, true);
 
 	GivePlayerAllWeapons(playerid);
+	SetPlayerColor(playerid, GetPlayerColorEx(playerid));
 
 	CheckPlayerNotifications(playerid);
 	return true;
@@ -380,4 +381,9 @@ stock GivePlayerAllWeapons(playerid){
 
 	SetPlayerArmedWeapon(playerid, 0);
 	return true;
+}
+
+stock GetPlayerColorEx(playerid){
+	if(GetPVarType(playerid, "Mask")) return 0x7a766700;
+	return 0xFFFFFFAA;
 }
