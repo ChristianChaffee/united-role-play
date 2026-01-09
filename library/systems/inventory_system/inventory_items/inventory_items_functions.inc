@@ -185,7 +185,8 @@ stock Inventory:UseItem(playerid, slot_index){
 				Inventory:SetPlayerSlotNull(playerid, slot_index);
 			}
 			case ITEM_TOMATO_ID, ITEM_ORANGE_ID, ITEM_RED_APPLE_ID, ITEM_GREEN_APPLE_ID, ITEM_CHEESBURGER_ID,
-				ITEM_HAMBURGER_ID, ITEM_KEBAB_ID, ITEM_BANAN_ID, ITEM_PIZZA_ID:{
+				ITEM_HAMBURGER_ID, ITEM_KEBAB_ID, ITEM_BANAN_ID, ITEM_PIZZA_ID, ITEM_FRIED_POTATO_ID, ITEM_NUGGETS_ID,
+				ITEM_HOT_DOG_ID:{
 
 				new 
 					give_satiety = GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_static_value_one),
