@@ -49,6 +49,9 @@ enum player_info_struct
 
 	Float:p_health,
 	p_drunked_level,
+
+	p_phone,
+	p_sim_card,
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -73,7 +76,10 @@ new const player_info_default[player_info_struct] = {
 	false,
 
 	100.0,
-	0
+	0,
+
+	0,
+	-1
 };
 
 //==============================================================================

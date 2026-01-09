@@ -10,6 +10,8 @@ hook OnGameModeInit(){
 	cef_subscribe("Inventory_TransferItem", "Inventory_TransferItem");
 	cef_subscribe("Inventory_TransferOfferAccept", "Inventory_TransferOfferAccept");
 	cef_subscribe("Inventory_TransferOfferDecline", "Inventory_TransferOfferDecline");
+	cef_subscribe("Inventory_PhoneRemove", "Inventory_PhoneRemove");
+	cef_subscribe("Inventory_SimCardRemove", "Inventory_SimCardRemove");
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 

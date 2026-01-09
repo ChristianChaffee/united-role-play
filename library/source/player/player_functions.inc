@@ -64,6 +64,9 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	cache_get_value_name_float(0, "health", GetPlayerData(playerid, p_health));
 	cache_get_value_name_int(0, "drunked_level", GetPlayerData(playerid, p_drunked_level));
 
+	cache_get_value_name_int(0, "phone", GetPlayerData(playerid, p_phone));
+	cache_get_value_name_int(0, "sim_card", GetPlayerData(playerid, p_sim_card));
+
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
 

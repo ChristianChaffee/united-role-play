@@ -36,7 +36,6 @@ public Inventory_UseItem(playerid, const arguments[]){
 	}
 
 	Inventory:UseItem(playerid, slot_index);
-	Inventory:Hide(playerid);
 	return true;
 }
 
@@ -247,5 +246,68 @@ public Inventory_TransferOfferDecline(playerid, const arguments[]){
 		GetPlayerData(scdplayerid, p_name), scdplayerid);
 	SendErrorMessage(playerid, small_string);
 	small_string[0] = EOS;
+	return true;
+}
+
+forward Inventory_PhoneRemove(playerid, const arguments[]);
+public Inventory_PhoneRemove(playerid, const arguments[]){
+	if(GetPlayerData(playerid, p_sim_card) != -1){
+		Inventory:ShowError(playerid, "Сначала снимите SIM-карту.");
+		return false;
+	}
+
+	new free_slot_index = Inventory:GetFreeSlotIndex(playerid);
+	if(free_slot_index == -1){
+		Inventory:ShowError(playerid, "У Вас нет места в инвентаре.");
+		return false;
+	}
+
+	Inventory:GiveItem(playerid, free_slot_index, ITEM_PHONE_ID);
+
+	SetPlayerData(playerid, p_phone, 0);
+	static const fmt_query[] = "UPDATE accounts SET phone = 0 WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerData(playerid, p_id));
+	mysql_tquery(mysql, query);
+
+	cef_emit_event(playerid, "setPhoneSlot", CEFSTR(""), CEFSTR(""));
+
+	cef_emit_event(playerid, "setInventoryItem",
+		CEFINT(GetPlayerInventoryItemData(playerid, free_slot_index, inv_player_item_slot)),
+		CEFSTR(GetInventoryItemData(inventory_player[playerid][free_slot_index][inv_player_item_id], item_name)),
+		CEFINT(GetPlayerInventoryItemData(playerid, free_slot_index, inv_player_item_count)),
+		CEFSTR(GetInventoryItemData(inventory_player[playerid][free_slot_index][inv_player_item_id], item_img_url)),
+		CEFSTR(GetInventoryItemData(inventory_player[playerid][free_slot_index][inv_player_item_id], item_description)));
+	return true;
+}
+
+forward Inventory_SimCardRemove(playerid, const arguments[]);
+public Inventory_SimCardRemove(playerid, const arguments[]){
+	new sim_card_number = strval(arguments);
+
+	new free_slot_index = Inventory:GetFreeSlotIndex(playerid);
+	if(free_slot_index == -1){
+		Inventory:ShowError(playerid, "У Вас нет места в инвентаре.");
+		return false;
+	}
+
+	Inventory:GiveItem(playerid, free_slot_index, ITEM_SIM_CARD_ID, _, sim_card_number);
+
+	SetPlayerData(playerid, p_sim_card, -1);
+	static const fmt_query[] = "UPDATE accounts SET sim_card = -1 WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerData(playerid, p_id));
+	mysql_tquery(mysql, query);
+
+	cef_emit_event(playerid, "setSimCardSlot", CEFSTR(""), CEFSTR(""));
+
+	cef_emit_event(playerid, "setInventoryItem",
+		CEFINT(GetPlayerInventoryItemData(playerid, free_slot_index, inv_player_item_slot)),
+		CEFSTR(GetInventoryItemData(inventory_player[playerid][free_slot_index][inv_player_item_id], item_name)),
+		CEFINT(GetPlayerInventoryItemData(playerid, free_slot_index, inv_player_item_count)),
+		CEFSTR(GetInventoryItemData(inventory_player[playerid][free_slot_index][inv_player_item_id], item_img_url)),
+		CEFSTR(GetInventoryItemData(inventory_player[playerid][free_slot_index][inv_player_item_id], item_description)));
 	return true;
 }

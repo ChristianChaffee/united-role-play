@@ -10,6 +10,20 @@ stock Inventory:Show(playerid){
 		CEFINT(GetPlayerData(playerid, p_money)),
 		CEFINT(GetPlayerBankCardData(playerid, pbc_balance)));
 
+	if(GetPlayerData(playerid, p_phone)){
+		cef_emit_event(playerid, "setPhoneSlot",
+			CEFSTR(" "),
+			CEFSTR(GetInventoryItemData(ITEM_PHONE_ID, item_img_url)));
+	}
+	if(GetPlayerData(playerid, p_sim_card) != -1){
+		new sim_card_name[16];
+		format(sim_card_name, sizeof(sim_card_name), "%d", GetPlayerData(playerid, p_sim_card));
+
+		cef_emit_event(playerid, "setSimCardSlot",
+			CEFSTR(sim_card_name),
+			CEFSTR(GetInventoryItemData(ITEM_SIM_CARD_ID, item_img_url)));
+	}
+
 	for(new i; i < MAX_INVENTORY_SLOTS; i++){
 		if(!GetPlayerInventoryItemData(playerid, i, inv_player_id)) continue;
 

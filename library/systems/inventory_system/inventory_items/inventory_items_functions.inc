@@ -280,6 +280,48 @@ stock Inventory:UseItem(playerid, slot_index){
 					Inventory:SaveItem(playerid, slot_index);
 				}
 			}
+			case ITEM_PHONE_ID:{
+				if(GetPlayerData(playerid, p_phone)){
+					Inventory:ShowError(playerid, "У Вас уже есть телефон в слоте для телефона. Сначала уберите его.");
+					return false;
+				}
+
+				SetPlayerData(playerid, p_phone, 1);
+				static const fmt_query[] = "UPDATE accounts SET phone = 1 WHERE id = %d";
+				new query[sizeof(fmt_query) + (-2 + 11)];
+				mysql_format(mysql, query, sizeof(query), fmt_query,
+					GetPlayerData(playerid, p_id));
+				mysql_tquery(mysql, query);
+		
+				Inventory:SetPlayerSlotNull(playerid, slot_index);
+				SendClientMessage(playerid, COLOR_GREEN, "Теперь у Вас есть активный телефон. Используйте '/phone'.");
+			}
+			case ITEM_SIM_CARD_ID:{
+				if(!GetPlayerData(playerid, p_phone)){
+					Inventory:ShowError(playerid, "У Вас нет телефона в слоте под телефон. Сначала выберите его.");
+					return false;
+				}
+				if(GetPlayerData(playerid, p_sim_card) != -1){
+					Inventory:ShowError(playerid, "У Вас уже есть SIM-карта в слоте для SIM-карты. Сначала уберите её.");
+					return false;
+				}
+
+				SetPlayerData(playerid, p_sim_card, GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one));
+				static const fmt_query[] = "UPDATE accounts SET sim_card = %d WHERE id = %d";
+				new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+				mysql_format(mysql, query, sizeof(query), fmt_query,
+					GetPlayerData(playerid, p_sim_card), GetPlayerData(playerid, p_id));
+				mysql_tquery(mysql, query);
+
+				Inventory:SetPlayerSlotNull(playerid, slot_index);
+
+				small_string[0] = EOS;
+				format(small_string, sizeof(small_string),
+					"Теперь у Вас есть активная сим-карта. Ваш номер телефона: "cl_white"%d",
+					GetPlayerData(playerid, p_sim_card));
+				SendClientMessage(playerid, COLOR_GREEN, small_string);
+				small_string[0] = EOS;
+			}
 		}
 	}
 
