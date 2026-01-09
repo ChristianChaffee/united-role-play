@@ -321,6 +321,8 @@ stock Inventory:UseItem(playerid, slot_index){
 					GetPlayerData(playerid, p_sim_card));
 				SendClientMessage(playerid, COLOR_GREEN, small_string);
 				small_string[0] = EOS;
+
+				SendMeAction(playerid, "поставил(-а) SIM-карту в телефон.");
 			}
 			case ITEM_CAMERA_ID, ITEM_FLOWERS_ID:{
 				new weaponid;
@@ -334,6 +336,13 @@ stock Inventory:UseItem(playerid, slot_index){
 				UpdatePlayerWeapons(playerid);
 
 				Inventory:SetPlayerSlotNull(playerid, slot_index);
+
+				small_string[0] = EOS;
+				format(small_string, sizeof(small_string),
+					"достал(-а) %s.",
+					GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_action_text));
+				SendMeAction(playerid, small_string, true);
+				small_string[0] = EOS;
 			}
 			case ITEM_MASK_ID:{
 				if(GetPVarType(playerid, "Mask")){
@@ -359,6 +368,32 @@ stock Inventory:UseItem(playerid, slot_index){
 				}
 
 				SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: Чтобы снять маску используйте '/maskoff'");
+			}
+			case ITEM_MED_KIT_ID:{
+				new Float:health;
+				GetPlayerHealth(playerid, health);
+
+				if(health >= 100.0){
+					Inventory:ShowError(playerid, "У Вас максимальный уровень здоровья.");
+					return false;
+				}
+
+				health += 25.0;
+				if(health > 100.0){
+					health = 100.0;
+				}
+
+				ApplyAnimation(playerid,"ped","gum_eat",4.0,0,0,0,0,0,1);
+				SetPlayerHealth(playerid, health);
+				SendMeAction(playerid, "использовал(-а) аптечку.");
+
+				SetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count, GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) - 1);
+				if(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) <= 0){
+					Inventory:SetPlayerSlotNull(playerid, slot_index);
+				}
+				else{
+					Inventory:SaveItem(playerid, slot_index);
+				}
 			}
 		}
 	}

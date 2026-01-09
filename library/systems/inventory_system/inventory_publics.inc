@@ -309,5 +309,7 @@ public Inventory_SimCardRemove(playerid, const arguments[]){
 		CEFINT(GetPlayerInventoryItemData(playerid, free_slot_index, inv_player_item_count)),
 		CEFSTR(GetInventoryItemData(inventory_player[playerid][free_slot_index][inv_player_item_id], item_img_url)),
 		CEFSTR(GetInventoryItemData(inventory_player[playerid][free_slot_index][inv_player_item_id], item_description)));
+
+	SendMeAction(playerid, "достал(-а) SIM-карту из телефона.");
 	return true;
 }
