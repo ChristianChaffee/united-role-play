@@ -18,6 +18,8 @@ public LoadInventoryItems(){
 
 		cache_get_value_name_int(i, "static_value_one", inventory_item_info[i + 1][item_static_value_one]);
 		cache_get_value_name_int(i, "static_value_two", inventory_item_info[i + 1][item_static_value_two]);
+
+		cache_get_value_name(i, "img_url", inventory_item_info[i + 1][item_img_url]);
 	}
 
 	printf("[LoadInventoryItems]: Предметы инвентаря загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);

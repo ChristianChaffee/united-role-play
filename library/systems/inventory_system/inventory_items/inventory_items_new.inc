@@ -26,7 +26,7 @@
 
 
 #define MAX_INVENTORY_ITEMS 					24
-#define MAX_INVENTORY_SLOTS  					75
+#define MAX_INVENTORY_SLOTS  					27
 
 #define GetInventoryItemData(%0,%1) 			inventory_item_info[%0][%1]
 
@@ -46,7 +46,8 @@ enum inventory_item_info_struct
 	Float:item_rot_z,
 	Float:item_scale,
 	item_static_value_one,
-	item_static_value_two
+	item_static_value_two,
+	item_img_url[64]
 }
 new inventory_item_info[MAX_INVENTORY_ITEMS + 1][inventory_item_info_struct];
 

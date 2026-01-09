@@ -1,88 +1,44 @@
 
 stock Inventory:Show(playerid){
-	for(new i; i < sizeof(InvParadox_TD); i++){
-		TextDrawShowForPlayer(playerid, InvParadox_TD[i]);
+	cef_emit_event(playerid, "showInventory");
+
+	cef_emit_event(playerid, "setInventoryData",
+		CEFSTR(GetPlayerData(playerid, p_name)),
+		CEFINT(GetPlayerData(playerid, p_level)),
+		CEFINT(GetPlayerData(playerid, p_exp)),
+		CEFINT(GetExpToNextLevel(GetPlayerData(playerid, p_level) + 1)),
+		CEFINT(GetPlayerData(playerid, p_money)),
+		CEFINT(GetPlayerBankCardData(playerid, pbc_balance)));
+
+	for(new i; i < MAX_INVENTORY_SLOTS; i++){
+		if(!GetPlayerInventoryItemData(playerid, i, inv_player_id)) continue;
+
+		cef_emit_event(playerid, "setInventoryItem",
+			CEFINT(GetPlayerInventoryItemData(playerid, i, inv_player_item_slot)),
+			CEFSTR(GetInventoryItemData(inventory_player[playerid][i][inv_player_item_id], item_name)),
+			CEFINT(GetPlayerInventoryItemData(playerid, i, inv_player_item_count)),
+			CEFSTR(GetInventoryItemData(inventory_player[playerid][i][inv_player_item_id], item_img_url)),
+			CEFSTR(GetInventoryItemData(inventory_player[playerid][i][inv_player_item_id], item_description)));
 	}
-	for(new i; i < 21; i++){
-		PlayerTextDrawShow(playerid, InvParadox_PTD[playerid][i]);
+
+	for(new i; i < PLAYER_ACCESSORIES_SLOTS_COUNT; i++){
+		if(!GetPlayerAccessoryData(playerid, i, player_acc_id)) continue;
+
+		cef_emit_event(playerid, "setAccessorySlot",
+			CEFINT(GetPlayerAccessoryData(playerid, i, player_acc_slot_index)),
+			CEFSTR(GetInventoryItemData(GetAccessoryItemData(GetPlayerAccessoryData(playerid, i, player_acc_item_id), acc_item_id), item_name)),
+			CEFSTR(GetInventoryItemData(GetAccessoryItemData(GetPlayerAccessoryData(playerid, i, player_acc_item_id), acc_item_id), item_img_url)));
 	}
-	for(new i; i < 25; i++){
-		PlayerTextDrawShow(playerid, SlotParadox_PTD[playerid][i]);
-	}
-	SelectTextDraw(playerid, COLOR_GREY);
-	DeletePVar(playerid, "Inventory_SelectedSlot");
-	SetPVarInt(playerid, "Inventory_Page", 1);
-	Inventory:UpdatePages(playerid);
 	return true;
 }
 
 stock Inventory:Hide(playerid){
-	for(new i; i < sizeof(InvParadox_TD); i++){
-		TextDrawHideForPlayer(playerid, InvParadox_TD[i]);
-	}
-	for(new i; i < 21; i++){
-		PlayerTextDrawHide(playerid, InvParadox_PTD[playerid][i]);
-	}
-	for(new i; i < 25; i++){
-		PlayerTextDrawHide(playerid, SlotParadox_PTD[playerid][i]);
-	}
-
-	PlayerTextDrawColor(playerid, SlotParadox_PTD[playerid][GetPVarInt(playerid, "Inventory_SelectedSlot")], -1);
-	
-	CancelSelectTextDraw(playerid);
-	DeletePVar(playerid, "Inventory_SelectedSlot");
-	DeletePVar(playerid, "Inventory_Page");
+	cef_emit_event(playerid, "hideInventory");
 	return true;
 }
 
-stock Inventory:UpdatePreviewModels(playerid){
-	PlayerTextDrawHide(playerid, InvParadox_PTD[playerid][0]);
-	PlayerTextDrawSetPreviewModel(playerid, InvParadox_PTD[playerid][0], GetPlayerSkin(playerid));
-	PlayerTextDrawShow(playerid, InvParadox_PTD[playerid][0]);
-
-	for(new i, model_id, item_index; i < 25; i++){
-		PlayerTextDrawHide(playerid, SlotParadox_PTD[playerid][i]);
-
-		item_index = Inventory:FindItemWithSlot(playerid, (GetPVarInt(playerid, "Inventory_Page") - 1) * 25 + i);
-
-		model_id = (item_index == -1) ? (1649) : (GetInventoryItemData(inventory_player[playerid][item_index][inv_player_item_id], item_model_id));
-
-		PlayerTextDrawSetPreviewModel(playerid, SlotParadox_PTD[playerid][i], model_id);
-		PlayerTextDrawSetPreviewRot(playerid, SlotParadox_PTD[playerid][i], 
-			(item_index == -1) ? (0.0) : (GetInventoryItemData(inventory_player[playerid][item_index][inv_player_item_id], item_rot_x)), 
-			(item_index == -1) ? (0.0) : (GetInventoryItemData(inventory_player[playerid][item_index][inv_player_item_id], item_rot_y)), 
-			(item_index == -1) ? (0.0) : (GetInventoryItemData(inventory_player[playerid][item_index][inv_player_item_id], item_rot_z)), 
-			(item_index == -1) ? (0.0) : (GetInventoryItemData(inventory_player[playerid][item_index][inv_player_item_id], item_scale)));
-
-		PlayerTextDrawShow(playerid, SlotParadox_PTD[playerid][i]);
-	}
-
-	for(new i = 12, temp_acc_slot_index, model_id, item_index; i <= 17; i++){
-		temp_acc_slot_index = i - 12;
-		item_index = Inventory:FindAccItemWithSlot(playerid, temp_acc_slot_index);
-
-		model_id = (item_index == -1) ? (1649) : (GetInventoryItemData(GetAccessoryItemData(player_accessories_items_info[playerid][item_index][player_acc_item_id], acc_item_id), item_model_id));
-	
-		PlayerTextDrawSetPreviewModel(playerid, InvParadox_PTD[playerid][i], model_id);
-		PlayerTextDrawSetPreviewRot(playerid, InvParadox_PTD[playerid][i], 
-			(item_index == -1) ? (0.0) : (GetInventoryItemData(GetAccessoryItemData(player_accessories_items_info[playerid][item_index][player_acc_item_id], acc_item_id), item_rot_x)), 
-			(item_index == -1) ? (0.0) : (GetInventoryItemData(GetAccessoryItemData(player_accessories_items_info[playerid][item_index][player_acc_item_id], acc_item_id), item_rot_y)), 
-			(item_index == -1) ? (0.0) : (GetInventoryItemData(GetAccessoryItemData(player_accessories_items_info[playerid][item_index][player_acc_item_id], acc_item_id), item_rot_z)), 
-			(item_index == -1) ? (0.0) : (GetInventoryItemData(GetAccessoryItemData(player_accessories_items_info[playerid][item_index][player_acc_item_id], acc_item_id), item_scale)));
-
-		PlayerTextDrawShow(playerid, InvParadox_PTD[playerid][i]);
-	}
-}
-
-stock Inventory:UpdatePages(playerid){
-	if(!GetPVarType(playerid, "Inventory_Page")) return false;
-
-	for(new i = 18; i <= 20; i++){
-		PlayerTextDrawHide(playerid, InvParadox_PTD[playerid][i]);
-		PlayerTextDrawColor(playerid, InvParadox_PTD[playerid][i], (GetPVarInt(playerid, "Inventory_Page") == (i - 18 + 1)) ? (-1503414785) : (2134219775));
-		PlayerTextDrawShow(playerid, InvParadox_PTD[playerid][i]);
-	}
-
-	Inventory:UpdatePreviewModels(playerid);
+stock Inventory:ShowError(playerid, text[]){
+	cef_emit_event(playerid, "showInventoryError",
+		CEFSTR(text));
 	return true;
 }

@@ -13,6 +13,11 @@ stock Inventory:FindAccItemWithSlot(playerid, slot_index){
 	return -1;
 }
 
+stock Inventory:GetItemIdByAccSlot(playerid, acc_slot_index){
+	if(acc_slot_index < 0 || acc_slot_index >= PLAYER_ACCESSORIES_SLOTS_COUNT) return 0;
+	return GetInventoryItemData(GetAccessoryItemData(GetPlayerAccessoryData(playerid, acc_slot_index, player_acc_item_id), acc_item_id), item_id);
+}
+
 stock Inventory:UpdatePlayersAccessories(playerid){
 	for(new i; i < PLAYER_ACCESSORIES_SLOTS_COUNT; i++){
 		RemovePlayerAttachedObject(playerid, i);
@@ -44,6 +49,8 @@ stock Inventory:SetAccSlotNull(playerid, slot_index){
 	SetPlayerAccessoryData(playerid, slot_index, player_acc_id, 0);
 	SetPlayerAccessoryData(playerid, slot_index, player_acc_item_id, 0);
 	SetPlayerAccessoryData(playerid, slot_index, player_acc_slot_index, 0);
+
+	Inventory:UpdatePlayersAccessories(playerid);
 	return true;
 }
 

@@ -487,6 +487,7 @@ stock OnMySQLConnect(){
 }
 
 #include "..\library\systems\registration_system\registration_publics.inc"
+#include "..\library\systems\inventory_system\inventory_publics.inc"
 #include "..\library\systems\inventory_system\inventory_items\inventory_items_publics.inc"
 #include "..\library\systems\inventory_system\accessories_items\accessories_items_publics.inc"
 #include "..\library\systems\enter_exits_system\enter_exits_publics.inc"
