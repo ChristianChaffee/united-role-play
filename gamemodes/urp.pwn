@@ -624,3 +624,27 @@ stock IsDataBaseLoaded(){
 	if(!load_info[loaded_start_quests]) return false;
 	return true;
 }
+
+stock GenerateSimCardNumber(){
+	new random_number = RandomEx(100000, 999999);
+
+	static const fmt_query[] = "SELECT id FROM player_inventory_items WHERE item_id = %d AND value_one = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		ITEM_SIM_CARD_ID, random_number);
+	mysql_query(mysql, query);
+
+	new rows;
+	cache_get_row_count(rows);
+	
+	while(rows){
+		random_number = RandomEx(100000, 999999);
+		mysql_format(mysql, query, sizeof(query), fmt_query,
+			ITEM_SIM_CARD_ID, random_number);
+		mysql_query(mysql, query);
+
+		cache_get_row_count(rows);
+	}
+
+	return random_number;
+}

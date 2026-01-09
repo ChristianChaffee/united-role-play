@@ -26,9 +26,15 @@
 #define ITEM_FRIED_POTATO_ID 					25
 #define ITEM_NUGGETS_ID 						26
 #define ITEM_HOT_DOG_ID 						27
+#define ITEM_MED_KIT_ID 						28
+#define ITEM_PHONE_ID 							29
+#define ITEM_SIM_CARD_ID 						30
+#define ITEM_MASK_ID 							31
+#define ITEM_CAMERA_ID 							32
+#define ITEM_FLOWERS_ID 						33
 
 
-#define MAX_INVENTORY_ITEMS 					27
+#define MAX_INVENTORY_ITEMS 					33
 #define MAX_INVENTORY_SLOTS  					27
 
 #define GetInventoryItemData(%0,%1) 			inventory_item_info[%0][%1]

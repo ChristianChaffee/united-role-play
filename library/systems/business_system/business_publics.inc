@@ -193,7 +193,22 @@ public Shop_BuyItem(playerid, const arguments[]){
 		return false;
 	}
 
-	Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(business_type, selected_position, bm_item_id));
+	//---------------------------------
+	if(business_type == BUSINESS_TYPE_SHOP 
+		&& GetBusinessMenuData(business_type, selected_position, bm_item_id) == ITEM_SIM_CARD_ID){
+
+		new sim_card_number = GenerateSimCardNumber();
+		Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(business_type, selected_position, bm_item_id), _, sim_card_number);
+	}
+	else if(business_type == BUSINESS_TYPE_SHOP 
+		&& GetBusinessMenuData(business_type, selected_position, bm_item_id) == ITEM_CAMERA_ID){
+
+		Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(business_type, selected_position, bm_item_id), _, 50);
+	}
+	else{
+		Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(business_type, selected_position, bm_item_id));
+	}
+	//---------------------------------
 
 	if(!money_type){
 		GiveMoney(playerid, -price);

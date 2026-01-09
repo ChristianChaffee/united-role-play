@@ -61,6 +61,7 @@ enum
 	BUSINESS_TYPE_PIZZA,
 	BUSINESS_TYPE_BURGER,
 	BUSINESS_TYPE_FASTFOOD,
+	BUSINESS_TYPE_SHOP,
 	BUSINESS_TYPES_COUNT
 }
 
@@ -75,7 +76,8 @@ new const business_type_names[BUSINESS_TYPES_COUNT][32] = {
 	"None",
 	"Пиццерия",
 	"Бургерная",
-	"Фастфуд-ресторан"
+	"Фастфуд-ресторан",
+	"Магазин 24/7"
 };
 //==============================================================================
 enum business_menu_info_struct
@@ -125,6 +127,19 @@ new const business_menu_info[BUSINESS_TYPES_COUNT][MAX_BUSINESS_MENU_POSITIONS][
 		{"Безалкогольный газированный напиток \"Sprunk\"", ITEM_SPRUNK_ID, 1},
 		{"Безалкогольный газированный напиток \"eCola\"", ITEM_ECOLA_ID, 1},
 		{"Кофе", ITEM_COFFEE_ID, 1}
+	},
+
+	{ /* Магазин 24/7 */
+		{"Аптечка", ITEM_MED_KIT_ID, 2},
+		{"Телефон", ITEM_PHONE_ID, 2},
+		{"SIM-карта", ITEM_SIM_CARD_ID, 2},
+		{"Маска", ITEM_MASK_ID, 2},
+		{"Фотоаппарат (50 снимков)", ITEM_CAMERA_ID, 10},
+		{"Букет цветов", ITEM_FLOWERS_ID, 10},
+		{"Безалкогольный газированный напиток \"Sprunk\"", ITEM_SPRUNK_ID, 2},
+		{"Безалкогольный газированный напиток \"eCola\"", ITEM_ECOLA_ID, 2},
+		{"-", 0, 0},
+		{"-", 0, 0}
 	}
 };
 
@@ -191,6 +206,20 @@ new const business_interior_info[BUSINESS_TYPES_COUNT][business_interior_info_st
 		{1001.8516, 1001.8516},
 		{270.0, 180.0},
 		{164, 167}
+	},
+
+	{ /* Магазин 24/7 */
+		6.0862, -31.7568, 1003.5494, 0.0,
+		10,
+		3.2734, -29.0138, 1003.5494,
+		1274,
+		""cl_lime"[Список товаров 24/7]\n"cl_grey"'Left ALT'",
+
+		{8.4494, 3.1430},
+		{-31.5018, -30.7013},
+		{1003.5494, 1003.5494},
+		{0.0, 0.0},
+		{164, 210}
 	}
 };
 
