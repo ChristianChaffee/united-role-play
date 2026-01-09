@@ -218,7 +218,7 @@ stock Inventory:UseItem(playerid, slot_index){
 					Inventory:SaveItem(playerid, slot_index);
 				}
 			}
-			case ITEM_COFFEE_ID, ITEM_MILK_ID, ITEM_ORANGE_JUICE_ID, ITEM_APPLE_JUICE_ID:{
+			case ITEM_COFFEE_ID, ITEM_MILK_ID, ITEM_ORANGE_JUICE_ID, ITEM_APPLE_JUICE_ID, ITEM_SPRUNK_ID, ITEM_ECOLA_ID:{
 				new 
 					give_satiety = GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_static_value_one),
 					give_thirst = GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_static_value_two);
@@ -321,6 +321,19 @@ stock Inventory:UseItem(playerid, slot_index){
 					GetPlayerData(playerid, p_sim_card));
 				SendClientMessage(playerid, COLOR_GREEN, small_string);
 				small_string[0] = EOS;
+			}
+			case ITEM_CAMERA_ID, ITEM_FLOWERS_ID:{
+				new weaponid;
+				switch(GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_id)){
+					
+					case ITEM_CAMERA_ID: weaponid = WEAPON_CAMERA;
+					case ITEM_FLOWERS_ID: weaponid = WEAPON_FLOWER;
+				}
+
+				GivePlayerWeapon(playerid, weaponid, GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one));
+				UpdatePlayerWeapons(playerid);
+
+				Inventory:SetPlayerSlotNull(playerid, slot_index);
 			}
 		}
 	}
