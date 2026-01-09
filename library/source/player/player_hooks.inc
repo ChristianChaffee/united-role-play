@@ -7,6 +7,8 @@ hook OnPlayerDisconnect(playerid, reason){
 	mysql_format(mysql, query, sizeof(query), fmt_query, GetPlayerDrunkLevel(playerid), GetPlayerData(playerid, p_id));
 	mysql_tquery(mysql, query);
 
+	UpdatePlayerWeapons(playerid);
+
 	player_info[playerid] = player_info_default;
 	player_logged[playerid] = false;
 	return Y_HOOKS_CONTINUE_RETURN_1;

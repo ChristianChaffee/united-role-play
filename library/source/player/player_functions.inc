@@ -35,6 +35,8 @@ stock SetPlayerSpawn(playerid, spawn_type){
 	SetCameraBehindPlayer(playerid);
 	TogglePlayerControllable(playerid, true);
 
+	GivePlayerAllWeapons(playerid);
+
 	CheckPlayerNotifications(playerid);
 	return true;
 }
@@ -66,6 +68,12 @@ stock LoadPlayer(playerid, Cache:cache_id){
 
 	cache_get_value_name_int(0, "phone", GetPlayerData(playerid, p_phone));
 	cache_get_value_name_int(0, "sim_card", GetPlayerData(playerid, p_sim_card));
+
+	cache_get_value_name(0, "weapons", temp_string);
+	sscanf(temp_string, "p<,>a<i>["#WEAPON_SLOTS_COUNT"]", player_info[playerid][p_weapons]);
+
+	cache_get_value_name(0, "weapons_ammo", temp_string);
+	sscanf(temp_string, "p<,>a<i>["#WEAPON_SLOTS_COUNT"]", player_info[playerid][p_weapons_ammo]);
 
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
@@ -327,5 +335,49 @@ stock CheckPlayerNotifications(playerid){
 	mysql_format(mysql, query, sizeof(query), fmt_query,
 		GetPlayerData(playerid, p_id));
 	mysql_tquery(mysql, query, "CheckPlayerNotificationsPublic", "i", playerid);
+	return true;
+}
+
+stock UpdatePlayerWeapons(playerid){
+	for(new i; i < WEAPON_SLOTS_COUNT; i++){
+		GetPlayerWeaponData(playerid, i, 
+			player_info[playerid][p_weapons][i], 
+			player_info[playerid][p_weapons_ammo][i]);
+	}
+
+	SavePlayerWeapons(playerid);
+	return true;
+}
+
+stock SavePlayerWeapons(playerid){
+	new weapon_str[128], weapon_ammo_str[128];
+
+	for(new i; i < WEAPON_SLOTS_COUNT; i++){
+		format(weapon_str, sizeof(weapon_str),
+			"%s%d%s",
+			weapon_str, player_info[playerid][p_weapons][i],
+			(i == WEAPON_SLOTS_COUNT - 1) ? ("") : (", "));
+
+		format(weapon_ammo_str, sizeof(weapon_ammo_str),
+			"%s%d%s",
+			weapon_ammo_str, player_info[playerid][p_weapons_ammo][i],
+			(i == WEAPON_SLOTS_COUNT - 1) ? ("") : (", "));
+	}
+
+	static const fmt_query[] = "UPDATE accounts SET weapons = '%s', weapons_ammo = '%s' WHERE id = %d LIMIT 1";
+	new query[sizeof(fmt_query) + ((-2 + 128) * 2) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		weapon_str, weapon_ammo_str, GetPlayerData(playerid, p_id));
+	mysql_tquery(mysql, query);
+	return true;
+}
+
+stock GivePlayerAllWeapons(playerid){
+	ResetPlayerWeapons(playerid);
+	for(new i; i < WEAPON_SLOTS_COUNT; i++){
+		GivePlayerWeapon(playerid, player_info[playerid][p_weapons][i], player_info[playerid][p_weapons_ammo][i]);
+	}
+
+	SetPlayerArmedWeapon(playerid, 0);
 	return true;
 }
