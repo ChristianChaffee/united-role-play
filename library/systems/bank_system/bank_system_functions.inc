@@ -420,3 +420,38 @@ stock Bank:ShowBusinessTake(playerid, business_index){
 	big_string[0] = EOS;
 	return true;
 }
+
+stock Bank:TransferMoney(playerid, scdplayerid, sum, is_phone){
+	if(!IsPlayerConnected(scdplayerid) || !player_logged[scdplayerid]){
+		if(is_phone) Phone:ShowError(playerid, "Данный игрок не в сети.");
+		return false;
+	}
+	if(scdplayerid == playerid){
+		if(is_phone) Phone:ShowError(playerid, "Вы не можете выполнить перевод самому себе.");
+		return false;
+	}
+	if(GetPlayerBankCardData(playerid, pbc_balance) < sum){
+		if(is_phone) Phone:ShowError(playerid, "У Вас на балансе недостаточно средств.");
+		return false;
+	}
+	if(!GetPlayerBankCardData(scdplayerid, pbc_id)){
+		if(is_phone) Phone:ShowError(playerid, "У данного игрока нет счёта в банке.");
+		return false;
+	}
+
+	Bank:GiveMoney(playerid, -sum);
+	Bank:GiveMoney(scdplayerid, sum);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы перевели игроку "cl_white"%s[%d] "cl_green"сумму в размере "cl_white"%d$"cl_green".",
+		GetPlayerData(scdplayerid, p_name), scdplayerid, sum);
+	SendClientMessage(playerid, COLOR_GREEN, small_string);
+
+	format(small_string, sizeof(small_string),
+		""cl_white"%s[%d] "cl_green"перевёл Вам сумму в размере "cl_white"%d$"cl_green".",
+		GetPlayerData(playerid, p_name), playerid, sum);
+	SendClientMessage(scdplayerid, COLOR_GREEN, small_string);
+	small_string[0] = EOS;
+	return true;
+}
