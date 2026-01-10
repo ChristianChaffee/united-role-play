@@ -1,4 +1,63 @@
 
+forward Phone_Call(playerid, const arguments[]);
+public Phone_Call(playerid, const arguments[]){
+	new number = -1;
+	if(strfind(arguments, "*") == -1 && strfind(arguments, "#") == -1){
+		sscanf(arguments, "i", number);
+	}
+
+	if(number == -1){
+		Phone:ShowError(playerid, "Корректно введите номер.");
+		return false;
+	}
+
+	new scdplayerid = GetPlayerIdByPhoneNumber(number);
+
+	if(scdplayerid == INVALID_PLAYER_ID){
+		Phone:ShowError(playerid, "Абонент вне зоны действия сети!");
+		return false;
+	}
+	if(scdplayerid == playerid){
+		Phone:ShowError(playerid, "Вы не можете позвонить самому себе.");
+		return false;
+	}
+	if(GetPVarType(scdplayerid, "Phone_CallID")){
+		Phone:ShowError(playerid, "Абонент занят.");
+		return false;
+	}
+	if(GetPlayerCallerId(playerid) != INVALID_PLAYER_ID){
+		Phone:ShowError(playerid, "У Вас уже есть активный вызов.");
+		return false;
+	}
+
+	SetPVarInt(playerid, "Phone_CallID", scdplayerid);
+
+	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_USECELLPHONE);
+	SendMeAction(playerid, "звонит по телефону.");
+
+	SendClientMessage(playerid, COLOR_GREY, "[Подсказка]: Чтобы сбросить трубку введите '/h' или откройте телефон с помощью '/phone'.");
+	SendClientMessage(playerid, COLOR_LIME, "У Вас звонит телефон: "cl_green"'/p' "cl_white"- поднять трубку"cl_lime", "cl_light_red"'/h' "cl_white"- сбросить вызов"cl_lime".");
+	
+	cef_emit_event(playerid, "startCallInterface",
+		CEFSTR(GetPlayerData(scdplayerid, p_name)));
+
+	return true;
+}
+
+forward Phone_CallHangup(playerid, const arguments[]);
+public Phone_CallHangup(playerid, const arguments[]){
+	new scdplayerid = GetPlayerCallerId(playerid);
+	
+	if(scdplayerid != INVALID_PLAYER_ID){
+		SendClientMessage(scdplayerid, COLOR_GREY, "Абонент сбросил трубку.");
+		Phone:StopCall(scdplayerid);
+	}
+
+	SendClientMessage(playerid, COLOR_GREY, "Вы сбросили трубку.");
+	Phone:StopCall(playerid);
+	return true;
+}
+
 forward Phone_BankTransfer(playerid, const arguments[]);
 public Phone_BankTransfer(playerid, const arguments[]){
 	new scdplayerid, 
@@ -16,9 +75,6 @@ public Phone_BusinessDeposit(playerid, const arguments[]){
 	new business_index,
 		amount,
 		business_interface_index;
-
-	#warning DEBUG
-	printf("Phone_BusinessDeposit");
 
 	sscanf(arguments, "ii", business_index, amount);
 	business_interface_index = business_index;
@@ -64,9 +120,6 @@ public Phone_BusinessWithdraw(playerid, const arguments[]){
 		amount,
 		business_interface_index;
 
-	#warning DEBUG
-	printf("Phone_BusinessWithdraw");
-
 	sscanf(arguments, "ii", business_index, amount);
 	business_interface_index = business_index;
 	business_index = player_listitems[playerid][business_index];
@@ -102,5 +155,11 @@ public Phone_BusinessWithdraw(playerid, const arguments[]){
 		GetBusinessData(business_index, b_name), amount);
 	SendClientMessage(playerid, COLOR_GREEN, small_string);
 	small_string[0] = EOS;
+	return true;
+}
+
+forward Phone_Close(playerid, const arguments[]);
+public Phone_Close(playerid, const arguments[]){
+	DeletePVar(playerid, "Phone_Show");
 	return true;
 }

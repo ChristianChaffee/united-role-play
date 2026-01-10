@@ -2,8 +2,13 @@
 stock Phone:ShowPhone(playerid){
 	new is_player_have_bank_card = (!GetPlayerBankCardData(playerid, pbc_id)) ? (false) : (true);
 
-	cef_emit_event(playerid, "showPhone",
-		CEFINT(is_player_have_bank_card));
+	if(!GetPVarType(playerid, "Phone_Show")){
+		cef_emit_event(playerid, "showPhone",
+			CEFINT(is_player_have_bank_card));
+	}
+	else{
+		cef_focus_browser(playerid, CEF_BROWSER_LOGO, true);
+	}
 
 	if(is_player_have_bank_card){
 		cef_emit_event(playerid, "setPhoneBankData",
@@ -21,16 +26,27 @@ stock Phone:ShowPhone(playerid){
 		player_listitems[playerid][counter] = i;
 		counter++;
 	}
+
+	SetPVarInt(playerid, "Phone_Show", 1);
 	return true;
 }
 
 stock Phone:HidePhone(playerid){
 	cef_emit_event(playerid, "hidePhone");
+	DeletePVar(playerid, "Phone_Show");
 	return true;
 }
 
 stock Phone:ShowError(playerid, text[]){
 	cef_emit_event(playerid, "showPhoneError",
 		CEFSTR(text));
+	return true;
+}
+
+stock Phone:StopCall(playerid){
+	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
+	Phone:HidePhone(playerid);
+
+	DeletePVar(playerid, "Phone_CallID");
 	return true;
 }

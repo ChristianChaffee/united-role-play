@@ -387,3 +387,24 @@ stock GetPlayerColorEx(playerid){
 	if(GetPVarType(playerid, "Mask")) return 0x7a766700;
 	return 0xFFFFFFAA;
 }
+
+stock GetPlayerIdByPhoneNumber(number){
+	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
+		if(!player_logged[i]) continue;
+		if(GetPlayerData(i, p_sim_card) == -1) continue;
+		if(GetPlayerData(i, p_sim_card) != number) continue;
+		return i;
+	}
+	return INVALID_PLAYER_ID;
+}
+
+stock GetPlayerCallerId(playerid){
+	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
+		if(!player_logged[i]) continue;
+		if(GetPlayerData(i, p_sim_card) == -1) continue;
+		if(!GetPVarType(i, "Phone_CallID")) continue;
+		if(GetPVarInt(i, "Phone_CallID") != playerid) continue;
+		return i;
+	}
+	return INVALID_PLAYER_ID;
+}
