@@ -163,3 +163,47 @@ public Phone_Close(playerid, const arguments[]){
 	DeletePVar(playerid, "Phone_Show");
 	return true;
 }
+
+forward Phone_VehicleLoad(playerid, const arguments[]);
+public Phone_VehicleLoad(playerid, const arguments[]){
+	new selected_vehicle_id;
+	sscanf(arguments, "i", selected_vehicle_id);
+	selected_vehicle_id = phone_vehicle_listitems[playerid][selected_vehicle_id];
+
+	static const fmt_query[] = "SELECT * FROM vehicles WHERE id = %d AND owner = %d AND status = %d LIMIT 1";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 3)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		selected_vehicle_id, GetPlayerData(playerid, p_id), VEHICLE_STATUS_PLAYER);
+	mysql_tquery(mysql, query, "CheckPlayerVehicle", "i", playerid);
+	return true;
+}
+
+forward Phone_VehicleUnload(playerid, const arguments[]);
+public Phone_VehicleUnload(playerid, const arguments[]){
+	new selected_vehicle_id;
+	sscanf(arguments, "i", selected_vehicle_id);
+	selected_vehicle_id = phone_vehicle_listitems[playerid][selected_vehicle_id];
+
+	new vehicleid = FindVehicleById(selected_vehicle_id);
+
+	if(vehicleid == INVALID_VEHICLE_ID){
+		Phone:ShowError(playerid, "Данного транспорта не существует.");
+		return false;
+	}
+	if(GetVehicleData(vehicleid, v_owner) != GetPlayerData(playerid, p_id)){
+		SendErrorMessage(playerid, "Данный транспорт принадлежит не Вам.");
+		Phone:HidePhone(playerid);
+		return false;
+	}
+
+	SendClientMessage(playerid, COLOR_LIGHT_RED, "Вы выгрузили транспорт с сервера.");
+	DestroyVehicle(vehicleid);
+
+	sscanf(arguments, "i", selected_vehicle_id);
+	cef_emit_event(playerid, "updateVehicleStatus",
+		CEFINT(selected_vehicle_id),
+		CEFINT(0));
+
+	Phone:HidePhone(playerid);
+	return true;
+}

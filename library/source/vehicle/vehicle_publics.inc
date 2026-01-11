@@ -71,29 +71,19 @@ public ShowPlayerCars(playerid){
 	new rows;
 	cache_get_row_count(rows);
 
-	if(!rows) return SendErrorMessage(playerid, "У Вас нет личного транспорта.");
+	if(!rows) return false;
 
-	big_string[0] = EOS;
-	format(big_string, sizeof(big_string),
-		""cl_grey"Модель\t"cl_grey"Статус");
 
 	for(new i, temp_id, temp_model_id; i < rows; i++){
 		cache_get_value_name_int(i, "id", temp_id);
 		cache_get_value_name_int(i, "model_id", temp_model_id);
 
-		format(big_string, sizeof(big_string),
-			"%s\n\
-			"cl_lime"%d. "cl_white"%s "cl_grey"[ID: %d]\t%s",
-			big_string, i + 1,
-			GetVehicleParamsData(GetVehicleParamIndexByModel(temp_model_id), vp_name), temp_id,
-			(FindVehicleById(temp_id) == INVALID_VEHICLE_ID) ? (""cl_light_red"Не загружена") : (""cl_green"Загружена"));
+		cef_emit_event(playerid, "addPhoneVehicle",
+			CEFSTR(GetVehicleParamsData(GetVehicleParamIndexByModel(temp_model_id), vp_name)),
+			CEFINT((FindVehicleById(temp_id) == INVALID_VEHICLE_ID) ? (0) : (1)));
 		
-		player_listitems[playerid][i] = temp_id;
+		phone_vehicle_listitems[playerid][i] = temp_id;
 	}
-	Dialog_Open(playerid, Dialog:D_PLAYER_CARS_LIST, DIALOG_STYLE_TABLIST_HEADERS,
-		"Мой транспорта", big_string,
-		"Выбрать", "Закрыть");
-	big_string[0] = EOS;
 	return true;
 }
 
@@ -102,7 +92,12 @@ public CheckPlayerVehicle(playerid){
 	new rows;
 	cache_get_row_count(rows);
 
-	if(!rows) return SendErrorMessage(playerid, "При загрузке транспорта произошла ошибка.");
+	if(!rows){
+		SendErrorMessage(playerid, "При загрузке транспорт произошла ошибка.");
+		cef_emit_event(playerid, "hidePhone");
+		DeletePVar(playerid, "Phone_Show");
+		return false;
+	}
 
 	new Float:temp_pos[4], temp_id;
 	cache_get_value_name_int(0, "id", temp_id);
@@ -112,7 +107,7 @@ public CheckPlayerVehicle(playerid){
 	cache_get_value_name_float(0, "pos_angle", temp_pos[3]);
 
 	if(temp_pos[0] == 0.0 && temp_pos[1] == 0.0 && temp_pos[2] == 0.0 && temp_pos[3] == 0.0){
-		SendClientMessage(playerid, COLOR_LIGHT_RED, "Данный транспорт находится на штраф-стоянке.");
+		SendErrorMessage(playerid, "Данный транспорт находится на штраф-стоянке.");
 		return false;
 	}
 	
@@ -125,7 +120,12 @@ public LoadPlayerVehicle(playerid, Float:pos_x, Float:pos_y, Float:pos_z, Float:
 	new rows;
 	cache_get_row_count(rows);
 
-	if(!rows) return SendErrorMessage(playerid, "При загрузке транспорта произошла ошибка.");
+	if(!rows){
+		SendErrorMessage(playerid, "При загрузке транспорт произошла ошибка.");
+		cef_emit_event(playerid, "hidePhone");
+		DeletePVar(playerid, "Phone_Show");
+		return false;
+	}
 
 	new temp_vehicle_data[vehicle_info_struct];
 
@@ -166,5 +166,22 @@ public LoadPlayerVehicle(playerid, Float:pos_x, Float:pos_y, Float:pos_z, Float:
 	vehicle_info[vehicleid] = temp_vehicle_data;
 
 	SetVehicleStatus(vehicleid, VEHICLE_STATUS_PLAYER);
+
+	if(GetPVarType(playerid, "Phone_Show")){
+		new cef_vehicle_index = -1;
+		for(new i; i < MAX_PLAYER_VEHICLES; i++){
+			if(!phone_vehicle_listitems[playerid][i]) continue;
+			if(phone_vehicle_listitems[playerid][i] != temp_vehicle_data[v_id]) continue;
+			
+			cef_vehicle_index = i;
+			break;
+		}
+
+		if(cef_vehicle_index != -1){
+			cef_emit_event(playerid, "updateVehicleStatus",
+				CEFINT(cef_vehicle_index),
+				CEFINT(1));
+		}
+	}
 	return true;
 }

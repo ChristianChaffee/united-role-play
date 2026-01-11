@@ -7,6 +7,8 @@
 
 #define LICENSES_COUNT 					7
 
+#define MAX_PLAYER_VEHICLES 			40
+
 //==============================================================================
 enum
 {
@@ -133,4 +135,5 @@ new const Float:standart_spawn_pos[5][4] = {
 	{1147.6335, -1770.3,16.5992, 360.0}
 };
 
-new player_listitems[MAX_PLAYERS][100];
+new player_listitems[MAX_PLAYERS][100],
+	phone_vehicle_listitems[MAX_PLAYERS][MAX_PLAYER_VEHICLES];

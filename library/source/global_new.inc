@@ -33,7 +33,6 @@ new command_info[][command_info_struct] = {
 	{"/piss", "справить нужду", COMMAND_TYPE_GENERAL},
 	{"/maskoff", "снять маску", COMMAND_TYPE_GENERAL},
 
-	{"/cars", "открыть список личных транспортных средств", COMMAND_TYPE_VEHICLE},
 	{"/park", "припарковать личное транспортное средство", COMMAND_TYPE_VEHICLE},
 	{"/lock", "открыть/закрыть транспортное средство", COMMAND_TYPE_VEHICLE}
 };

@@ -9,6 +9,9 @@ hook OnGameModeInit(){
 	cef_subscribe("Phone_BusinessDeposit", "Phone_BusinessDeposit");
 	cef_subscribe("Phone_BusinessWithdraw", "Phone_BusinessWithdraw");
 	cef_subscribe("Phone_Close", "Phone_Close");
+
+	cef_subscribe("Phone_VehicleLoad", "Phone_VehicleLoad");
+	cef_subscribe("Phone_VehicleUnload", "Phone_VehicleUnload");
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
