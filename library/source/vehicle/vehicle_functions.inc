@@ -229,6 +229,11 @@ stock CreatePlayerVehicle(playerid, id, Float:pos_x = 0.0, Float:pos_y = 0.0, Fl
 	return true;
 }
 
+stock IsFueledVehicle(vehicleid){
+	if(GetVehicleParamsData(GetVehicleParamIndexByModel(GetVehicleModel(vehicleid)), vp_fuel_type) == FUEL_TYPE_NONE) return false;
+	return true;
+}
+
 //==============================================================================
 stock ShowVehicleMenu(playerid){
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER || !GetPlayerVehicleID(playerid)) return false;

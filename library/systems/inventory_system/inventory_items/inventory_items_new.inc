@@ -32,9 +32,14 @@
 #define ITEM_MASK_ID 							31
 #define ITEM_CAMERA_ID 							32
 #define ITEM_FLOWERS_ID 						33
+#define ITEM_CANISTER_ID 						34
+#define ITEM_REPAIR_ID 							35
+
+#warning TODO: Add image to ITEM_CANISTER_ID
+#warning TODO: Add image to ITEM_REPAIR_ID
 
 
-#define MAX_INVENTORY_ITEMS 					33
+#define MAX_INVENTORY_ITEMS 					35
 #define MAX_INVENTORY_SLOTS  					27
 
 #define GetInventoryItemData(%0,%1) 			inventory_item_info[%0][%1]

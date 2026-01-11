@@ -53,6 +53,6 @@ stock Speedometr:UpdateFuel(playerid){
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER || !vehicleid) return false;
 
-	cef_emit_event(playerid, "updateSpeed", CEFINT(floatround(GetVehicleData(vehicleid, v_fuel))));
+	cef_emit_event(playerid, "updateFuel", CEFINT(floatround(GetVehicleData(vehicleid, v_fuel))));
 	return true;
 }

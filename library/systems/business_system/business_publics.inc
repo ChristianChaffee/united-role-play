@@ -74,56 +74,97 @@ public LoadBusinesses(business_index){
 
 		//-------------------
 		
-		small_string[0] = EOS;
-		format(small_string, sizeof(small_string),
-			""cl_lime"[%s]\n"cl_white"%s\n"cl_grey"'Left ALT'",
-			business_type_names[GetBusinessData(business_index, b_type)], GetBusinessData(business_index, b_name));
+		if(GetBusinessData(business_index, b_type) != BUSINESS_TYPE_GAS_STATION){
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				""cl_lime"[%s]\n"cl_white"%s\n"cl_grey"'Left ALT'",
+				business_type_names[GetBusinessData(business_index, b_type)], GetBusinessData(business_index, b_name));
 
-		GetBusinessData(business_index, b_enter_text) = CreateDynamic3DTextLabel(small_string, -1, 
-			GetBusinessData(business_index, b_pos_x), GetBusinessData(business_index, b_pos_y), GetBusinessData(business_index, b_pos_z), 
-			15.0, _, _, 1, 
-			GetBusinessData(business_index, b_vw), GetBusinessData(business_index, b_int));
-		small_string[0] = EOS;
+			GetBusinessData(business_index, b_enter_text) = CreateDynamic3DTextLabel(small_string, -1, 
+				GetBusinessData(business_index, b_pos_x), GetBusinessData(business_index, b_pos_y), GetBusinessData(business_index, b_pos_z), 
+				15.0, _, _, 1, 
+				GetBusinessData(business_index, b_vw), GetBusinessData(business_index, b_int));
+			small_string[0] = EOS;
 
-		GetBusinessData(business_index, b_enter_pickup) = CreateDynamicPickup(BUSINESS_ENTER_PICKUP_MODEL_ID, 23, 
-			GetBusinessData(business_index, b_pos_x), GetBusinessData(business_index, b_pos_y), GetBusinessData(business_index, b_pos_z), 
-			GetBusinessData(business_index, b_vw), GetBusinessData(business_index, b_int));
-		
-		//-------------------
+			GetBusinessData(business_index, b_enter_pickup) = CreateDynamicPickup(BUSINESS_ENTER_PICKUP_MODEL_ID, 23, 
+				GetBusinessData(business_index, b_pos_x), GetBusinessData(business_index, b_pos_y), GetBusinessData(business_index, b_pos_z), 
+				GetBusinessData(business_index, b_vw), GetBusinessData(business_index, b_int));
+			
+			//-------------------
 
-		GetBusinessData(business_index, b_exit_text) = CreateDynamic3DTextLabel(""cl_white"Выход\n"cl_grey"'Left ALT'", -1, 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_x), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_y), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_z), 
-			15.0, _, _, 1, 
-			GetBusinessData(business_index, b_id), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_int));
+			GetBusinessData(business_index, b_exit_text) = CreateDynamic3DTextLabel(""cl_white"Выход\n"cl_grey"'Left ALT'", -1, 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_x), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_y), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_z), 
+				15.0, _, _, 1, 
+				GetBusinessData(business_index, b_id), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_int));
 
-		GetBusinessData(business_index, b_exit_pickup) = CreateDynamicPickup(BUSINESS_ENTER_PICKUP_MODEL_ID, 23, 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_x), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_y), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_z), 
-			GetBusinessData(business_index, b_id), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_int));
-		
-		//-------------------
+			GetBusinessData(business_index, b_exit_pickup) = CreateDynamicPickup(BUSINESS_ENTER_PICKUP_MODEL_ID, 23, 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_x), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_y), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_exit_pos_z), 
+				GetBusinessData(business_index, b_id), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_int));
+			
+			//-------------------
 
-		GetBusinessData(business_index, b_cashbox_text) = CreateDynamic3DTextLabel(GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_text), -1, 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_x), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_y), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_z), 
-			15.0, _, _, 1, 
-			GetBusinessData(business_index, b_id), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_int));
+			GetBusinessData(business_index, b_cashbox_text) = CreateDynamic3DTextLabel(GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_text), -1, 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_x), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_y), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_z), 
+				15.0, _, _, 1, 
+				GetBusinessData(business_index, b_id), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_int));
 
-		GetBusinessData(business_index, b_cashbox_pickup) = CreateDynamicPickup(GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pickup_model_id), 23, 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_x), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_y), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_z), 
-			GetBusinessData(business_index, b_id), 
-			GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_int));
+			GetBusinessData(business_index, b_cashbox_pickup) = CreateDynamicPickup(GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pickup_model_id), 23, 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_x), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_y), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_z), 
+				GetBusinessData(business_index, b_id), 
+				GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_int));
 
-		//-------------------
+			//-------------------
+		}
+		else{
+			new business_type = GetBusinessData(business_index, b_type);
+
+			big_string[0] = EOS;
+
+			format(big_string, sizeof(big_string),
+				""cl_lime"[%s]",
+				GetBusinessData(business_index, b_name));
+
+			for(new g; g < MAX_BUSINESS_MENU_POSITIONS; g++){
+				if(!strcmp(GetBusinessMenuData(business_type, g, bm_name), "-")) continue;
+
+				format(big_string, sizeof(big_string),
+					"%s\n"cl_lime"%s: "cl_white"%d$",
+					big_string, GetBusinessMenuData(business_type, g, bm_name),
+					business_info[business_index][b_products_prices][g]);
+			}
+
+			format(big_string, sizeof(big_string),
+				"%s\n\n\
+				"cl_grey"Пешком используйте 'Left ALT'\n\
+				"cl_grey"В транспорте используйте '/fill'",
+				big_string);
+
+			GetBusinessData(business_index, b_cashbox_text) = CreateDynamic3DTextLabel(big_string, -1, 
+				GetBusinessData(business_index, b_pos_x), 
+				GetBusinessData(business_index, b_pos_y), 
+				GetBusinessData(business_index, b_pos_z), 
+				15.0, _, _, 1, 
+				GetBusinessData(business_index, b_vw), 
+				GetBusinessData(business_index, b_int));
+
+			GetBusinessData(business_index, b_cashbox_pickup) = CreateDynamicPickup(GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pickup_model_id), 23, 
+				GetBusinessData(business_index, b_pos_x), 
+				GetBusinessData(business_index, b_pos_y), 
+				GetBusinessData(business_index, b_pos_z), 
+				GetBusinessData(business_index, b_vw), 
+				GetBusinessData(business_index, b_int));
+		}
 
 		Business:LoadBusinessPerks(business_index);
 	}
@@ -245,5 +286,109 @@ public Shop_BuyItem(playerid, const arguments[]){
 	mysql_tquery(mysql, query);
 
 	cef_emit_event(playerid, "hideShopWindow");
+	return true;
+}
+
+forward GasStation_Buy(playerid, const arguments[]);
+public GasStation_Buy(playerid, const arguments[]){
+	new item_index,
+		item_count,
+		payment_type,
+		business_index = -1;
+
+	for(new i; i < MAX_BUSINESS; i++){
+		if(!GetBusinessData(i, b_id)) continue;
+		if(GetBusinessData(i, b_type) != BUSINESS_TYPE_GAS_STATION) continue;
+		if(!IsPlayerInRangeOfPoint(playerid, 5.0, GetBusinessData(i, b_pos_x), GetBusinessData(i, b_pos_y), GetBusinessData(i, b_pos_z))) continue;
+
+		business_index = i;
+		break;
+	}
+
+	if(business_index == -1){
+		SendErrorMessage(playerid, "Вы должны находиться на АЗС.");
+		Business:HideGasStation(playerid);
+		return false;
+	}
+
+	sscanf(arguments, "iii", item_index, item_count, payment_type);
+
+	new price = business_info[business_index][b_products_prices][item_index] * item_count,
+		vehicleid = GetPlayerVehicleID(playerid);
+
+	if(GetBusinessData(business_index, b_products) - (GetBusinessMenuData(GetBusinessData(business_index, b_type), item_index, bm_products_price) * item_count) < 0){
+		Business:ShowGasStationError(playerid, "В бизнесе недостаточно продуктов.");
+		return false;
+	}
+	if(payment_type && !GetPlayerBankCardData(playerid, pbc_id)){
+		Business:ShowGasStationError(playerid, "У Вас нет банковской карты.");
+		return false;
+	}
+	if(payment_type && GetPlayerBankCardData(playerid, pbc_balance) < price){
+		Business:ShowGasStationError(playerid, "У Вас недостаточно средств на банковской карте.");
+		return false;
+	}
+	if(!payment_type && GetPlayerData(playerid, p_money) < price){
+		Business:ShowGasStationError(playerid, "У Вас недостаточно наличных денежных средств.");
+		return false;
+	}
+	if(item_index <= 3 && !vehicleid){
+		Business:ShowGasStationError(playerid, "Вы должны находиться в транспорте.");
+		return false;
+	}
+	if(item_index <= 3 && GetVehicleParamsData(GetVehicleParamIndexByModel(GetVehicleModel(vehicleid)), vp_fuel_type) != item_index + 1){
+		Business:ShowGasStationError(playerid, "Вашему транспорту не подходит данное топливо.");
+		return false;
+	}
+	if(item_index <= 3 && floatround(GetVehicleData(vehicleid, v_fuel), floatround_floor) + item_count > 100){
+		Business:ShowGasStationError(playerid, "В транспорт не влезет такое количество топлива.");
+		return false;
+	}
+
+	if(item_index <= 3){
+		AddVehicleData(vehicleid, v_fuel, float(item_count));
+		cef_emit_event(playerid, "updateFuel", CEFINT(floatround(GetVehicleData(vehicleid, v_fuel))));
+
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			"Вы заправили транспорт на "cl_white"%d литров(-а)"cl_lime".",
+			item_count);
+		SendClientMessage(playerid, COLOR_LIME, small_string);
+		small_string[0] = EOS;
+	}
+	else{
+		new slot_index = Inventory:GetFreeSlotIndex(playerid);
+		if(slot_index == -1){
+			Business:ShowGasStationError(playerid, "У Вас недостаточно места в инвентаре.");
+			return false;
+		}
+
+		Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(GetBusinessData(business_index, b_type), item_index, bm_item_id));
+	
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			""cl_lime"Вы купили: "cl_white"%s.",
+			GetBusinessMenuData(GetBusinessData(business_index, b_type), item_index, bm_name));
+		SendClientMessage(playerid, -1, small_string);
+		SendClientMessage(playerid, COLOR_GREY, "- Предмет помещён в инвентарь (/inv).");
+		small_string[0] = EOS;
+	}
+
+	if(!payment_type){
+		GiveMoney(playerid, -price);
+	}
+	else Bank:GiveMoney(playerid, -price);
+
+	Business:HideGasStation(playerid);
+
+	AddBusinessData(business_index, b_balance, price);
+	AddBusinessData(business_index, b_products, -(GetBusinessMenuData(GetBusinessData(business_index, b_type), item_index, bm_products_price) * item_count));
+
+	static const fmt_query[] = "UPDATE business SET products = %d, balance = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 3)];
+	mysql_format(mysql, query, sizeof(query), fmt_query, 
+		GetBusinessData(business_index, b_products), GetBusinessData(business_index, b_balance),
+		GetBusinessData(business_index, b_id));
+	mysql_tquery(mysql, query);
 	return true;
 }

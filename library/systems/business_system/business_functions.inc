@@ -26,6 +26,21 @@ stock Business:ShowMenu(playerid, business_index){
 				counter++;
 			}
 		}
+
+		case BUSINESS_TYPE_GAS_STATION:{
+			cef_emit_event(playerid,
+				"showGasStation",
+				CEFINT((IsPlayerInAnyVehicle(playerid)) ? ((IsFueledVehicle(GetPlayerVehicleID(playerid))) ? (1) : (0)) : (0)),
+				CEFINT((IsPlayerInAnyVehicle(playerid)) ? ((IsFueledVehicle(GetPlayerVehicleID(playerid))) ? (floatround(GetVehicleData(GetPlayerVehicleID(playerid), v_fuel))) : (0)) : (0)));
+
+			cef_emit_event(playerid, "setGasStationPrices",
+				CEFINT(business_info[business_index][b_products_prices][0]),
+				CEFINT(business_info[business_index][b_products_prices][1]),
+				CEFINT(business_info[business_index][b_products_prices][2]),
+				CEFINT(business_info[business_index][b_products_prices][3]),
+				CEFINT(business_info[business_index][b_products_prices][4]),
+				CEFINT(business_info[business_index][b_products_prices][5]));
+		}
 	}
 	return true;
 }
@@ -479,5 +494,16 @@ stock Business:DeleteSellPVars(playerid){
 	DeletePVar(playerid, "Business_SellPrice");
 	DeletePVar(playerid, "Business_BuyPlayerid");
 	DeletePVar(playerid, "Business_BuyTime");
+	return true;
+}
+
+stock Business:HideGasStation(playerid){
+	cef_emit_event(playerid, "hideGasStation");
+	return true;
+}
+
+stock Business:ShowGasStationError(playerid, text[]){
+	cef_emit_event(playerid, "showGasStationError",
+		CEFSTR(text));
 	return true;
 }

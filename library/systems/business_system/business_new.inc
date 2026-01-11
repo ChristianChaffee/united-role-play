@@ -62,6 +62,7 @@ enum
 	BUSINESS_TYPE_BURGER,
 	BUSINESS_TYPE_FASTFOOD,
 	BUSINESS_TYPE_SHOP,
+	BUSINESS_TYPE_GAS_STATION,
 	BUSINESS_TYPES_COUNT
 }
 
@@ -77,7 +78,8 @@ new const business_type_names[BUSINESS_TYPES_COUNT][32] = {
 	"Пиццерия",
 	"Бургерная",
 	"Фастфуд-ресторан",
-	"Магазин 24/7"
+	"Магазин 24/7",
+	"АЗС"
 };
 //==============================================================================
 enum business_menu_info_struct
@@ -138,6 +140,19 @@ new const business_menu_info[BUSINESS_TYPES_COUNT][MAX_BUSINESS_MENU_POSITIONS][
 		{"Букет цветов", ITEM_FLOWERS_ID, 10},
 		{"Безалкогольный газированный напиток \"Sprunk\"", ITEM_SPRUNK_ID, 2},
 		{"Безалкогольный газированный напиток \"eCola\"", ITEM_ECOLA_ID, 2},
+		{"-", 0, 0},
+		{"-", 0, 0}
+	},
+
+	{ /* АЗС */
+		{"АИ-92", 0, 2},
+		{"АИ-95", 0, 2},
+		{"АИ-98", 0, 2},
+		{"ДТ", 0, 2},
+		{"Канистра с топливом", ITEM_CANISTER_ID, 10},
+		{"Ремкомплект", ITEM_REPAIR_ID, 10},
+		{"-", 0, 0},
+		{"-", 0, 0},
 		{"-", 0, 0},
 		{"-", 0, 0}
 	}
@@ -220,6 +235,20 @@ new const business_interior_info[BUSINESS_TYPES_COUNT][business_interior_info_st
 		{1003.5494, 1003.5494},
 		{0.0, 0.0},
 		{164, 210}
+	},
+
+	{ /* АЗС */
+		0.0, 0.0, 0.0, 0.0,
+		0,
+		0.0, 0.0, 0.0,
+		1274,
+		"-",
+
+		{0.0, 0.0},
+		{0.0, 0.0},
+		{0.0, 0.0},
+		{0.0, 0.0},
+		{0, 0}
 	}
 };
 

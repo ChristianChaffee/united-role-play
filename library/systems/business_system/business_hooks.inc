@@ -4,6 +4,7 @@
 //==============================================================================
 hook OnGameModeInit(){
 	cef_subscribe("Shop_BuyItem", "Shop_BuyItem");
+	cef_subscribe("GasStation_Buy", "GasStation_Buy");
 
 	CreateDynamicPickup(1239, 23, BUSINESS_INFO_PICKUP_POS, BUSINESS_INFO_PICKUP_VW, BUSINESS_INFO_PICKUP_INT);
 	CreateDynamic3DTextLabel(""cl_lime"Информация по бизнесам\n"cl_grey"'Left ALT'", -1, 
@@ -23,9 +24,10 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 		}
 	}
 
-	if(newkeys == KEY_WALK){
+	if(newkeys == KEY_WALK && !IsPlayerInAnyVehicle(playerid)){
 		for(new i; i < MAX_BUSINESS; i++){
 			if(!GetBusinessData(i, b_id)) continue;
+			if(GetBusinessData(i, b_type) == BUSINESS_TYPE_GAS_STATION) continue;
 		
 			if(IsPlayerInRangeOfPoint(playerid, 2.0, GetBusinessData(i, b_pos_x), GetBusinessData(i, b_pos_y), GetBusinessData(i, b_pos_z))){
 
@@ -47,6 +49,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 		for(new i, business_index; i < BUSINESS_TYPES_COUNT; i++){
 			if(!IsPlayerInRangeOfPoint(playerid, 2.0, GetBusinessInteriorData(i, bi_exit_pos_x), GetBusinessInteriorData(i, bi_exit_pos_y), GetBusinessInteriorData(i, bi_exit_pos_z))) continue;
 			if(GetPlayerInterior(playerid) != GetBusinessInteriorData(i, bi_int)) continue;
+			if(GetBusinessData(i, b_type) == BUSINESS_TYPE_GAS_STATION) continue;
 
 			business_index = Business:GetBusinessIndexByVW(GetPlayerVirtualWorld(playerid));
 			if(business_index == -1) continue;
@@ -65,6 +68,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 		}
 
 		for(new i, business_index; i < BUSINESS_TYPES_COUNT; i++){
+			if(GetBusinessData(business_index, b_type) == BUSINESS_TYPE_GAS_STATION) continue;
 			if(!IsPlayerInRangeOfPoint(playerid, 2.0, GetBusinessInteriorData(i, bi_cashbox_pos_x), GetBusinessInteriorData(i, bi_cashbox_pos_y), GetBusinessInteriorData(i, bi_cashbox_pos_z))) continue;
 			if(GetPlayerInterior(playerid) != GetBusinessInteriorData(i, bi_int)) continue;
 
@@ -72,6 +76,15 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 			if(business_index == -1) continue;
 
 			Business:ShowMenu(playerid, business_index);
+			return Y_HOOKS_CONTINUE_RETURN_1;
+		}
+
+		for(new i; i < BUSINESS_TYPES_COUNT; i++){
+			if(!GetBusinessData(i, b_id)) continue;
+			if(GetBusinessData(i, b_type) != BUSINESS_TYPE_GAS_STATION) continue;
+			if(!IsPlayerInRangeOfPoint(playerid, 5.0, GetBusinessData(i, b_pos_x), GetBusinessData(i, b_pos_y), GetBusinessData(i, b_pos_z))) continue;
+
+			Business:ShowMenu(playerid, i);
 			return Y_HOOKS_CONTINUE_RETURN_1;
 		}
 	}
