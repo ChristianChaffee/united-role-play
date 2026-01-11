@@ -197,6 +197,17 @@ stock SendMeAction(playerid, action[], is_automatic = false){
 	return true;
 }
 
+stock SendDoAction(playerid, action[], is_automatic = false){
+	new temp_string[144];
+	format(temp_string, sizeof(temp_string),
+		"%s%s (%s)",
+		(is_automatic) ? ("* ") : (""),
+		action, GetPlayerData(playerid, p_name));
+
+	ProxDetector(playerid, 15.0, COLOR_ACTION, temp_string);
+	return true;
+}
+
 stock ProxDetector(playerid, Float:max_range, color, const string[], Float:max_ratio = 1.6){
     new
         Float:pos_x,
@@ -288,7 +299,8 @@ stock ShowHelpMenu(playerid){
 	Dialog_Open(playerid, Dialog:D_HELP_MENU, DIALOG_STYLE_LIST,
 		"Главное меню",
 		""cl_blue"1. "cl_white"Общие команды\n\
-		"cl_blue"2. "cl_white"Команды для транспорта",
+		"cl_blue"2. "cl_white"Команды для транспорта\n\
+		"cl_blue"3. "cl_white"Команды чата",
 		"Выбрать", "Назад");
 	return true;
 }

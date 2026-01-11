@@ -113,6 +113,7 @@ public OnPlayerConnect(playerid)
 	ApplyAnimation(playerid, "OTB", "_", 4.1, 1, 1, 1, 1, 1);
 	ApplyAnimation(playerid, "VENDING", "_", 4.1, 1, 1, 1, 1, 1);
 	ApplyAnimation(playerid, "shop", "_", 4.1, 1, 1, 1, 1, 1);
+	ApplyAnimation(playerid, "COP_AMBIENT", "_", 4.1, 1, 1, 1, 1, 1);
 	return 1;
 }
 

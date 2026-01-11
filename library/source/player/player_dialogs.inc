@@ -16,6 +16,7 @@ DialogResponse:D_HELP_MENU(playerid, response, listitem, inputtext[]){
 	switch(listitem){
 		case 0: ShowHelp(playerid, COMMAND_TYPE_GENERAL);
 		case 1: ShowHelp(playerid, COMMAND_TYPE_VEHICLE);
+		case 2: ShowHelp(playerid, COMMAND_TYPE_CHAT);
 	}
 	return true;
 }
