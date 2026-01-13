@@ -11,7 +11,7 @@ public LoadBusinesses(business_index){
 		return false;
 	}
 
-	for(new i, old_business_index = business_index, temp_string[2048]; i < rows; i++){
+	for(new i, old_business_index = business_index, temp_string[2048], map_icon; i < rows; i++){
 
 		if(old_business_index == -1){
 			business_index = i;
@@ -48,6 +48,28 @@ public LoadBusinesses(business_index){
 				GetBusinessData(business_index, b_id), GetBusinessData(business_index, b_type),
 				GetBusinessData(business_index, b_type), BUSINESS_TYPES_COUNT);
 			continue;
+		}
+
+		map_icon = -1;
+		switch(GetBusinessData(business_index, b_type)){
+			case BUSINESS_TYPE_PIZZA: map_icon = 29;
+			case BUSINESS_TYPE_BURGER: map_icon = 10;
+			case BUSINESS_TYPE_FASTFOOD: map_icon = 14;
+			case BUSINESS_TYPE_SHOP: map_icon = 38;
+			case BUSINESS_TYPE_GAS_STATION: map_icon = 47;
+			case BUSINESS_TYPE_SKIN_SHOP: map_icon = 45;
+			case BUSINESS_TYPE_AMMUNITION: map_icon = 6;
+			case BUSINESS_TYPE_ALHAMBRA, BUSINESS_TYPE_PIG_PEN, BUSINESS_TYPE_JIZZY: map_icon = 48;
+			case BUSINESS_TYPE_BAR: map_icon = 49;
+		}
+
+		if(map_icon != -1){
+			CreateDynamicMapIcon(GetBusinessData(business_index, b_pos_x), 
+				GetBusinessData(business_index, b_pos_y), 
+				GetBusinessData(business_index, b_pos_z), 
+				map_icon, -1, 
+				GetBusinessData(business_index, b_vw),
+				GetBusinessData(business_index, b_int));
 		}
 
 		if(GetBusinessData(business_index, b_owner_id) != 0 && GetBusinessData(business_index, b_balance) < 0){
