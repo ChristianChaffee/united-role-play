@@ -11,7 +11,7 @@ public LoadBusinesses(business_index){
 		return false;
 	}
 
-	for(new i, old_business_index = business_index, temp_string[256]; i < rows; i++){
+	for(new i, old_business_index = business_index, temp_string[2048]; i < rows; i++){
 
 		if(old_business_index == -1){
 			business_index = i;
@@ -33,7 +33,12 @@ public LoadBusinesses(business_index){
 		cache_get_value_name_int(i, "price", GetBusinessData(business_index, b_price));
 
 		cache_get_value_name(i, "products_prices", temp_string);
-		sscanf(temp_string, "p<,>a<i>["#MAX_BUSINESS_MENU_POSITIONS"]", business_info[business_index][b_products_prices]);
+		if(GetBusinessData(business_index, b_type) != BUSINESS_TYPE_SKIN_SHOP){
+			sscanf(temp_string, "p<,>a<i>["#MAX_BUSINESS_MENU_POSITIONS"]", business_info[business_index][b_products_prices]);
+		}
+		else{
+			sscanf(temp_string, "p<,>a<i>["#BUSINESS_SKIN_SHOP_COUNT"]", business_skin_shop_prices[business_index]);
+		}
 
 		cache_get_value_name(i, "perks", temp_string);
 		sscanf(temp_string, "p<,>a<i>["#BUSINESS_PERKS_COUNT"]", business_info[business_index][b_perks]);
@@ -390,5 +395,126 @@ public GasStation_Buy(playerid, const arguments[]){
 		GetBusinessData(business_index, b_products), GetBusinessData(business_index, b_balance),
 		GetBusinessData(business_index, b_id));
 	mysql_tquery(mysql, query);
+	return true;
+}
+
+forward skinSelectorPrev(playerid, const arguments[]);
+public skinSelectorPrev(playerid, const arguments[]){
+	SetPVarInt(playerid, "Business_SkinShopSkinIndex", GetPVarInt(playerid, "Business_SkinShopSkinIndex") - 1);
+	if(GetPVarInt(playerid, "Business_SkinShopSkinIndex") < GetPVarInt(playerid, "Business_SkinShopSkinStartIndex")){
+		SetPVarInt(playerid, "Business_SkinShopSkinIndex", GetPVarInt(playerid, "Business_SkinShopMaxSkinIndex") - 1);
+	}
+
+	SetPlayerSkin(playerid, GetBusinessSkinShopMenu(GetPVarInt(playerid, "Business_SkinShopSkinIndex"), bm_item_id));
+
+	cef_emit_event(playerid, "skinShopSetData",
+		CEFINT(GetBusinessSkinShopMenu(GetPVarInt(playerid, "Business_SkinShopSkinIndex"), bm_item_id)),
+		CEFINT(business_skin_shop_prices[GetPVarInt(playerid, "Business_Index")][GetPVarInt(playerid, "Business_SkinShopSkinIndex")]));
+	return true;
+}
+
+forward skinSelectorNext(playerid, const arguments[]);
+public skinSelectorNext(playerid, const arguments[]){
+	SetPVarInt(playerid, "Business_SkinShopSkinIndex", GetPVarInt(playerid, "Business_SkinShopSkinIndex") + 1);
+	if(GetPVarInt(playerid, "Business_SkinShopSkinIndex") >= GetPVarInt(playerid, "Business_SkinShopMaxSkinIndex")){
+		SetPVarInt(playerid, "Business_SkinShopSkinIndex", GetPVarInt(playerid, "Business_SkinShopSkinStartIndex"));
+	}
+
+	SetPlayerSkin(playerid, GetBusinessSkinShopMenu(GetPVarInt(playerid, "Business_SkinShopSkinIndex"), bm_item_id));
+
+	cef_emit_event(playerid, "skinShopSetData",
+		CEFINT(GetBusinessSkinShopMenu(GetPVarInt(playerid, "Business_SkinShopSkinIndex"), bm_item_id)),
+		CEFINT(business_skin_shop_prices[GetPVarInt(playerid, "Business_Index")][GetPVarInt(playerid, "Business_SkinShopSkinIndex")]));
+	return true;
+}
+
+forward skinSelectorExit(playerid, const arguments[]);
+public skinSelectorExit(playerid, const arguments[]){
+	new business_index = GetPVarInt(playerid, "Business_Index");
+
+	SetPlayerPos(playerid, 
+		GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_x),
+		GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_y),
+		GetBusinessInteriorData(GetBusinessData(business_index, b_type), bi_cashbox_pos_z));	
+	
+	SetPlayerVirtualWorld(playerid,
+		GetBusinessData(business_index, b_id));
+
+	SetPlayerSkin(playerid, GetPVarInt(playerid, "Business_SkinShopOldSkin"));
+
+	DeletePVar(playerid, "Business_Index");
+	DeletePVar(playerid, "Business_SkinShopSkinIndex");
+	DeletePVar(playerid, "Business_SkinShopSkinStartIndex");
+	DeletePVar(playerid, "Business_SkinShopMaxSkinIndex");
+	DeletePVar(playerid, "Business_SkinShopOldSkin");
+
+	SetCameraBehindPlayer(playerid);
+	CancelSelectTextDraw(playerid);
+
+	cef_emit_event(playerid, "hideSkinSelector");
+	return true;
+}
+
+forward skinSelectorBuy(playerid, const arguments[]);
+public skinSelectorBuy(playerid, const arguments[]){
+	new business_index = GetPVarInt(playerid, "Business_Index"),
+		skin_index = GetPVarInt(playerid, "Business_SkinShopSkinIndex"),
+		price = business_skin_shop_prices[business_index][skin_index],
+		payment_type;
+
+	sscanf(arguments, "i", payment_type);
+
+	if(GetBusinessData(business_index, b_products) - GetBusinessSkinShopMenu(skin_index, bm_products_price) < 0){
+		Business:ShowSkinShopError(playerid, "В бизнесе недостаточно продуктов.");
+		return false;
+	}
+	if(payment_type && !GetPlayerBankCardData(playerid, pbc_id)){
+		Business:ShowSkinShopError(playerid, "У Вас нет банковской карты.");
+		return false;
+	}
+	if(payment_type && GetPlayerBankCardData(playerid, pbc_balance) < price){
+		Business:ShowSkinShopError(playerid, "У Вас недостаточно средств на банковской карте.");
+		return false;
+	}
+	if(!payment_type && GetPlayerData(playerid, p_money) < price){
+		Business:ShowSkinShopError(playerid, "У Вас недостаточно наличных денежных средств.");
+		return false;
+	}
+
+	new slot_index = Inventory:GetFreeSlotIndex(playerid);
+	if(slot_index == -1){
+		Business:ShowSkinShopError(playerid, "У Вас недостаточно места в инвентаре.");
+		return false;
+	}
+
+	Inventory:GiveItem(playerid, slot_index, ITEM_SKIN_ID, _, GetBusinessSkinShopMenu(skin_index, bm_item_id));
+
+	small_string[0] = EOS;
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		""cl_lime"Вы купили: "cl_white"%s",
+		GetBusinessSkinShopMenu(skin_index, bm_name));
+	SendClientMessage(playerid, -1, small_string);
+	SendClientMessage(playerid, COLOR_GREY, "- Предмет помещён в инвентарь (/inv).");
+	small_string[0] = EOS;
+
+	if(!payment_type){
+		GiveMoney(playerid, -price);
+	}
+	else{
+		Bank:GiveMoney(playerid, -price);
+	}
+
+	AddBusinessData(business_index, b_balance, price);
+	AddBusinessData(business_index, b_products, -GetBusinessSkinShopMenu(skin_index, bm_products_price));
+
+	static const fmt_query[] = "UPDATE business SET products = %d, balance = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 3)];
+	mysql_format(mysql, query, sizeof(query), fmt_query, 
+		GetBusinessData(business_index, b_products), GetBusinessData(business_index, b_balance),
+		GetBusinessData(business_index, b_id));
+	mysql_tquery(mysql, query);
+
+	skinSelectorExit(playerid, "");
 	return true;
 }

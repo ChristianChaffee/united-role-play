@@ -322,7 +322,7 @@ stock Inventory:UseItem(playerid, slot_index){
 				SendClientMessage(playerid, COLOR_GREEN, small_string);
 				small_string[0] = EOS;
 
-				SendMeAction(playerid, "поставил(-а) SIM-карту в телефон.");
+				SendMeAction(playerid, "поставил(-а) SIM-карту в телефон.", true);
 			}
 			case ITEM_CAMERA_ID, ITEM_FLOWERS_ID:{
 				new weaponid;
@@ -353,7 +353,7 @@ stock Inventory:UseItem(playerid, slot_index){
 				SetPVarInt(playerid, "Mask", 1);
 				SetPVarInt(playerid, "Mask_Timer", 600);
 
-				SendMeAction(playerid, "надел(-а) маску.");
+				SendMeAction(playerid, "надел(-а) маску.", true);
 
 				SetPlayerColor(playerid, GetPlayerColorEx(playerid));
 				GameTextForPlayer(playerid, "~b~Invisible ~g~ON", 5000, 3);
@@ -385,7 +385,7 @@ stock Inventory:UseItem(playerid, slot_index){
 
 				ApplyAnimation(playerid,"ped","gum_eat",4.0,0,0,0,0,0,1);
 				SetPlayerHealth(playerid, health);
-				SendMeAction(playerid, "использовал(-а) аптечку.");
+				SendMeAction(playerid, "использовал(-а) аптечку.", true);
 
 				SetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count, GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) - 1);
 				if(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_count) <= 0){
@@ -394,6 +394,24 @@ stock Inventory:UseItem(playerid, slot_index){
 				else{
 					Inventory:SaveItem(playerid, slot_index);
 				}
+			}
+			case ITEM_SKIN_ID:{
+				new old_skin = GetPlayerSkin(playerid);
+
+				SetPlayerSkin(playerid, GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one));
+				Inventory:SetPlayerSlotNull(playerid, slot_index);
+
+				Inventory:GiveItem(playerid, slot_index, ITEM_SKIN_ID, _, old_skin);
+
+				SetPlayerData(playerid, p_skin, GetPlayerSkin(playerid));
+
+				static const fmt_query[] = "UPDATE accounts SET skin = %d WHERE id = %d";
+				new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+				mysql_format(mysql, query, sizeof(query), fmt_query,
+					GetPlayerData(playerid, p_skin), GetPlayerData(playerid, p_id));
+				mysql_tquery(mysql, query);
+
+				SendMeAction(playerid, "сменил(-а) одежду.", true);
 			}
 		}
 	}

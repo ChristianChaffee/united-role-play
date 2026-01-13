@@ -151,21 +151,41 @@ DialogResponse:D_BUSINESS_CHANGE_PRICE(playerid, response, listitem, inputtext[]
 
 	business_info[GetPVarInt(playerid, "Business_Index")][b_products_prices][GetPVarInt(playerid, "Business_MenuPositionIndex")] = strval(inputtext);
 
-	small_string[0] = EOS;
-	for(new i; i < MAX_BUSINESS_MENU_POSITIONS; i++){
-		format(small_string, sizeof(small_string),
-			"%s%d%s",
-			small_string,
-			business_info[GetPVarInt(playerid, "Business_Index")][b_products_prices][i],
-			(i == MAX_BUSINESS_MENU_POSITIONS - 1) ? ("") : (", "));
-	}
 
-	static const fmt_query[] = "UPDATE business SET products_prices = '%s' WHERE id = %d";
-	new query[sizeof(fmt_query) + (-2 + sizeof(small_string)) + (-2 + 11)];
-	mysql_format(mysql, query, sizeof(query), fmt_query,
-		small_string, GetBusinessData(GetPVarInt(playerid, "Business_Index"), b_id));
-	mysql_tquery(mysql, query);
-	small_string[0] = EOS;
+	if(GetBusinessData(GetPVarInt(playerid, "Business_Index"), b_type) != BUSINESS_TYPE_SKIN_SHOP){
+		small_string[0] = EOS;
+		for(new i; i < MAX_BUSINESS_MENU_POSITIONS; i++){
+			format(small_string, sizeof(small_string),
+				"%s%d%s",
+				small_string,
+				business_info[GetPVarInt(playerid, "Business_Index")][b_products_prices][i],
+				(i == MAX_BUSINESS_MENU_POSITIONS - 1) ? ("") : (", "));
+		}
+
+		static const fmt_query[] = "UPDATE business SET products_prices = '%s' WHERE id = %d";
+		new query[sizeof(fmt_query) + (-2 + sizeof(small_string)) + (-2 + 11)];
+		mysql_format(mysql, query, sizeof(query), fmt_query,
+			small_string, GetBusinessData(GetPVarInt(playerid, "Business_Index"), b_id));
+		mysql_tquery(mysql, query);
+		small_string[0] = EOS;
+	}
+	else{
+		big_string[0] = EOS;
+		for(new i; i < BUSINESS_SKIN_SHOP_COUNT; i++){
+			format(big_string, sizeof(big_string),
+				"%s%d%s",
+				small_string,
+				business_skin_shop_prices[GetPVarInt(playerid, "Business_Index")][i],
+				(i == BUSINESS_SKIN_SHOP_COUNT - 1) ? ("") : (", "));
+		}
+
+		static const fmt_query[] = "UPDATE business SET products_prices = '%s' WHERE id = %d";
+		new query[sizeof(fmt_query) + (-2 + sizeof(big_string)) + (-2 + 11)];
+		mysql_format(mysql, query, sizeof(query), fmt_query,
+			big_string, GetBusinessData(GetPVarInt(playerid, "Business_Index"), b_id));
+		mysql_tquery(mysql, query);
+		big_string[0] = EOS;
+	}
 
 	DeletePVar(playerid, "Business_Index");
 	DeletePVar(playerid, "Business_MenuPositionIndex");
@@ -205,11 +225,19 @@ DialogResponse:D_BUSINESS_PERK_INFO(playerid, response, listitem, inputtext[]){
 
 		small_string[0] = EOS;
 		format(small_string, sizeof(small_string),
-			"Вы купили улучшения \"%s\" за %d$.",
+			"Вы купили улучшение \"%s\" за %d$.",
 			GetBusinessPerkData(perk_index, bp_name),
 			GetBusinessPerkData(perk_index, bp_price));
 		SendClientMessage(playerid, COLOR_GREEN, small_string);
 		small_string[0] = EOS;
+
+		AddBusinessData(business_index, b_balance, -GetBusinessPerkData(perk_index, bp_price));
+
+		static const fmt_query[] = "UPDATE business SET balance = %d WHERE id = %d";
+		new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+		mysql_format(mysql, query, sizeof(query), fmt_query,
+			GetBusinessData(business_index, b_balance), GetBusinessData(business_index, b_id));
+		mysql_tquery(mysql, query);
 	}
 	else{
 		DeletePVar(playerid, "Business_PerkIndex");

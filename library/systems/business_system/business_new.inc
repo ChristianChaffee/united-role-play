@@ -5,6 +5,11 @@
 	Business_MenuPositionIndex
 	Business_PerkIndex
 
+	Business_SkinShopSkinStartIndex
+	Business_SkinShopMaxSkinIndex
+	Business_SkinShopSkinIndex
+	Business_SkinShopOldSkin
+
 	Business_BuyIndex
 	Business_SellPrice
 	Business_BuyPlayerid
@@ -63,6 +68,7 @@ enum
 	BUSINESS_TYPE_FASTFOOD,
 	BUSINESS_TYPE_SHOP,
 	BUSINESS_TYPE_GAS_STATION,
+	BUSINESS_TYPE_SKIN_SHOP,
 	BUSINESS_TYPES_COUNT
 }
 
@@ -79,7 +85,8 @@ new const business_type_names[BUSINESS_TYPES_COUNT][32] = {
 	"Бургерная",
 	"Фастфуд-ресторан",
 	"Магазин 24/7",
-	"АЗС"
+	"АЗС",
+	"Магазин одежды"
 };
 //==============================================================================
 enum business_menu_info_struct
@@ -155,6 +162,10 @@ new const business_menu_info[BUSINESS_TYPES_COUNT][MAX_BUSINESS_MENU_POSITIONS][
 		{"-", 0, 0},
 		{"-", 0, 0},
 		{"-", 0, 0}
+	},
+
+	{ /* Магазин одежды (файл: business_skin_shop_new.inc) */
+		{"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}
 	}
 };
 
@@ -249,6 +260,20 @@ new const business_interior_info[BUSINESS_TYPES_COUNT][business_interior_info_st
 		{0.0, 0.0},
 		{0.0, 0.0},
 		{0, 0}
+	},
+
+	{ /* Магазин одежды */
+		227.5055, -8.1579, 1002.2109, 90.0,
+		5,
+		206.3749, -8.0494, 1001.2109,
+		1275,
+		""cl_lime"[Каталог одежды]\n"cl_grey"'Left ALT'",
+
+		{227.5390, 204.8524},
+		{-6.0029, -8.4483},
+		{1002.2180, 1001.2109},
+		{90.0, 270.0},
+		{164, 211}
 	}
 };
 

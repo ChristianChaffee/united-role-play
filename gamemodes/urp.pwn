@@ -70,6 +70,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\parking_fine_system\parking_fine_new.inc"
 #include "..\library\systems\report_system\report_system_new.inc"
 #include "..\library\systems\business_system\business_new.inc"
+#include "..\library\systems\business_system\business_skin_shop_new.inc"
 #include "..\library\systems\logo_system\logo_system_new.inc"
 #include "..\library\systems\phone_system\phone_system_new.inc"
 

@@ -15,7 +15,7 @@ CMD:maskoff(playerid){
 	if(!player_logged[playerid]) return false;
 	if(!GetPVarType(playerid, "Mask")) return SendErrorMessage(playerid, "На Вас нет маски.");
 
-	SendMeAction(playerid, "снял(-а) маску.");
+	SendMeAction(playerid, "снял(-а) маску.", true);
 	DeletePVar(playerid, "Mask");
 	DeletePVar(playerid, "Mask_Timer");
 

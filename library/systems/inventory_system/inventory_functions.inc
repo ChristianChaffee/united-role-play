@@ -30,7 +30,7 @@ stock Inventory:Show(playerid){
 		cef_emit_event(playerid, "setInventoryItem",
 			CEFINT(GetPlayerInventoryItemData(playerid, i, inv_player_item_slot)),
 			CEFSTR(GetInventoryItemData(inventory_player[playerid][i][inv_player_item_id], item_name)),
-			CEFINT(GetPlayerInventoryItemData(playerid, i, inv_player_item_count)),
+			CEFINT((GetPlayerInventoryItemData(playerid, i, inv_player_item_id) == ITEM_SKIN_ID) ? (GetPlayerInventoryItemData(playerid, i, inv_player_value_one)) : (GetPlayerInventoryItemData(playerid, i, inv_player_item_count))),
 			CEFSTR(GetInventoryItemData(inventory_player[playerid][i][inv_player_item_id], item_img_url)),
 			CEFSTR(GetInventoryItemData(inventory_player[playerid][i][inv_player_item_id], item_description)));
 	}

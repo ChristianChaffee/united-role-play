@@ -41,6 +41,37 @@ stock Business:ShowMenu(playerid, business_index){
 				CEFINT(business_info[business_index][b_products_prices][4]),
 				CEFINT(business_info[business_index][b_products_prices][5]));
 		}
+
+		case BUSINESS_TYPE_SKIN_SHOP:{
+			SetPlayerPos(playerid, BUSINESS_SKIN_SHOP_SPAWN_POS);
+			SetPlayerFacingAngle(playerid, BUSINESS_SKIN_SHOP_SPAWN_ANG);
+			SetPlayerVirtualWorld(playerid, playerid + BUSINESS_SKIN_SHOP_VW_OFFSET);
+
+			SetPlayerCameraPos(playerid, BUSINESS_SKIN_SHOP_SPAWN_CAM);
+			SetPlayerCameraLookAt(playerid, BUSINESS_SKIN_SHOP_SPAWN_POS);
+
+			cef_emit_event(playerid, "clearSkinSelectorSkins");
+
+			new start = (!GetPlayerData(playerid, p_sex)) ? (0) : (248),
+				end = (!GetPlayerData(playerid, p_sex)) ? (248) : (sizeof(business_skin_shop_menu));
+
+			cef_emit_event(playerid, "showSkinSelector",
+				CEFINT((!GetPlayerBankCardData(playerid, pbc_id)) ? (0) : ((!GetPlayerBankCardData(playerid, pbc_balance)) ? (0) : (1))));
+			
+			cef_emit_event(playerid, "skinShopSetData",
+				CEFINT(GetBusinessSkinShopMenu(start, bm_item_id)),
+				CEFINT(business_skin_shop_prices[business_index][start]));
+
+			SetPVarInt(playerid, "Business_SkinShopOldSkin", GetPlayerSkin(playerid));
+			SetPVarInt(playerid, "Business_SkinShopSkinStartIndex", start);
+			SetPVarInt(playerid, "Business_SkinShopSkinIndex", start);
+			SetPVarInt(playerid, "Business_SkinShopMaxSkinIndex", end);
+
+			SetPVarInt(playerid, "Business_Index", business_index);
+
+			SetPlayerSkin(playerid, GetBusinessSkinShopMenu(start, bm_item_id));
+			SelectTextDraw(playerid, -1);
+		}
 	}
 	return true;
 }
@@ -239,18 +270,35 @@ stock Business:ShowPricesList(playerid, business_index){
 	format(big_string, sizeof(big_string),
 		""cl_grey"Наименование позиции\t"cl_grey"Цена");
 
-	for(new i; i < MAX_BUSINESS_MENU_POSITIONS; i++){
-		if(!strcmp("-", GetBusinessMenuData(GetBusinessData(business_index, b_type), i, bm_name))) continue;
+	if(GetBusinessData(business_index, b_type) != BUSINESS_TYPE_SKIN_SHOP){
+		for(new i; i < MAX_BUSINESS_MENU_POSITIONS; i++){
+			if(!strcmp("-", GetBusinessMenuData(GetBusinessData(business_index, b_type), i, bm_name))) continue;
 
-		format(big_string, sizeof(big_string),
-			"%s\n\
-			"cl_blue"%d. "cl_white"%s\t"cl_white"%d$",
-			big_string, count + 1, 
-			GetBusinessMenuData(GetBusinessData(business_index, b_type), i, bm_name),
-			business_info[business_index][b_products_prices][i]);
+			format(big_string, sizeof(big_string),
+				"%s\n\
+				"cl_blue"%d. "cl_white"%s\t"cl_white"%d$",
+				big_string, count + 1, 
+				GetBusinessMenuData(GetBusinessData(business_index, b_type), i, bm_name),
+				business_info[business_index][b_products_prices][i]);
 
-		player_listitems[playerid][count] = i;
-		count++;
+			player_listitems[playerid][count] = i;
+			count++;
+		}
+	}
+	else{
+		for(new i; i < BUSINESS_SKIN_SHOP_COUNT; i++){
+			if(!strcmp("-", GetBusinessSkinShopMenu(i, bm_name))) continue;
+
+			format(big_string, sizeof(big_string),
+				"%s\n\
+				"cl_blue"%d. "cl_white"%s\t"cl_white"%d$",
+				big_string, count + 1, 
+				GetBusinessSkinShopMenu(i, bm_name),
+				business_skin_shop_prices[business_index][i]);
+
+			player_listitems[playerid][count] = i;
+			count++;
+		}
 	}
 
 	if(!count){
@@ -504,6 +552,12 @@ stock Business:HideGasStation(playerid){
 
 stock Business:ShowGasStationError(playerid, text[]){
 	cef_emit_event(playerid, "showGasStationError",
+		CEFSTR(text));
+	return true;
+}
+
+stock Business:ShowSkinShopError(playerid, text[]){
+	cef_emit_event(playerid, "skinShopShowError",
 		CEFSTR(text));
 	return true;
 }

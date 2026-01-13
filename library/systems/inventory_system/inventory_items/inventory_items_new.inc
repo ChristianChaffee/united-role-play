@@ -34,12 +34,14 @@
 #define ITEM_FLOWERS_ID 						33
 #define ITEM_CANISTER_ID 						34
 #define ITEM_REPAIR_ID 							35
+#define ITEM_SKIN_ID 							36
 
 #warning TODO: Add image to ITEM_CANISTER_ID
 #warning TODO: Add image to ITEM_REPAIR_ID
+#warning TODO: Add image to ITEM_SKIN_ID
 
 
-#define MAX_INVENTORY_ITEMS 					35
+#define MAX_INVENTORY_ITEMS 					36
 #define MAX_INVENTORY_SLOTS  					27
 
 #define GetInventoryItemData(%0,%1) 			inventory_item_info[%0][%1]
