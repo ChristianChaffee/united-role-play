@@ -262,6 +262,11 @@ public Shop_BuyItem(playerid, const arguments[]){
 
 		Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(business_type, selected_position, bm_item_id), item_count);
 	}
+	else if(business_type == BUSINESS_TYPE_ALHAMBRA || business_type == BUSINESS_TYPE_PIG_PEN || business_type == BUSINESS_TYPE_JIZZY
+		|| business_type == BUSINESS_TYPE_BAR){
+		SetPlayerDrunkLevel(playerid, GetPlayerData(playerid, p_drunked_level) + 1500);
+		SendMeAction(playerid, "выпил(-а) алкогольный напиток.", true);
+	}
 	else{
 		Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(business_type, selected_position, bm_item_id));
 	}
@@ -286,13 +291,16 @@ public Shop_BuyItem(playerid, const arguments[]){
 	AddBusinessData(business_index, b_balance, price);
 	AddBusinessData(business_index, b_products, -GetBusinessMenuData(business_type, selected_position, bm_products_price));
 
-	small_string[0] = EOS;
-	format(small_string, sizeof(small_string),
-		""cl_lime"Вы купили: "cl_white"%s.",
-		GetBusinessMenuData(business_type, selected_position, bm_name));
-	SendClientMessage(playerid, -1, small_string);
-	SendClientMessage(playerid, COLOR_GREY, "- Предмет помещён в инвентарь (/inv).");
-	small_string[0] = EOS;
+	if(business_type != BUSINESS_TYPE_ALHAMBRA || business_type != BUSINESS_TYPE_PIG_PEN || business_type != BUSINESS_TYPE_JIZZY
+		|| business_type != BUSINESS_TYPE_BAR){
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			""cl_lime"Вы купили: "cl_white"%s.",
+			GetBusinessMenuData(business_type, selected_position, bm_name));
+		SendClientMessage(playerid, -1, small_string);
+		SendClientMessage(playerid, COLOR_GREY, "- Предмет помещён в инвентарь (/inv).");
+		small_string[0] = EOS;
+	}
 
 	static const fmt_query[] = "UPDATE business SET products = %d, balance = %d WHERE id = %d";
 	new query[sizeof(fmt_query) + ((-2 + 11) * 3)];
