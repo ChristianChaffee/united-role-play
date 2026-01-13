@@ -324,15 +324,16 @@ stock Inventory:UseItem(playerid, slot_index){
 
 				SendMeAction(playerid, "поставил(-а) SIM-карту в телефон.", true);
 			}
-			case ITEM_CAMERA_ID, ITEM_FLOWERS_ID:{
-				new weaponid;
+			case ITEM_CAMERA_ID, ITEM_FLOWERS_ID, ITEM_PEPPER_SPRAY_ID:{
+				new weaponid, ammo;
 				switch(GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_id)){
 					
-					case ITEM_CAMERA_ID: weaponid = WEAPON_CAMERA;
-					case ITEM_FLOWERS_ID: weaponid = WEAPON_FLOWER;
+					case ITEM_CAMERA_ID: weaponid = WEAPON_CAMERA, ammo = GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one);
+					case ITEM_FLOWERS_ID: weaponid = WEAPON_FLOWER, ammo = GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one);
+					case ITEM_PEPPER_SPRAY_ID: weaponid = WEAPON_SPRAYCAN, ammo = 1000;
 				}
 
-				GivePlayerWeapon(playerid, weaponid, GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one));
+				GivePlayerWeapon(playerid, weaponid, ammo);
 				UpdatePlayerWeapons(playerid);
 
 				Inventory:SetPlayerSlotNull(playerid, slot_index);
@@ -413,6 +414,34 @@ stock Inventory:UseItem(playerid, slot_index){
 
 				SendMeAction(playerid, "сменил(-а) одежду.", true);
 			}
+			case ITEM_DEAGLE_ID, ITEM_SHOTGUN_ID, ITEM_MP5_ID, ITEM_M4_ID:{
+				if(!Inventory:GetAmmoForWeapon(playerid, GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_id))){
+					Inventory:ShowError(playerid, "У Вас нет патронов для этого типа оружия.");
+					return false;
+				}
+
+				Inventory:Hide(playerid);
+
+				big_string[0] = EOS;
+				format(big_string, sizeof(big_string),
+					""cl_blue"- "cl_white"Введите количество патронов, которое хотите взять для "cl_grey"%s\n\
+					"cl_grey"Доступное количество патронов: "cl_white"%d шт",
+					GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_name),
+					Inventory:GetAmmoForWeapon(playerid, GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_id)));
+
+				Dialog_Open(playerid, Dialog:D_INV_AMMO, DIALOG_STYLE_INPUT,
+					"Количество патронов", big_string,
+					"Взять", "Закрыть");
+				big_string[0] = EOS;
+
+				SetPVarInt(playerid, "Inventory_SlotIndex", slot_index);
+				return true;
+			}
+			case ITEM_AMMO_ID:{
+				SetPlayerArmour(playerid, 100.0);
+				SendMeAction(playerid, "надел(-а) бронежилет.", true);
+				Inventory:SetPlayerSlotNull(playerid, slot_index);
+			}
 		}
 	}
 
@@ -455,4 +484,26 @@ stock Inventory:DropItem(playerid, slot_index, count){
 
 	Inventory:Hide(playerid);
 	return true;
+}
+
+stock Inventory:GetInventoryItemsCount(playerid, find_item_id){
+	new count;
+
+	for(new i; i < MAX_INVENTORY_SLOTS; i++){
+		if(!GetPlayerInventoryItemData(playerid, i, inv_player_id)) continue;
+		if(GetPlayerInventoryItemData(playerid, i, inv_player_item_id) != find_item_id) continue;
+
+		count += GetPlayerInventoryItemData(playerid, i, inv_player_item_count);
+	}
+	return count;
+}
+
+stock Inventory:GetAmmoForWeapon(playerid, weapon_item_id){
+	switch(weapon_item_id){
+		case ITEM_DEAGLE_ID: return Inventory:GetInventoryItemsCount(playerid, ITEM_DEAGLE_AMMO_ID);
+		case ITEM_SHOTGUN_ID: return Inventory:GetInventoryItemsCount(playerid, ITEM_SHOTGUN_AMMO_ID);
+		case ITEM_MP5_ID: return Inventory:GetInventoryItemsCount(playerid, ITEM_MP5_AMMO_ID);
+		case ITEM_M4_ID: return Inventory:GetInventoryItemsCount(playerid, ITEM_M4_AMMO_ID);
+	}
+	return 0;
 }

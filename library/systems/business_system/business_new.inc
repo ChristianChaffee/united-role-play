@@ -69,6 +69,7 @@ enum
 	BUSINESS_TYPE_SHOP,
 	BUSINESS_TYPE_GAS_STATION,
 	BUSINESS_TYPE_SKIN_SHOP,
+	BUSINESS_TYPE_AMMUNITION,
 	BUSINESS_TYPES_COUNT
 }
 
@@ -86,7 +87,8 @@ new const business_type_names[BUSINESS_TYPES_COUNT][32] = {
 	"Фастфуд-ресторан",
 	"Магазин 24/7",
 	"АЗС",
-	"Магазин одежды"
+	"Магазин одежды",
+	"Аммуниция"
 };
 //==============================================================================
 enum business_menu_info_struct
@@ -166,6 +168,19 @@ new const business_menu_info[BUSINESS_TYPES_COUNT][MAX_BUSINESS_MENU_POSITIONS][
 
 	{ /* Магазин одежды (файл: business_skin_shop_new.inc) */
 		{"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}, {"-", 0, 0}
+	},
+
+	{ /* Аммуниция */
+		{"Пистолет Desert Eagle", ITEM_DEAGLE_ID, 10},
+		{"Дробовик Shotgun", ITEM_SHOTGUN_ID, 10},
+		{"Пистолет-пулемёт MP5", ITEM_MP5_ID, 10},
+		{"Автомат M4", ITEM_M4_ID, 15},
+		{"Патроны к Desert Eagle (20 шт)", ITEM_DEAGLE_AMMO_ID, 5},
+		{"Патроны к Shotgun (20 шт)", ITEM_SHOTGUN_AMMO_ID, 5},
+		{"Патроны к MP5 (50 шт)", ITEM_MP5_AMMO_ID, 5},
+		{"Патроны к M4 (50 шт)", ITEM_M4_AMMO_ID, 10},
+		{"Перцовый балончик", ITEM_PEPPER_SPRAY_ID, 3},
+		{"Бронежилет", ITEM_AMMO_ID, 10}
 	}
 };
 
@@ -274,6 +289,20 @@ new const business_interior_info[BUSINESS_TYPES_COUNT][business_interior_info_st
 		{1002.2180, 1001.2109},
 		{90.0, 270.0},
 		{164, 211}
+	},
+
+	{ /* Аммуниция */
+		285.3952, -41.7337, 1001.5156, 0.0,
+		1,
+		295.8574, -38.5148, 1001.5156,
+		353,
+		""cl_lime"[Каталог аммуниции]\n"cl_grey"'Left ALT'",
+
+		{284.3176, 295.8690},
+		{-40.5261, -40.2171},
+		{1001.5156, 1001.5156},
+		{270.0, 0.0},
+		{164, 179}
 	}
 };
 

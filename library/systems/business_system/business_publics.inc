@@ -251,6 +251,17 @@ public Shop_BuyItem(playerid, const arguments[]){
 
 		Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(business_type, selected_position, bm_item_id), _, 50);
 	}
+	else if(business_type == BUSINESS_TYPE_AMMUNITION){
+		new item_count;
+
+		switch(item_index){
+			case 4, 5: item_count = 20;
+			case 6, 7: item_count = 50;
+			default: item_count = 1;
+		}
+
+		Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(business_type, selected_position, bm_item_id), item_count);
+	}
 	else{
 		Inventory:GiveItem(playerid, slot_index, GetBusinessMenuData(business_type, selected_position, bm_item_id));
 	}

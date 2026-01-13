@@ -4,7 +4,7 @@ stock Business:ShowMenu(playerid, business_index){
 
 	switch(GetBusinessData(business_index, b_type)){
 		case BUSINESS_TYPE_PIZZA, BUSINESS_TYPE_BURGER, BUSINESS_TYPE_FASTFOOD,
-			BUSINESS_TYPE_SHOP:{
+			BUSINESS_TYPE_SHOP, BUSINESS_TYPE_AMMUNITION:{
 			new counter;
 
 			cef_emit_event(playerid, "clearShopItems");

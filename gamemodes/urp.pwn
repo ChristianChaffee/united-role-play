@@ -523,6 +523,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\parking_fine_system\parking_fine_dialogs.inc"
 #include "..\library\systems\report_system\report_system_dialogs.inc"
 #include "..\library\systems\business_system\business_dialogs.inc"
+#include "..\library\systems\inventory_system\inventory_items\inventory_items_dialogs.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_functions.inc"
 #include "..\library\systems\registration_system\registration_functions.inc"
@@ -575,6 +576,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\business_system\business_hooks.inc"
 #include "..\library\systems\logo_system\logo_system_hooks.inc"
 #include "..\library\systems\phone_system\phone_system_hooks.inc"
+#include "..\library\systems\inventory_system\inventory_items\inventory_items_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 #include "..\library\systems\administration_system\administration_system_commands.inc"

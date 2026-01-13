@@ -36,12 +36,33 @@
 #define ITEM_REPAIR_ID 							35
 #define ITEM_SKIN_ID 							36
 
+#define ITEM_DEAGLE_ID 							37
+#define ITEM_SHOTGUN_ID 						38
+#define ITEM_MP5_ID 							39
+#define ITEM_M4_ID 								40
+#define ITEM_DEAGLE_AMMO_ID 					41
+#define ITEM_SHOTGUN_AMMO_ID 					42
+#define ITEM_MP5_AMMO_ID 						43
+#define ITEM_M4_AMMO_ID 						44
+#define ITEM_PEPPER_SPRAY_ID 					45
+#define ITEM_AMMO_ID 							46
+
 #warning TODO: Add image to ITEM_CANISTER_ID
 #warning TODO: Add image to ITEM_REPAIR_ID
 #warning TODO: Add image to ITEM_SKIN_ID
+#warning TODO: Add image to ITEM_DEAGLE_ID
+#warning TODO: Add image to ITEM_SHOTGUN_ID
+#warning TODO: Add image to ITEM_MP5_ID
+#warning TODO: Add image to ITEM_M4_ID
+#warning TODO: Add image to ITEM_DEAGLE_AMMO_ID
+#warning TODO: Add image to ITEM_SHOTGUN_AMMO_ID
+#warning TODO: Add image to ITEM_MP5_AMMO_ID
+#warning TODO: Add image to ITEM_M4_AMMO_ID
+#warning TODO: Add image to ITEM_PEPPER_SPRAY_ID
+#warning TODO: Add image to ITEM_AMMO_ID
 
 
-#define MAX_INVENTORY_ITEMS 					36
+#define MAX_INVENTORY_ITEMS 					46
 #define MAX_INVENTORY_SLOTS  					27
 
 #define GetInventoryItemData(%0,%1) 			inventory_item_info[%0][%1]
