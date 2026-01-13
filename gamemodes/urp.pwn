@@ -73,6 +73,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\business_system\business_skin_shop_new.inc"
 #include "..\library\systems\logo_system\logo_system_new.inc"
 #include "..\library\systems\phone_system\phone_system_new.inc"
+#include "..\library\systems\house_system\house_system_new.inc"
 
 public OnGameModeInit(){
 	EnableStuntBonusForAll(false);
@@ -506,6 +507,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\business_system\business_publics.inc"
 #include "..\library\systems\logo_system\logo_system_publics.inc"
 #include "..\library\systems\phone_system\phone_system_publics.inc"
+#include "..\library\systems\house_system\house_system_publics.inc"
 
 #include "..\library\systems\registration_system\registration_dialogs.inc"
 #include "..\library\systems\bank_system\bank_system_dialogs.inc"
@@ -550,6 +552,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\business_system\business_functions.inc"
 #include "..\library\systems\logo_system\logo_system_functions.inc"
 #include "..\library\systems\phone_system\phone_system_functions.inc"
+#include "..\library\systems\house_system\house_system_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -577,6 +580,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\logo_system\logo_system_hooks.inc"
 #include "..\library\systems\phone_system\phone_system_hooks.inc"
 #include "..\library\systems\inventory_system\inventory_items\inventory_items_hooks.inc"
+#include "..\library\systems\house_system\house_system_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 #include "..\library\systems\administration_system\administration_system_commands.inc"
@@ -585,6 +589,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\business_system\business_commands.inc"
 #include "..\library\systems\job_system\job_products_delivery\job_products_delivery_commands.inc"
 #include "..\library\systems\phone_system\phone_system_commands.inc"
+#include "..\library\systems\house_system\house_system_commands.inc"
 
 //==============================================================================
 #include "..\library\source\mapping\spawn.inc"
