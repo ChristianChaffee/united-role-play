@@ -6,10 +6,15 @@
 #define MAX_GARAGES 							MAX_HOUSES
 
 #define GARAGE_ENTER_PICKUP_MODEL 				19197
+#define GARAGE_REPAIR_PICKUP_MODEL 				19134
 
 #define GARAGE_TP_POS 							945.6981, 2129.2825, 1004.4070
 #define GARAGE_TP_ANGLE 						270.0
 #define GARAGE_TP_INT 							1
+
+#define GARAGE_REPAIR_POS 						952.2365, 2147.1829, 1004.6840
+
+#define GARAGE_REPAIR_PERCENT_PRICE 			0.3
 
 //==============================================================================
 enum garage_info_struct
@@ -23,5 +28,7 @@ enum garage_info_struct
 	g_enter_pickup,
 	Text3D:g_enter_text,
 	Text3D:g_exit_text,
+	g_repair_pickup,
+	Text3D:g_repair_text
 }
 new garage_info[MAX_GARAGES][garage_info_struct];

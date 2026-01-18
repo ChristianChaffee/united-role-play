@@ -4,6 +4,8 @@
 //==============================================================================
 hook OnGameModeInit(){
 	mysql_tquery(mysql, "SELECT * FROM garages", "LoadGarages", "i", -1);
+
+	cef_subscribe("garageRepairConfirm", "garageRepairConfirm");
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
@@ -23,10 +25,15 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 			for(new i; i < MAX_GARAGES; i++){
 				if(!GetGarageData(i, g_id)) continue;
 				if(GetPlayerVirtualWorld(playerid) != GetGarageData(i, g_id)) continue;
-				if(!IsPlayerInRangeOfPoint(playerid, 3.0, GARAGE_TP_POS)) continue;
 
-				House:GarageExit(playerid, i);
-				return Y_HOOKS_CONTINUE_RETURN_1;
+				if(IsPlayerInRangeOfPoint(playerid, 3.0, GARAGE_TP_POS)){
+					House:GarageExit(playerid, i);
+					return Y_HOOKS_CONTINUE_RETURN_1;
+				}
+				else if(IsPlayerInRangeOfPoint(playerid, 1.0, GARAGE_REPAIR_POS)){
+					House:ShowGarageRepair(playerid, i);
+					return Y_HOOKS_CONTINUE_RETURN_1;
+				}
 			}
 		}
 	}

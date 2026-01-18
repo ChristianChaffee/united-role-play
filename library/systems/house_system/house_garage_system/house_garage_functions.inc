@@ -11,6 +11,12 @@ stock House:GarageUpdate(garage_index){
 	if(IsValidDynamic3DTextLabel(GetGarageData(garage_index, g_exit_text))){
 		DestroyDynamic3DTextLabel(GetGarageData(garage_index, g_exit_text));
 	}
+	if(IsValidDynamicPickup(GetGarageData(garage_index, g_repair_pickup))){
+		DestroyDynamicPickup(GetGarageData(garage_index, g_repair_pickup));
+	}
+	if(IsValidDynamic3DTextLabel(GetGarageData(garage_index, g_repair_text))){
+		DestroyDynamic3DTextLabel(GetGarageData(garage_index, g_repair_text));
+	}
 
 	GetGarageData(garage_index, g_enter_pickup) = CreateDynamicPickup(GARAGE_ENTER_PICKUP_MODEL, 23, 
 		GetGarageData(garage_index, g_pos_x), 
@@ -38,6 +44,17 @@ stock House:GarageUpdate(garage_index){
 		"cl_grey"В транспорте: "cl_white"'H'",
 		-1,
 		GARAGE_TP_POS,
+		15.0, _, _, 1,
+		GetGarageData(garage_index, g_id), GARAGE_TP_INT);
+
+	GetGarageData(garage_index, g_repair_pickup) = CreateDynamicPickup(GARAGE_REPAIR_PICKUP_MODEL, 23, 
+		GARAGE_REPAIR_POS, 
+		GetGarageData(garage_index, g_id), GARAGE_TP_INT);
+
+	GetGarageData(garage_index, g_repair_text) = CreateDynamic3DTextLabel(""cl_lime"[Ремонт транспорта]\n\
+		"cl_grey"'Left ALT'",
+		-1,
+		GARAGE_REPAIR_POS,
 		15.0, _, _, 1,
 		GetGarageData(garage_index, g_id), GARAGE_TP_INT);
 	return true;
@@ -118,5 +135,33 @@ stock House:GarageExit(playerid, garage_index){
 
 		SetCameraBehindPlayer(playerid);
 	}
+	return true;
+}
+
+stock House:ShowGarageRepair(playerid, garage_index){
+	if(garage_index < 0 || garage_index >= MAX_GARAGES) return false;
+
+	cef_emit_event(playerid, "showGarageRepair");
+	cef_emit_event(playerid, "clearGarageRepairVehicles");
+
+	for(new i, j = GetVehiclePoolSize(), Float:veh_health; i <= j; i++){
+		if(!IsValidVehicle(i)) continue;
+		if(GetVehicleVirtualWorld(i) != GetGarageData(garage_index, g_id)) continue;
+		if(!IsVehicleInRangeOfPoint(i, 50.0, GARAGE_REPAIR_POS)) continue;
+
+		GetVehicleHealth(i, veh_health);
+
+		cef_emit_event(playerid, "addGarageRepairVehicle",
+			CEFSTR(GetVehicleParamsData(GetVehicleParamIndexByModel(GetVehicleModel(i)), vp_name)),
+			CEFINT(floatround((veh_health * 100.0) / 1000.0)),
+			CEFINT(floatround((100.0 - (veh_health * 100.0) / 1000.0) * GARAGE_REPAIR_PERCENT_PRICE)),
+			CEFINT(i));
+	}
+
+	return true;
+}
+
+stock House:HideGarageRepair(playerid){
+	cef_emit_event(playerid, "hideGarageRepair");
 	return true;
 }

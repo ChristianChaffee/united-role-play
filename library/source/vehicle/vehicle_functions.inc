@@ -234,6 +234,13 @@ stock IsFueledVehicle(vehicleid){
 	return true;
 }
 
+stock IsVehicleInRangeOfPoint(vehicleid, Float:radius, Float:x, Float:y, Float:z){
+	if(!IsValidVehicle(vehicleid)) return false;
+
+	if(GetVehicleDistanceFromPoint(vehicleid, x, y, z) <= radius) return true;
+	return false;
+}
+
 //==============================================================================
 stock ShowVehicleMenu(playerid){
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER || !GetPlayerVehicleID(playerid)) return false;

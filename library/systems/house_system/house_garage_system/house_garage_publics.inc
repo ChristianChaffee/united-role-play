@@ -68,3 +68,41 @@ public LoadCreateGarage(playerid){
 	mysql_tquery(mysql, query, "LoadGarages", "i", free_index);
 	return true;
 }
+
+forward garageRepairConfirm(playerid, const arguments[]);
+public garageRepairConfirm(playerid, const arguments[]){
+	new vehicleid,
+		Float:veh_health;
+
+	sscanf(arguments, "i", vehicleid);
+
+	if(!IsValidVehicle(vehicleid)){
+		SendErrorMessage(playerid, "Данного транспорта не существует.");
+		House:HideGarageRepair(playerid);
+		return false;
+	}
+
+	GetVehicleHealth(vehicleid, veh_health);
+	new price = floatround((100.0 - (veh_health * 100.0) / 1000.0) * GARAGE_REPAIR_PERCENT_PRICE);
+
+	if(GetPlayerData(playerid, p_money) < price){
+		SendErrorMessage(playerid, "У Вас недостаточно наличных денежных средств.");
+		return false;
+	}
+
+	GiveMoney(playerid, -price);
+
+	RepairVehicle(vehicleid);
+	SetVehicleHealth(vehicleid, 1000.0);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы починили транспорт "cl_white"\"%s\" "cl_lime"за "cl_white"%d$"cl_lime".",
+		GetVehicleParamsData(GetVehicleParamIndexByModel(GetVehicleModel(vehicleid)), vp_name),
+		price);
+	SendClientMessage(playerid, COLOR_LIME, small_string);
+	small_string[0] = EOS;
+
+	House:HideGarageRepair(playerid);
+	return true;
+}
