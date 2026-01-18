@@ -235,15 +235,33 @@ public houseMenuUpgradeBuy(playerid, const arguments[]){
 		return false;
 	}
 
-	Bank:GiveMoney(playerid, -house_upgrade_info[upgrade_index][hu_price]);
+	if(upgrade_index != HOUSE_UPGRADE_GARAGE){
+		Bank:GiveMoney(playerid, -house_upgrade_info[upgrade_index][hu_price]);
 
-	house_info[house_index][h_upgrades][upgrade_index] = 1;
-	House:SaveUpgrades(house_index);
+		house_info[house_index][h_upgrades][upgrade_index] = 1;
+		House:SaveUpgrades(house_index);
 
-	House:UpdateUpgradesList(playerid, house_index);
+		House:UpdateUpgradesList(playerid, house_index);
+	}
 
 	switch(upgrade_index){
-		#warning TODO	
+		case HOUSE_UPGRADE_GARAGE:{
+			House:HideMenu(playerid);
+
+			SetPlayerPos(playerid,
+				GetHouseData(house_index, h_pos_x),
+				GetHouseData(house_index, h_pos_y),
+				GetHouseData(house_index, h_pos_z));
+
+			SetPlayerVirtualWorld(playerid,
+				GetHouseData(house_index, h_vw));
+
+			SetPlayerInterior(playerid,
+				GetHouseData(house_index, h_int));
+
+			SendClientMessage(playerid, COLOR_LIME, "Выберите место, где хотите поставить гараж и введите "cl_white"'/savegarage'"cl_lime".");
+			SetPVarInt(playerid, "House_IsCreateGarage", house_index);
+		}	
 	}
 	return true;
 }
