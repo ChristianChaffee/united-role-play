@@ -111,14 +111,15 @@ CMD:delveh(playerid, params[]){
 }
 
 CMD:tpcoord(playerid, params[]){
-	if(sscanf(params, "fff", params[0], params[1], params[2])) return SendErrorMessage(playerid, "Используйте '/tpcoord [X] [Y] [Z]'");
+	new Float:pos[3];
+	if(sscanf(params, "fff", pos[0], pos[1], pos[2])) return SendErrorMessage(playerid, "Используйте '/tpcoord [X] [Y] [Z]'");
 
-	SetPlayerPos(playerid, params[0], params[1], params[2]);
+	SetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 
 	small_string[0] = EOS;
 	format(small_string, sizeof(small_string),
 		"Вы телепортировались по координатам %f, %f, %f.",
-		params[0], params[1], params[2]);
+		pos[0], pos[1], pos[2]);
 	SendClientMessage(playerid, COLOR_LIME, small_string);
 	small_string[0] = EOS;
 	return true;
@@ -282,6 +283,32 @@ CMD:gotobiz(playerid, params[]){
 
 	SetPlayerVirtualWorld(playerid, GetBusinessData(business_index, b_vw));
 	SetPlayerInterior(playerid, GetBusinessData(business_index, b_int));
+	return true;
+}
+
+CMD:gotohouse(playerid, params[]){
+	if(sscanf(params, "i", params[0]) || !params[0]) return SendErrorMessage(playerid, "Используйте '/gotohouse [ID дома]'");
+	
+	new house_index = -1;
+	for(new i; i < MAX_HOUSES; i++){
+		if(GetHouseData(i, h_id) != params[0]) continue;
+		house_index = i;
+		break;
+	}
+
+	if(house_index == -1) return SendErrorMessage(playerid, "Данного дома не существует.");
+
+	if(IsPlayerInAnyVehicle(playerid)){
+		SetVehiclePos(GetPlayerVehicleID(playerid), GetHouseData(house_index, h_pos_x), GetHouseData(house_index, h_pos_y), GetHouseData(house_index, h_pos_z));
+		SetVehicleVirtualWorld(GetPlayerVehicleID(playerid), GetHouseData(house_index, h_vw));
+		LinkVehicleToInterior(GetPlayerVehicleID(playerid), GetHouseData(house_index, h_int));
+	}
+	else{
+		SetPlayerPos(playerid, GetHouseData(house_index, h_pos_x), GetHouseData(house_index, h_pos_y), GetHouseData(house_index, h_pos_z));
+	}
+
+	SetPlayerVirtualWorld(playerid, GetHouseData(house_index, h_vw));
+	SetPlayerInterior(playerid, GetHouseData(house_index, h_int));
 	return true;
 }
 

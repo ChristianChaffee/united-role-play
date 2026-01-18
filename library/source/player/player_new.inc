@@ -57,7 +57,9 @@ enum player_info_struct
 	p_sim_card,
 
 	p_weapons[WEAPON_SLOTS_COUNT],
-	p_weapons_ammo[WEAPON_SLOTS_COUNT]
+	p_weapons_ammo[WEAPON_SLOTS_COUNT],
+
+	p_tenant_house_id
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -88,7 +90,9 @@ new const player_info_default[player_info_struct] = {
 	-1,
 
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+
+	0
 };
 
 //==============================================================================

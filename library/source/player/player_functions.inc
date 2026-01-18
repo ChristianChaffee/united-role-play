@@ -76,6 +76,8 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	cache_get_value_name(0, "weapons_ammo", temp_string);
 	sscanf(temp_string, "p<,>a<i>["#WEAPON_SLOTS_COUNT"]", player_info[playerid][p_weapons_ammo]);
 
+	cache_get_value_name_int(0, "tenant_house_id", GetPlayerData(playerid, p_tenant_house_id));
+
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
 
@@ -329,6 +331,15 @@ stock ShowHelp(playerid, commands_type){
 stock GetPlayerId(const name[]){
 	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
 		if(!strcmp(name, GetPlayerData(i, p_name))) return i;
+	}
+	return INVALID_PLAYER_ID;
+}
+
+stock GetPlayerIdBySqlId(sql_id){
+	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
+		if(!player_logged[i]) continue;
+		if(GetPlayerData(i, p_id) != sql_id) continue;
+		return i;
 	}
 	return INVALID_PLAYER_ID;
 }
