@@ -302,7 +302,8 @@ stock ShowHelpMenu(playerid){
 		"Главное меню",
 		""cl_blue"1. "cl_white"Общие команды\n\
 		"cl_blue"2. "cl_white"Команды для транспорта\n\
-		"cl_blue"3. "cl_white"Команды чата",
+		"cl_blue"3. "cl_white"Команды чата\n\
+		"cl_blue"4. "cl_white"Команды управления жильём",
 		"Выбрать", "Назад");
 	return true;
 }

@@ -16,6 +16,7 @@ enum
 	COMMAND_TYPE_GENERAL,
 	COMMAND_TYPE_VEHICLE,
 	COMMAND_TYPE_CHAT,
+	COMMAND_TYPE_HOUSE,
 	COMMAND_TYPE_MAX
 }
 
@@ -34,13 +35,17 @@ new command_info[][command_info_struct] = {
 	{"/piss", "справить нужду", COMMAND_TYPE_GENERAL},
 	{"/maskoff", "снять маску", COMMAND_TYPE_GENERAL},
 	{"/time", "взглянуть на часы", COMMAND_TYPE_GENERAL},
+	{"/phone", "достать телефон", COMMAND_TYPE_GENERAL},
 
 	{"/park", "припарковать личное транспортное средство", COMMAND_TYPE_VEHICLE},
 	{"/lock", "открыть/закрыть транспортное средство", COMMAND_TYPE_VEHICLE},
 
 	{"/me", "действие от 1-го лица", COMMAND_TYPE_CHAT},
 	{"/do", "действие/описание от 3-го лица", COMMAND_TYPE_CHAT},
-	{"/try", "действие-попытка (удачное/неудачное)", COMMAND_TYPE_CHAT}
+	{"/try", "действие-попытка (удачное/неудачное)", COMMAND_TYPE_CHAT},
+
+	{"/hpanel", "меню управления домом", COMMAND_TYPE_HOUSE},
+	{"/leavehouse", "покинуть дом, являясь его жильцом", COMMAND_TYPE_HOUSE}
 };
 
 //==============================================================================
