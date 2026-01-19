@@ -478,7 +478,6 @@ public houseMenuTenantAcceptResponse(playerid, const arguments[]){
 		return false;
 	}
 	if(GetPlayerData(playerid, p_tenant_house_id) != 0){
-		#warning CMD
 		SendErrorMessage(playerid, "Вы уже живёте в другом доме. Используйте '/leavehouse' чтобы выселиться.");
 		return false;
 	}
