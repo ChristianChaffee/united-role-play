@@ -50,9 +50,13 @@ enum load_info_struct
 	loaded_businesses,
 	loaded_inventory_items,
 	loaded_start_quests,
+	loaded_houses,
+	loaded_garages
 }
 
 new load_info[load_info_struct] = {
+	false,
+	false,
 	false,
 	false,
 	false,

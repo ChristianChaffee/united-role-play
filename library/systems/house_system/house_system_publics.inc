@@ -1,7 +1,10 @@
 
-forward LoadHouses();
-public LoadHouses(){
-	new rows, tick_time = GetTickCount();
+forward LoadHouses(house_index);
+public LoadHouses(house_index){
+	new rows, 
+		tick_time = GetTickCount(),
+		old_house_index = house_index;
+
 	cache_get_row_count(rows);
 
 	if(rows >= MAX_HOUSES){
@@ -10,42 +13,50 @@ public LoadHouses(){
 	}
 
 	for(new i, temp_string[256]; i < rows; i++){
-		cache_get_value_name_int(i, "id", GetHouseData(i, h_id));
-		cache_get_value_name_int(i, "owner_id", GetHouseData(i, h_owner_id));
-		cache_get_value_name_int(i, "class", GetHouseData(i, h_class));
-		cache_get_value_name_int(i, "price", GetHouseData(i, h_price));
-		cache_get_value_name_int(i, "payment_days", GetHouseData(i, h_payment_days));
-		cache_get_value_name_int(i, "door_lock", GetHouseData(i, h_lock));
+		
+		if(old_house_index == -1){
+			house_index = i;
+		}
 
-		cache_get_value_name_float(i, "pos_x", GetHouseData(i, h_pos_x));
-		cache_get_value_name_float(i, "pos_y", GetHouseData(i, h_pos_y));
-		cache_get_value_name_float(i, "pos_z", GetHouseData(i, h_pos_z));
-		cache_get_value_name_int(i, "vw", GetHouseData(i, h_vw));
-		cache_get_value_name_int(i, "interior", GetHouseData(i, h_vw));
+		cache_get_value_name_int(i, "id", GetHouseData(house_index, h_id));
+		cache_get_value_name_int(i, "owner_id", GetHouseData(house_index, h_owner_id));
+		cache_get_value_name_int(i, "class", GetHouseData(house_index, h_class));
+		cache_get_value_name_int(i, "price", GetHouseData(house_index, h_price));
+		cache_get_value_name_int(i, "payment_days", GetHouseData(house_index, h_payment_days));
+		cache_get_value_name_int(i, "door_lock", GetHouseData(house_index, h_lock));
 
-		cache_get_value_name_int(i, "interior_index", GetHouseData(i, h_interior_index));
+		cache_get_value_name_float(i, "pos_x", GetHouseData(house_index, h_pos_x));
+		cache_get_value_name_float(i, "pos_y", GetHouseData(house_index, h_pos_y));
+		cache_get_value_name_float(i, "pos_z", GetHouseData(house_index, h_pos_z));
+		cache_get_value_name_int(i, "vw", GetHouseData(house_index, h_vw));
+		cache_get_value_name_int(i, "interior", GetHouseData(house_index, h_vw));
+
+		cache_get_value_name_int(i, "interior_index", GetHouseData(house_index, h_interior_index));
 
 		cache_get_value_name(i, "upgrades", temp_string);
-		sscanf(temp_string, "p<,>a<i>["#HOUSE_UPGRADES_COUNT"]", house_info[i][h_upgrades]);
+		sscanf(temp_string, "p<,>a<i>["#HOUSE_UPGRADES_COUNT"]", house_info[house_index][h_upgrades]);
 
 		cache_get_value_name(i, "inventory_items_id", temp_string);
-		sscanf(temp_string, "p<,>a<i>["#MAX_HOUSE_INVENTORY_ITEMS"]", house_info[i][h_inventory_items_id]);
+		sscanf(temp_string, "p<,>a<i>["#MAX_HOUSE_INVENTORY_ITEMS"]", house_info[house_index][h_inventory_items_id]);
 
 		cache_get_value_name(i, "inventory_items_count", temp_string);
-		sscanf(temp_string, "p<,>a<i>["#MAX_HOUSE_INVENTORY_ITEMS"]", house_info[i][h_inventory_items_count]);
+		sscanf(temp_string, "p<,>a<i>["#MAX_HOUSE_INVENTORY_ITEMS"]", house_info[house_index][h_inventory_items_count]);
 
 		cache_get_value_name(i, "inventory_items_value_one", temp_string);
-		sscanf(temp_string, "p<,>a<i>["#MAX_HOUSE_INVENTORY_ITEMS"]", house_info[i][h_inventory_items_value_one]);
+		sscanf(temp_string, "p<,>a<i>["#MAX_HOUSE_INVENTORY_ITEMS"]", house_info[house_index][h_inventory_items_value_one]);
 
 		cache_get_value_name(i, "inventory_items_value_two", temp_string);
-		sscanf(temp_string, "p<,>a<i>["#MAX_HOUSE_INVENTORY_ITEMS"]", house_info[i][h_inventory_items_value_two]);
+		sscanf(temp_string, "p<,>a<i>["#MAX_HOUSE_INVENTORY_ITEMS"]", house_info[house_index][h_inventory_items_value_two]);
 
-		cache_get_value_name_int(i, "safe_cash", GetHouseData(i, h_safe_cash));
+		cache_get_value_name_int(i, "safe_cash", GetHouseData(house_index, h_safe_cash));
 
-		House:UpdatePickups(i);
+		House:UpdatePickups(house_index);
 	}
 
-	printf("[LoadHouses]: Дома загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+	if(old_house_index == -1){
+		printf("[LoadHouses]: Дома загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+		load_info[loaded_houses] = true;
+	}
 	return true;
 }
 
@@ -787,5 +798,39 @@ public houseMenuSafeWithdraw(playerid, const arguments[]){
 	small_string[0] = EOS;
 
 	House:HideMenu(playerid);
+	return true;
+}
+
+forward NewHouseCreated();
+public NewHouseCreated(){
+	new free_index = -1;
+	for(new i; i < MAX_HOUSES; i++){
+		if(GetHouseData(i, h_id) != 0) continue;
+		
+		free_index = i;
+		break;
+	}
+
+	if(free_index == -1){
+		static const fmt_query[] = "DELETE FROM houses WHERE id = %d";
+		new query[sizeof(fmt_query) + (-2 + 11)];
+		mysql_format(mysql, query, sizeof(query), fmt_query,
+			cache_insert_id());
+		mysql_tquery(mysql, query);
+
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			"[A] Ошибка создания дома №%d. На сервере максимальное количество домов.",
+			cache_insert_id());
+		Admin:SendAdminMessage(COLOR_LIGHT_RED, small_string);
+		small_string[0] = EOS;
+		return false;
+	}
+
+	static const fmt_query[] = "SELECT * FROM houses WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		cache_insert_id());
+	mysql_tquery(mysql, query, "LoadHouses", "i", free_index);
 	return true;
 }

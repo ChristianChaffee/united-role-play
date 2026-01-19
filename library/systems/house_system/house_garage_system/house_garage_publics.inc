@@ -1,7 +1,10 @@
 
 forward LoadGarages(garage_index);
 public LoadGarages(garage_index){
-	new rows, tick_time = GetTickCount();
+	new rows, 
+		tick_time = GetTickCount(),
+		old_garage_index = garage_index;
+
 	cache_get_row_count(rows);
 
 	if(rows >= MAX_GARAGES){
@@ -9,7 +12,7 @@ public LoadGarages(garage_index){
 		return false;
 	}
 
-	for(new i, old_garage_index = garage_index; i < rows; i++){
+	for(new i; i < rows; i++){
 		if(old_garage_index == -1){
 			garage_index = i;
 		}
@@ -23,7 +26,10 @@ public LoadGarages(garage_index){
 		House:GarageUpdate(garage_index);
 	}
 
-	printf("[LoadGarages]: Гаражи загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+	if(old_garage_index == -1){
+		printf("[LoadGarages]: Гаражи загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+		load_info[loaded_garages] = true;
+	}
 	return true;
 }
 

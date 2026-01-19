@@ -328,3 +328,20 @@ CMD:addbiz(playerid){
 	big_string[0] = EOS;
 	return true;
 }
+
+CMD:addhouse(playerid){
+	big_string[0] = EOS;
+	for(new i; i < sizeof(house_class_names); i++){
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%d. "cl_white"%s",
+			big_string, i + 1,
+			house_class_names[i]);
+	}
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_HOUSE_CREATE_TYPE, DIALOG_STYLE_LIST,
+		"Выберите класс дома", big_string,
+		"Далее", "Закрыть");
+	big_string[0] = EOS;
+	return true;
+}

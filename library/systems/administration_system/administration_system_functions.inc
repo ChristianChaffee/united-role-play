@@ -68,3 +68,27 @@ stock Admin:ShowBusinessCreateAccept(playerid){
 	big_string[0] = EOS;
 	return true;
 }
+
+stock Admin:ShowCreateHousePrice(playerid){
+	Dialog_Open(playerid, Dialog:D_ADMIN_HOUSE_CREATE_PRICE, DIALOG_STYLE_INPUT,
+		"Гос. стоимость",
+		""cl_blue"- "cl_white"Введите государственную стоимость создаваемого дома",
+		"Далее", "Назад");
+	return true;
+}
+
+stock Admin:ShowCreateHouseAccept(playerid){
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"Класс дома: "cl_white"%s\n\
+		"cl_blue"Цена дома: "cl_white"%d$\n\n\
+		\\c"cl_grey"[Вы действительно хотите создать данный дом?]",
+		house_class_names[GetPVarInt(playerid, "Admin_HouseCreateType")],
+		GetPVarInt(playerid, "Admin_HouseCreatePrice"));
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_HOUSE_CREATE_ACCEPT, DIALOG_STYLE_MSGBOX,
+		"Создание дома", big_string,
+		"Создать", "Назад");
+	big_string[0] = EOS;
+	return true;
+}

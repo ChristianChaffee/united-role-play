@@ -3,7 +3,7 @@
 
 //==============================================================================
 hook OnGameModeInit(){
-	mysql_tquery(mysql, "SELECT * FROM houses", "LoadHouses");
+	mysql_tquery(mysql, "SELECT * FROM houses", "LoadHouses", "i", -1);
 
 	cef_subscribe("houseClose", "houseClose");
 	cef_subscribe("houseInspect", "houseInspect");

@@ -2,7 +2,8 @@
 forward LoadBusinesses(business_index);
 public LoadBusinesses(business_index){
 	new rows,
-		tick_time = GetTickCount();
+		tick_time = GetTickCount(),
+		old_business_index = business_index;
 
 	cache_get_row_count(rows);
 
@@ -11,7 +12,7 @@ public LoadBusinesses(business_index){
 		return false;
 	}
 
-	for(new i, old_business_index = business_index, temp_string[2048], map_icon; i < rows; i++){
+	for(new i, temp_string[2048], map_icon; i < rows; i++){
 
 		if(old_business_index == -1){
 			business_index = i;
@@ -196,8 +197,10 @@ public LoadBusinesses(business_index){
 		Business:LoadBusinessPerks(business_index);
 	}
 
-	printf("[LoadBusinesses]: Бизнесы загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
-	load_info[loaded_businesses] = true;
+	if(old_business_index == -1){
+		printf("[LoadBusinesses]: Бизнесы загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+		load_info[loaded_businesses] = true;
+	}
 	return true;
 }
 

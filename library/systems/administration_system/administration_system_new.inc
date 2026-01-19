@@ -3,6 +3,13 @@
 Используемые PVar`ы:
 	Admin_GiveItemID
 
+	Admin_BusinessCreateType
+	Admin_BusinessCreatePrice
+	Admin_BusinessCreateName
+
+	Admin_HouseCreateType
+	Admin_HouseCreatePrice
+
 */
 
 #define Admin:%0(%1)  					Admn_%0(%1)
@@ -59,5 +66,6 @@ new const admin_command_info[][admin_command_info_struct] = {
 	{6, "payday", "Внеплановый PayDay."},
 	{6, "paydayres", "Внеплановый PayDay с рестартом сервера."},
 	{6, "addbiz", "Создать бизнес."},
+	{6, "addhouse", "Создать дом."},
 	{6, "gmx", "Произвести рестарт сервера через 5 секунд."}
 };
