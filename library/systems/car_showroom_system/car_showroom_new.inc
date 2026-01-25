@@ -182,7 +182,7 @@ new car_showroom_info[CAR_SHOWROOMS_COUNT][car_showroom_info_struct] = {
 			483,
 			499,
 			529,
-			549,
+			15000,
 			600
 		},
 		{
@@ -214,7 +214,7 @@ new car_showroom_info[CAR_SHOWROOMS_COUNT][car_showroom_info_struct] = {
 			10000,
 			12500,
 			16750,
-			5200,
+			30450,
 			18450
 		},
 		{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
@@ -253,7 +253,7 @@ new car_showroom_info[CAR_SHOWROOMS_COUNT][car_showroom_info_struct] = {
 			555,
 			558,
 			561,
-			585
+			15001
 		},
 		{
 			25000,
@@ -285,7 +285,7 @@ new car_showroom_info[CAR_SHOWROOMS_COUNT][car_showroom_info_struct] = {
 			30000,
 			32500,
 			45500,
-			18000
+			50500
 		},
 		{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
 		Text3D:-1

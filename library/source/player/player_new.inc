@@ -129,6 +129,9 @@ new const licensing_names[LICENSES_COUNT][128] = {
 enum spawn_type_struct
 {
 	SPAWN_TYPE_STANDART,
+	SPAWN_TYPE_HOUSE,
+	SPAWN_TYPE_EXIT,
+	SPAWN_TYPE_FRACTION
 }
 
 new const Float:standart_spawn_pos[5][4] = {

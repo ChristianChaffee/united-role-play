@@ -89,7 +89,7 @@ CMD:ooc(playerid, params[]){
 
 CMD:tveh(playerid, params[]){
 	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/tveh [ID модели]'");
-	if(params[0] < 400 || params[0] > 610) return SendErrorMessage(playerid, "Данной модели транспорта не существует.");
+	//if(params[0] < 400 || params[0] > 610) return SendErrorMessage(playerid, "Данной модели транспорта не существует.");
 
 	new Float:pos[4];
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);

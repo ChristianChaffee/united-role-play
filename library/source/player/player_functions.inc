@@ -81,7 +81,7 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
 
-	SetPlayerSpawn(playerid, SPAWN_TYPE_STANDART);
+	ShowPlayerSpawnSelect(playerid);
 	return true;
 }
 
@@ -431,4 +431,31 @@ stock GetPlayerCallerId(playerid){
 		return i;
 	}
 	return INVALID_PLAYER_ID;
+}
+
+stock ShowPlayerSpawnSelect(playerid){
+	SelectTextDraw(playerid, -1);
+	cef_emit_event(playerid,
+		"showSpawnSelector");
+
+	new is_house_blocked = true;
+
+	/*for(new i; i < MAX_HOUSES; i++){
+		if(!GetHouseData(i, h_id)) continue;
+		if(GetHouseData(i, h_owner_id) != GetPlayerData(playerid, p_id)) continue;
+
+		is_house_blocked = false;
+		break;
+	}*/
+
+	if(GetPlayerData(playerid, p_tenant_house_id) != 0){
+		is_house_blocked = false;
+	}
+
+	cef_emit_event(playerid, "setSpawnSelectorData",
+		CEFINT(0),
+		CEFINT(is_house_blocked),
+		CEFINT(1),
+		CEFINT(1));
+	return true;
 }
