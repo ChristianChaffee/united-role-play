@@ -4,6 +4,8 @@
 hook OnGameModeInit(){
 	ManualVehicleEngineAndLights();
 	SetTimer("VehicleFuelTimer", VEHICLE_FUEL_TIME, true);
+
+	cef_subscribe("vehicleRadialMenuSelect", "vehicleRadialMenuSelect");
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
@@ -86,7 +88,7 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 			case VEHICLE_STATUS_CAR_SHOWROOM: return Y_HOOKS_CONTINUE_RETURN_1;
 		}
 		
-		ShowVehicleMenu(playerid);
+		ShowVehicleRadialUI(playerid);
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }

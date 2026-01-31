@@ -242,30 +242,21 @@ stock IsVehicleInRangeOfPoint(vehicleid, Float:radius, Float:x, Float:y, Float:z
 }
 
 //==============================================================================
-stock ShowVehicleMenu(playerid){
+stock ShowVehicleRadialUI(playerid){
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER || !GetPlayerVehicleID(playerid)) return false;
 	
 	new vehicleid = GetPlayerVehicleID(playerid);
 
-	big_string[0] = EOS;
-	format(big_string, sizeof(big_string),
-		""cl_grey"Параметр\t"cl_grey"Статус\n\
-		"cl_blue"1. "cl_white"Двигатель\t"cl_grey"[%s"cl_grey"]\n\
-		"cl_blue"2. "cl_white"Двери\t"cl_grey"[%s"cl_grey"]\n\
-		"cl_blue"3. "cl_white"Фары\t"cl_grey"[%s"cl_grey"]\n\
-		"cl_blue"4. "cl_white"Капот\t"cl_grey"[%s"cl_grey"]\n\
-		"cl_blue"5. "cl_white"Багажник\t"cl_grey"[%s"cl_grey"]\n\
-		"cl_blue"6. "cl_white"Топливо\t"cl_grey"["cl_white"%.02f"cl_grey"]",
-		(GetVehicleEngine(vehicleid)) ? (""cl_green"Заведён") : (""cl_dark_red"Заглушен"),
-		(!GetVehicleDoors(vehicleid)) ? (""cl_green"Открыты") : (""cl_dark_red"Закрыты"),
-		(GetVehicleLights(vehicleid)) ? (""cl_green"Включены") : (""cl_dark_red"Выключены"),
-		(GetVehicleBonnet(vehicleid)) ? (""cl_green"Открыт") : (""cl_dark_red"Закрыт"),
-		(GetVehicleBoot(vehicleid)) ? (""cl_green"Открыт") : (""cl_dark_red"Закрыт"),
-		GetVehicleData(vehicleid, v_fuel));
+	cef_emit_event(playerid, "showVehicleRadialMenu",
+		CEFINT(GetVehicleEngine(vehicleid)),
+		CEFINT(!GetVehicleDoors(vehicleid)),
+		CEFINT(GetVehicleLights(vehicleid)),
+		CEFINT(GetVehicleBonnet(vehicleid)),
+		CEFINT(GetVehicleBoot(vehicleid)));
+	return true;
+}
 
-	Dialog_Open(playerid, Dialog:D_VEHICLE_MENU, DIALOG_STYLE_TABLIST_HEADERS,
-		"Управление транспортом", big_string,
-		"Выбрать", "Закрыть");
-	big_string[0] = EOS;
+stock HideVehicleRadialUI(playerid){
+	cef_emit_event(playerid, "hideVehicleRadialMenu");
 	return true;
 }
