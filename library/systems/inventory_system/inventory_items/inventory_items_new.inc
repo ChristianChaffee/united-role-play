@@ -47,21 +47,6 @@
 #define ITEM_PEPPER_SPRAY_ID 					45
 #define ITEM_AMMO_ID 							46
 
-#warning TODO: Add image to ITEM_CANISTER_ID
-#warning TODO: Add image to ITEM_REPAIR_ID
-#warning TODO: Add image to ITEM_SKIN_ID
-#warning TODO: Add image to ITEM_DEAGLE_ID
-#warning TODO: Add image to ITEM_SHOTGUN_ID
-#warning TODO: Add image to ITEM_MP5_ID
-#warning TODO: Add image to ITEM_M4_ID
-#warning TODO: Add image to ITEM_DEAGLE_AMMO_ID
-#warning TODO: Add image to ITEM_SHOTGUN_AMMO_ID
-#warning TODO: Add image to ITEM_MP5_AMMO_ID
-#warning TODO: Add image to ITEM_M4_AMMO_ID
-#warning TODO: Add image to ITEM_PEPPER_SPRAY_ID
-#warning TODO: Add image to ITEM_AMMO_ID
-
-
 #define MAX_INVENTORY_ITEMS 					46
 #define MAX_INVENTORY_SLOTS  					27
 
