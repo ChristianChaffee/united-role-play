@@ -1,47 +1,4 @@
 
-stock SetPlayerSpawn(playerid, spawn_type){
-	
-	new spawn_vw, spawn_int;
-	switch(spawn_type){
-		case SPAWN_TYPE_STANDART:{
-			new spawn_pos_index = random(sizeof(standart_spawn_pos));
-
-			SetSpawnInfo(playerid, 0, GetPlayerData(playerid, p_skin), 
-				standart_spawn_pos[spawn_pos_index][0], 
-				standart_spawn_pos[spawn_pos_index][1], 
-				standart_spawn_pos[spawn_pos_index][2], 
-				standart_spawn_pos[spawn_pos_index][3], 
-				0, 0, 0, 0, 0, 0);
-			
-			spawn_vw = GAME_VW;
-			spawn_int = GAME_INT;
-		}
-	}
-
-	ResetPlayerMoney(playerid);
-	GivePlayerMoney(playerid, GetPlayerData(playerid, p_money));
-
-	SetPlayerScore(playerid, GetPlayerData(playerid, p_level));
-	SetPlayerHealth(playerid, GetPlayerData(playerid, p_health));
-	SetPlayerDrunkLevel(playerid, GetPlayerData(playerid, p_drunked_level));
-
-	CheckPlayerLicenses(playerid);
-
-	player_logged[playerid] = true;
-	SpawnPlayer(playerid);
-
-	SetPlayerVirtualWorld(playerid, spawn_vw);
-	SetPlayerInterior(playerid, spawn_int);
-	SetCameraBehindPlayer(playerid);
-	TogglePlayerControllable(playerid, true);
-
-	GivePlayerAllWeapons(playerid);
-	SetPlayerColor(playerid, GetPlayerColorEx(playerid));
-
-	CheckPlayerNotifications(playerid);
-	return true;
-}
-
 stock LoadPlayer(playerid, Cache:cache_id){
 	new temp_string[128];
 	cache_set_active(cache_id);
@@ -78,10 +35,15 @@ stock LoadPlayer(playerid, Cache:cache_id){
 
 	cache_get_value_name_int(0, "tenant_house_id", GetPlayerData(playerid, p_tenant_house_id));
 
+	cache_get_value_name_float(0, "spawn_x", GetPlayerData(playerid, p_spawn_x));
+	cache_get_value_name_float(0, "spawn_y", GetPlayerData(playerid, p_spawn_y));
+	cache_get_value_name_float(0, "spawn_z", GetPlayerData(playerid, p_spawn_z));
+	cache_get_value_name_float(0, "spawn_angle", GetPlayerData(playerid, p_spawn_angle));
+	cache_get_value_name_int(0, "vw", GetPlayerData(playerid, p_spawn_vw));
+	cache_get_value_name_int(0, "int", GetPlayerData(playerid, p_spawn_int));
+
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
-
-	ShowPlayerSpawnSelect(playerid);
 	return true;
 }
 
@@ -431,31 +393,4 @@ stock GetPlayerCallerId(playerid){
 		return i;
 	}
 	return INVALID_PLAYER_ID;
-}
-
-stock ShowPlayerSpawnSelect(playerid){
-	SelectTextDraw(playerid, -1);
-	cef_emit_event(playerid,
-		"showSpawnSelector");
-
-	new is_house_blocked = true;
-
-	/*for(new i; i < MAX_HOUSES; i++){
-		if(!GetHouseData(i, h_id)) continue;
-		if(GetHouseData(i, h_owner_id) != GetPlayerData(playerid, p_id)) continue;
-
-		is_house_blocked = false;
-		break;
-	}*/
-
-	if(GetPlayerData(playerid, p_tenant_house_id) != 0){
-		is_house_blocked = false;
-	}
-
-	cef_emit_event(playerid, "setSpawnSelectorData",
-		CEFINT(0),
-		CEFINT(is_house_blocked),
-		CEFINT(1),
-		CEFINT(1));
-	return true;
 }

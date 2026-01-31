@@ -2,11 +2,6 @@
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
 //==============================================================================
-hook OnGameModeInit(){
-	cef_subscribe("spawnSelectorSelect", "spawnSelectorSelect");
-	return Y_HOOKS_CONTINUE_RETURN_1;
-}
-
 hook OnPlayerDisconnect(playerid, reason){
 	static const fmt_query[] = "UPDATE accounts SET drunked_level = %d WHERE id = %d";
 	new query[sizeof(fmt_query) + (-2 + 11) + (-2 + 11)];
@@ -14,9 +9,6 @@ hook OnPlayerDisconnect(playerid, reason){
 	mysql_tquery(mysql, query);
 
 	UpdatePlayerWeapons(playerid);
-
-	player_info[playerid] = player_info_default;
-	player_logged[playerid] = false;
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 

@@ -10,7 +10,7 @@ hook stock OnMySQLConnect(){
 	return continue();
 }
 
-hook stock SetPlayerSpawn(playerid, spawn_type){
+hook stock OnPlayerAccountLoaded(playerid){
 	Report:CheckPlayerAnswers(playerid);
-	return continue(playerid, spawn_type);
+	return continue(playerid);
 }

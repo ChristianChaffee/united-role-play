@@ -59,7 +59,14 @@ enum player_info_struct
 	p_weapons[WEAPON_SLOTS_COUNT],
 	p_weapons_ammo[WEAPON_SLOTS_COUNT],
 
-	p_tenant_house_id
+	p_tenant_house_id,
+
+	Float:p_spawn_x,
+	Float:p_spawn_y,
+	Float:p_spawn_z,
+	Float:p_spawn_angle,
+	p_spawn_vw,
+	p_spawn_int
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -92,6 +99,13 @@ new const player_info_default[player_info_struct] = {
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 
+	0,
+
+	0.0,
+	0.0,
+	0.0,
+	0.0,
+	0,
 	0
 };
 

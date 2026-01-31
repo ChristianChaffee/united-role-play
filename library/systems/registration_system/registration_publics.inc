@@ -66,7 +66,7 @@ public CreatePlayerAccount(playerid){
 	small_string[0] = EOS;
 
 	SetPlayerData(playerid, p_health, 100.0);
-	SetPlayerSpawn(playerid, SPAWN_TYPE_STANDART);
+	SpawnSelect:SetPlayerSpawn(playerid, SPAWN_TYPE_STANDART);
 }
 
 forward OnPlayerCefAuthorization(playerid, const arguments[]);

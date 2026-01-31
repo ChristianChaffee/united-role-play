@@ -314,3 +314,15 @@ stock House:SaveInventory(house_index){
 	mysql_tquery(mysql, query);
 	return true;
 }
+
+stock House:GetHouseIndexByID(house_id){
+	if(house_id <= 0) return -1;
+	
+	for(new i; i < MAX_HOUSES; i++){
+		if(!GetHouseData(i, h_id)) continue;
+		if(GetHouseData(i, h_id) != house_id) continue;
+
+		return i;
+	}
+	return -1;
+}
