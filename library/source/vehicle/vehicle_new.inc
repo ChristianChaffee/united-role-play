@@ -1,5 +1,5 @@
 
-#define VEHICLE_MODELS_COUNT 						215
+#define VEHICLE_MODELS_COUNT 						216
 #define VEHICLE_FUEL_TIME 							60000
 
 #define GetVehicleData(%0,%1)  						vehicle_info[%0][%1]
@@ -279,7 +279,8 @@ new const vehicle_params_info[VEHICLE_MODELS_COUNT][vehicle_params_info_struct] 
 	{611, "Utility Trailer", FUEL_TYPE_NONE, VEHICLE_TYPE_TRAILER, 0.0, 0},
 	{15000, "Ubermacht 36C", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 4.5, 165},
 	{15001, "Benefactor C200", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 4.5, 165},
-	{15002, "Benefactor S600", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.4, 180}
+	{15002, "Benefactor S600", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.4, 180},
+	{15003, "Ubermacht 38L", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.4, 180}
 };
 
 enum vehicle_info_struct
