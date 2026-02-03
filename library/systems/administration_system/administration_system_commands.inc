@@ -345,3 +345,33 @@ CMD:addhouse(playerid){
 	big_string[0] = EOS;
 	return true;
 }
+
+CMD:settime(playerid, params[]){
+	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/settime [Время (0 - 23)]'");
+	if(params[0] < 0 || params[0] > 23) return SendErrorMessage(playerid, "Время должно быть от 0 до 23.");
+
+	SetWorldTime(params[0]);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"[A][%d] Администратор %s[%d] изменил(-а) время на %d:00.",
+		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name), playerid, params[0]);
+	Admin:SendAdminMessage(COLOR_GREY, small_string);
+	small_string[0] = EOS;
+	return true;
+}
+
+CMD:setweather(playerid, params[]){
+	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "setweather '/settime [ID погоды (0 - 255)]'");
+	if(params[0] < 0 || params[0] > 255) return SendErrorMessage(playerid, "ID погоды должно быть от 0 до 255.");
+
+	SetWeather(params[0]);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"[A][%d] Администратор %s[%d] изменил(-а) погоду на ID %d.",
+		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name), playerid, params[0]);
+	Admin:SendAdminMessage(COLOR_GREY, small_string);
+	small_string[0] = EOS;
+	return true;
+}
