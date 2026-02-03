@@ -605,6 +605,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\phone_system\phone_system_commands.inc"
 #include "..\library\systems\house_system\house_system_commands.inc"
 #include "..\library\systems\house_system\house_garage_system\house_garage_commands.inc"
+#include "..\library\systems\donate_shop_system\donate_shop_commands.inc"
 
 //==============================================================================
 #include "..\library\source\mapping\spawn.inc"

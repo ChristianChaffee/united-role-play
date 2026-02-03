@@ -41,6 +41,9 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	cache_get_value_name_float(0, "spawn_angle", GetPlayerData(playerid, p_spawn_angle));
 	cache_get_value_name_int(0, "vw", GetPlayerData(playerid, p_spawn_vw));
 	cache_get_value_name_int(0, "int", GetPlayerData(playerid, p_spawn_int));
+	
+	cache_get_value_name_int(0, "donate", GetPlayerData(playerid, p_donate));
+	cache_get_value_name_int(0, "vehicle_slots", GetPlayerData(playerid, p_vehicle_slots));
 
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
@@ -393,4 +396,17 @@ stock GetPlayerCallerId(playerid){
 		return i;
 	}
 	return INVALID_PLAYER_ID;
+}
+
+stock GetFreeVehicleSlotsCount(playerid){
+	static const fmt_query[] = "SELECT id FROM vehicles WHERE owner = %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerData(playerid, p_id));
+	mysql_query(mysql, query);
+
+	new rows;
+	cache_get_row_count(rows);
+
+	return GetPlayerData(playerid, p_vehicle_slots) - rows;
 }

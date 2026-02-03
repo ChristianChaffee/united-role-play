@@ -66,7 +66,10 @@ enum player_info_struct
 	Float:p_spawn_z,
 	Float:p_spawn_angle,
 	p_spawn_vw,
-	p_spawn_int
+	p_spawn_int,
+
+	p_donate,
+	p_vehicle_slots,
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -106,7 +109,10 @@ new const player_info_default[player_info_struct] = {
 	0.0,
 	0.0,
 	0,
-	0
+	0,
+
+	0,
+	3
 };
 
 //==============================================================================
