@@ -34,6 +34,18 @@ stock Donate:ShowUI(playerid){
 		CEFINT(donate_upgrades_info[DONATE_UPGRADE_NAME][du_price]));
 	// ---
 
+	// --- Денежные наборы
+	cef_emit_event(playerid, "clearDonateCashBoxes");
+
+	for(new i; i < DONATE_SHOP_CASHBOXES_COUNT; i++){
+		cef_emit_event(playerid, "addDonateCashBox",
+			CEFSTR(donate_cashbox_info[i][dc_name]),
+			CEFINT(donate_cashbox_info[i][dc_price]),
+			CEFINT(donate_cashbox_info[i][dc_give_money]),
+			CEFINT(i));
+	}
+	// ---
+
 	SelectTextDraw(playerid, -1);
 	SetPVarInt(playerid, "Donate_IsOpen", 1);
 	return true;

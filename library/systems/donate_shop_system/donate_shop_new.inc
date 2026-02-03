@@ -6,6 +6,7 @@
 
 #define DONATE_SHOP_VEHICLES_COUNT 		38
 #define DONATE_SHOP_UPGRADES_COUNT 		4
+#define DONATE_SHOP_CASHBOXES_COUNT 	4
 
 //==============================================================================
 enum
@@ -86,4 +87,18 @@ new const donate_vehicle_info[DONATE_SHOP_VEHICLES_COUNT][donate_vehicle_info_st
 	{556, 6100, 0, RARITY_TYPE_LEGENDARY, "assets/donate/vehicles/556.jpg"}, // Monster "A"
 	{557, 6100, 0, RARITY_TYPE_LEGENDARY, "assets/donate/vehicles/557.jpg"}, // Monster "B"
 	{573, 4500, 0, RARITY_TYPE_LEGENDARY, "assets/donate/vehicles/573.jpg"} // Dune
+};
+
+//==============================================================================
+enum donate_cashbox_info_struct
+{
+	dc_name[64],
+	dc_price,
+	dc_give_money
+}
+new const donate_cashbox_info[DONATE_SHOP_CASHBOXES_COUNT][donate_cashbox_info_struct] = {
+	{"Стартовый набор", 100, 5000},
+	{"Средний набор", 150, 10000},
+	{"Премиум набор", 400, 30000},
+	{"Элитный набор", 1000, 85000}
 };

@@ -189,3 +189,31 @@ public DonateShop_BuyNicknameCheck(playerid, name[]){
 	small_string[0] = EOS;
 	return true;
 }
+
+forward DonateShop_BuyCashBox(playerid, const arguments[]);
+public DonateShop_BuyCashBox(playerid, const arguments[]){
+	new index;
+	sscanf(arguments, "i", index);
+
+	if(index < 0 || index >= DONATE_SHOP_CASHBOXES_COUNT){
+		Donate:ShowError(playerid, "Произошла ошибка.");
+		return false;
+	}
+	if(donate_cashbox_info[index][dc_price] > GetPlayerData(playerid, p_donate)){
+		Donate:ShowError(playerid, "У Вас недостаточно U-Coin`s.");
+		return false;
+	}
+
+	Donate:HideUI(playerid);
+	Donate:GiveDonate(playerid, -donate_cashbox_info[index][dc_price]);
+
+	GiveMoney(playerid, donate_cashbox_info[index][dc_give_money]);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы купили валютный набор \"%s\" (%d$) за %d U-Coins.",
+		donate_cashbox_info[index][dc_name], donate_cashbox_info[index][dc_give_money], donate_cashbox_info[index][dc_price]);
+	SendClientMessage(playerid, COLOR_YELLOW, small_string);
+	small_string[0] = EOS;
+	return true;
+}
