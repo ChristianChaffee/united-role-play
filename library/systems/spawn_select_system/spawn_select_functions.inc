@@ -104,6 +104,7 @@ stock SpawnSelect:SetPlayerSpawn(playerid, spawn_type){
 	SetPlayerScore(playerid, GetPlayerData(playerid, p_level));
 	SetPlayerHealth(playerid, GetPlayerData(playerid, p_health));
 	SetPlayerDrunkLevel(playerid, GetPlayerData(playerid, p_drunked_level));
+	SetPlayerWantedLevel(playerid, GetPlayerData(playerid, p_wanted));
 
 	CheckPlayerLicenses(playerid);
 

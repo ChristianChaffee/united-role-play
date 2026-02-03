@@ -26,6 +26,14 @@ stock Donate:ShowUI(playerid){
 	cef_emit_event(playerid, "sortDonateVehicles");
 	// ---
 
+	// --- Привелегии
+	cef_emit_event(playerid, "setDonateUpgradesPrices",
+		CEFINT(donate_upgrades_info[DONATE_UPGRADE_LEVEL][du_price]),
+		CEFINT(donate_upgrades_info[DONATE_UPGRADE_LICENSES][du_price]),
+		CEFINT(donate_upgrades_info[DONATE_UPGRADE_WANTED][du_price]),
+		CEFINT(donate_upgrades_info[DONATE_UPGRADE_NAME][du_price]));
+	// ---
+
 	SelectTextDraw(playerid, -1);
 	SetPVarInt(playerid, "Donate_IsOpen", 1);
 	return true;

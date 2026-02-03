@@ -3,7 +3,9 @@
 
 //==============================================================================
 #define DONATE_SHOP_CONVERT 			4
+
 #define DONATE_SHOP_VEHICLES_COUNT 		38
+#define DONATE_SHOP_UPGRADES_COUNT 		4
 
 //==============================================================================
 enum
@@ -13,6 +15,28 @@ enum
 	RARITY_TYPE_EPIC,
 	RARITY_TYPE_LEGENDARY
 }
+
+//==============================================================================
+enum
+{
+	DONATE_UPGRADE_LEVEL,
+	DONATE_UPGRADE_LICENSES,
+	DONATE_UPGRADE_WANTED,
+	DONATE_UPGRADE_NAME,
+}
+
+enum donate_upgrades_info_struct
+{
+	du_name[32],
+	du_price,
+	du_discount
+}
+new const donate_upgrades_info[DONATE_SHOP_UPGRADES_COUNT][donate_upgrades_info_struct] = {
+	{"Повышение уровня", 75, 0},
+	{"Пакет лицензий", 700, 0},
+	{"Снятие розыска", 200, 0},
+	{"Смена ник-нейма", 100, 0}
+};
 
 //==============================================================================
 enum donate_vehicle_info_struct

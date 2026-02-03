@@ -44,6 +44,7 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	
 	cache_get_value_name_int(0, "donate", GetPlayerData(playerid, p_donate));
 	cache_get_value_name_int(0, "vehicle_slots", GetPlayerData(playerid, p_vehicle_slots));
+	cache_get_value_name_int(0, "wanted", GetPlayerData(playerid, p_wanted));
 
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);

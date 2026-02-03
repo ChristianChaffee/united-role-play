@@ -8,6 +8,7 @@
 #define LICENSES_COUNT 					7
 
 #define MAX_PLAYER_VEHICLES 			40
+#define MAX_PLAYER_LEVEL 				500
 
 //==============================================================================
 enum
@@ -70,6 +71,7 @@ enum player_info_struct
 
 	p_donate,
 	p_vehicle_slots,
+	p_wanted,
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -112,7 +114,8 @@ new const player_info_default[player_info_struct] = {
 	0,
 
 	0,
-	3
+	3,
+	0
 };
 
 //==============================================================================

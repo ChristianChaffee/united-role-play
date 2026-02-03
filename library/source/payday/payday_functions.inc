@@ -24,6 +24,17 @@ stock PlayerPayDay(playerid){
 
 	//--------------- Выдача
 	GivePlayerExp(playerid, give_exp);
+
+	if(GetPlayerData(playerid, p_wanted) > 0){
+		AddPlayerData(playerid, p_wanted, -1);
+		SetPlayerWantedLevel(playerid, GetPlayerData(playerid, p_wanted));
+
+		static const fmt_query[] = "UPDATE accounts SET wanted = %d WHERE id = %d";
+		new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+		mysql_format(mysql, query, sizeof(query), fmt_query,
+			GetPlayerData(playerid, p_wanted), GetPlayerData(playerid, p_id));
+		mysql_tquery(mysql, query);
+	}
 	//----------------------
 
 	//--------------- Информирование

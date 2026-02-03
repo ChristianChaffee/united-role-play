@@ -4,5 +4,10 @@
 //==============================================================================
 hook OnGameModeInit(){
 	cef_subscribe("DonateShop_BuyVehicle", "DonateShop_BuyVehicle");
+
+	cef_subscribe("DonateShop_BuyLevel", "DonateShop_BuyLevel");
+	cef_subscribe("DonateShop_BuyLicenses", "DonateShop_BuyLicenses");
+	cef_subscribe("DonateShop_BuyWanted", "DonateShop_BuyWanted");
+	cef_subscribe("DonateShop_BuyNickname", "DonateShop_BuyNickname");
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
