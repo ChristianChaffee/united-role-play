@@ -68,4 +68,9 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
-//==============================================================================
+hook stock PayDay(hour){
+	if(hour == 5){
+		mysql_tquery(mysql, "UPDATE `houses` SET `payment_days` = `payment_days` - '1' WHERE `owner_id` != '0'");
+	}
+	return continue(hour);
+}

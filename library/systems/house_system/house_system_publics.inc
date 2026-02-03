@@ -12,7 +12,7 @@ public LoadHouses(house_index){
 		return false;
 	}
 
-	for(new i, temp_string[256]; i < rows; i++){
+	for(new i, temp_string[256], playerid = INVALID_PLAYER_ID; i < rows; i++){
 		
 		if(old_house_index == -1){
 			house_index = i;
@@ -49,6 +49,45 @@ public LoadHouses(house_index){
 		sscanf(temp_string, "p<,>a<i>["#MAX_HOUSE_INVENTORY_ITEMS"]", house_info[house_index][h_inventory_items_value_two]);
 
 		cache_get_value_name_int(i, "safe_cash", GetHouseData(house_index, h_safe_cash));
+
+		if(GetHouseData(house_index, h_payment_days) < 0 && GetHouseData(house_index, h_owner_id) != 0){
+			playerid = INVALID_PLAYER_ID;
+			for(new g, j = GetPlayerPoolSize(); g <= j; g++){
+				if(!IsPlayerConnected(g) || !player_logged[g]) continue;
+				if(GetPlayerData(g, p_id) != GetHouseData(house_index, h_owner_id)) continue;
+
+				playerid = g;
+				break;
+			}
+
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				""cl_dark_red"Дом №%d был продан государству за неуплату налога за %d$.",
+				GetHouseData(house_index, h_id), GetHouseData(house_index, h_price));
+
+			if(playerid == INVALID_PLAYER_ID){
+				AddPlayerNotification(GetHouseData(house_index, h_owner_id), small_string);
+
+				static const fmt_query[] = "UPDATE accounts SET money = money + %d WHERE id = %d";
+				new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+				mysql_format(mysql, query, sizeof(query), fmt_query,
+					GetHouseData(house_index, h_price), GetHouseData(house_index, h_owner_id));
+				mysql_tquery(mysql, query);
+			}
+			else{
+				SendClientMessage(playerid, COLOR_DARK_RED, small_string);
+
+				if(!GetPlayerBankCardData(playerid, pbc_id)){
+					GiveMoney(playerid, GetHouseData(house_index, h_price));
+				}
+				else{
+					Bank:GiveMoney(playerid, GetHouseData(house_index, h_price));
+				}
+			}
+			small_string[0] = EOS;
+
+			House:SellHouse(house_index);
+		}
 
 		House:UpdatePickups(house_index);
 	}

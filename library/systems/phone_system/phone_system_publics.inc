@@ -207,3 +207,53 @@ public Phone_VehicleUnload(playerid, const arguments[]){
 	Phone:HidePhone(playerid);
 	return true;
 }
+
+forward Phone_BankHousePay(playerid, const arguments[]);
+public Phone_BankHousePay(playerid, const arguments[]){
+	Phone:HidePhone(playerid);
+
+	new days_count, house_index;
+	sscanf(arguments, "ii", days_count, house_index);
+
+	if(house_index < 0 || house_index >= MAX_HOUSES){
+		SendErrorMessage(playerid, "Произошла ошибка.");
+		return false;
+	}
+	if(GetHouseData(house_index, h_owner_id) != GetPlayerData(playerid, p_id)){
+		SendErrorMessage(playerid, "Вы не владелец этого дома.");
+		return false;
+	}
+	if(days_count + GetHouseData(house_index, h_payment_days) > 30){
+		SendErrorMessage(playerid, "Произошла ошибка.");
+		return false;
+	}
+	if(GetPlayerBankCardData(playerid, pbc_balance) < days_count * house_class_payment_price[GetHouseData(house_index, h_class)]){
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			"Для оплаты дома на %d дней необходимо %d$ на банковской карте.", 
+			days_count,
+			days_count * house_class_payment_price[GetHouseData(house_index, h_class)]);
+		SendErrorMessage(playerid, small_string);
+		small_string[0] = EOS;
+		return false;
+	}
+
+	Bank:GiveMoney(playerid, -(days_count * house_class_payment_price[GetHouseData(house_index, h_class)]));
+
+	AddHouseData(house_index, h_payment_days, days_count);
+	static const fmt_query[] = "UPDATE houses SET payment_days = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetHouseData(house_index, h_payment_days),
+		GetHouseData(house_index, h_id));
+	mysql_tquery(mysql, query);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы оплатили дом №%d на %d дней(-я).",
+		GetHouseData(house_index, h_id), days_count);
+	SendClientMessage(playerid, COLOR_LIME, small_string);
+	small_string[0] = EOS;
+
+	return true;
+}

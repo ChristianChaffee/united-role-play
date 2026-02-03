@@ -12,6 +12,7 @@ hook OnGameModeInit(){
 
 	cef_subscribe("Phone_VehicleLoad", "Phone_VehicleLoad");
 	cef_subscribe("Phone_VehicleUnload", "Phone_VehicleUnload");
+	cef_subscribe("Phone_BankHousePay", "Phone_BankHousePay");
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 

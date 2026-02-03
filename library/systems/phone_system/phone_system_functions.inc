@@ -27,6 +27,19 @@ stock Phone:ShowPhone(playerid){
 		counter++;
 	}
 
+	cef_emit_event(playerid, "clearPhoneBankHouses");
+
+	for(new i; i < MAX_HOUSES; i++){
+		if(!GetHouseData(i, h_id)) continue;
+		if(GetHouseData(i, h_owner_id) != GetPlayerData(playerid, p_id)) continue;
+
+		cef_emit_event(playerid, "addPhoneBankHouse",
+			CEFINT(i),
+			CEFINT(GetHouseData(i, h_id)),
+			CEFINT(GetHouseData(i, h_payment_days)),
+			CEFINT(house_class_payment_price[GetHouseData(i, h_class)]));
+	}
+
 	static const fmt_query[] = "SELECT id, model_id FROM vehicles WHERE owner = %d AND status = %d";
 	new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
 	mysql_format(mysql, query, sizeof(query), fmt_query,
