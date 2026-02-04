@@ -11,5 +11,10 @@ hook OnGameModeInit(){
 	cef_subscribe("DonateShop_BuyNickname", "DonateShop_BuyNickname");
 
 	cef_subscribe("DonateShop_BuyCashBox", "DonateShop_BuyCashBox");
+
+	cef_subscribe("DonateShop_BuySkin", "DonateShop_BuySkin");
+
+	cef_subscribe("DonateShop_BuyCase", "DonateShop_BuyCase");
+	cef_subscribe("DonateShop_CaseResult", "DonateShop_CaseResult");
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }

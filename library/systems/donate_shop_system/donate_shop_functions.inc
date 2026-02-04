@@ -12,7 +12,8 @@ stock Donate:ShowUI(playerid){
 			CEFINT(donate_vehicle_info[i][dv_price]),
 			CEFINT(donate_vehicle_info[i][dv_discount]),
 			CEFINT(donate_vehicle_info[i][dv_rarity]),
-			CEFSTR(donate_vehicle_info[i][dv_image_url]));
+			CEFSTR(donate_vehicle_info[i][dv_image_url]),
+			CEFINT(i));
 
 		if(donate_vehicle_info[i][dv_discount] != 0){
 			cef_emit_event(playerid, "addDonateDiscountBlock",
@@ -24,7 +25,6 @@ stock Donate:ShowUI(playerid){
 	}
 
 	cef_emit_event(playerid, "sortDonateVehicles");
-	// ---
 
 	// --- Привелегии
 	cef_emit_event(playerid, "setDonateUpgradesPrices",
@@ -32,11 +32,32 @@ stock Donate:ShowUI(playerid){
 		CEFINT(donate_upgrades_info[DONATE_UPGRADE_LICENSES][du_price]),
 		CEFINT(donate_upgrades_info[DONATE_UPGRADE_WANTED][du_price]),
 		CEFINT(donate_upgrades_info[DONATE_UPGRADE_NAME][du_price]));
-	// ---
+
+	// --- Скины
+	cef_emit_event(playerid, "clearDonateSkins");
+
+	for(new i; i < DONATE_SHOP_SKINS_COUNT; i++){
+		cef_emit_event(playerid, "addDonateSkins",
+			CEFSTR(donate_skin_info[i][ds_name]),
+			CEFINT(donate_skin_info[i][ds_price]),
+			CEFINT(donate_skin_info[i][ds_discount]),
+			CEFINT(donate_skin_info[i][ds_rarity]),
+			CEFSTR(donate_skin_info[i][ds_image_url]),
+			CEFINT(i));
+
+		if(donate_skin_info[i][ds_discount] != 0){
+			cef_emit_event(playerid, "addDonateDiscountBlock",
+				CEFSTR(donate_skin_info[i][ds_image_url]),
+				CEFINT(donate_skin_info[i][ds_price]),
+				CEFINT(donate_skin_info[i][ds_discount]),
+				CEFINT(donate_skin_info[i][ds_rarity]));
+		}
+	}
+
+	cef_emit_event(playerid, "sortDonateSkins");
 
 	// --- Денежные наборы
 	cef_emit_event(playerid, "clearDonateCashBoxes");
-
 	for(new i; i < DONATE_SHOP_CASHBOXES_COUNT; i++){
 		cef_emit_event(playerid, "addDonateCashBox",
 			CEFSTR(donate_cashbox_info[i][dc_name]),
@@ -44,6 +65,28 @@ stock Donate:ShowUI(playerid){
 			CEFINT(donate_cashbox_info[i][dc_give_money]),
 			CEFINT(i));
 	}
+
+	// --- Кейсы
+	cef_emit_event(playerid, "clearDonateCases");
+	for(new i; i < DONATE_SHOP_CASES_COUNT; i++){
+		cef_emit_event(playerid, "DonateShop_AddCase",
+			CEFSTR(donate_case_info[i][dci_name]),
+			CEFINT(donate_case_info[i][dci_price]),
+			CEFINT(donate_case_info[i][dci_discount]),
+			CEFSTR(donate_case_info[i][dci_image_url]),
+			CEFINT(i));
+
+		if(donate_case_info[i][dci_discount] != 0){
+			cef_emit_event(playerid, "addDonateDiscountBlock",
+				CEFSTR(donate_case_info[i][dci_image_url]),
+				CEFINT(donate_case_info[i][dci_price]),
+				CEFINT(donate_case_info[i][dci_discount]),
+				CEFINT(RARITY_TYPE_COMMON));
+		}
+	}
+
+	Donate:AddCasePrizes(playerid);
+
 	// ---
 
 	SelectTextDraw(playerid, -1);
@@ -77,6 +120,35 @@ stock Donate:GiveDonate(playerid, amount){
 		GetPlayerData(playerid, p_donate), GetPlayerData(playerid, p_id));
 	mysql_tquery(mysql, query);
 	return true;
+}
+
+stock Donate:AddCasePrizes(playerid){
+	for(new i; i < DONATE_SHOP_CASES_COUNT; i++){
+		cef_emit_event(playerid, "clearDonateCasePrizes", CEFINT(i));
+	}
+
+	for(new i, name[64]; i < DONATE_SHOP_CASE_PRIZES_COUNT; i++){
+
+		switch(donate_case_prize_info[i][dcp_type]){
+
+			case CASE_PRIZE_TYPE_MONEY: format(name, sizeof(name), "%d$", donate_case_prize_info[i][dcp_count]);
+			case CASE_PRIZE_TYPE_DONATE: format(name, sizeof(name), "%d U-Coin`s", donate_case_prize_info[i][dcp_count]);
+			case CASE_PRIZE_TYPE_SKIN: format(name, sizeof(name), "Одежда №%d", donate_case_prize_info[i][dcp_count]);
+			case CASE_PRIZE_TYPE_VEHICLE: format(name, sizeof(name), "%s", GetVehicleParamsData(GetVehicleParamIndexByModel(donate_case_prize_info[i][dcp_count]), vp_name));
+		}
+
+		cef_emit_event(playerid, "addDonateCasePrize",
+			CEFSTR(name),
+			CEFINT(donate_case_prize_info[i][dcp_rarity]),
+			CEFSTR(donate_case_prize_info[i][dcp_image_url]),
+			CEFINT(donate_case_prize_info[i][dcp_case_index]),
+			CEFINT(i),
+			CEFFLOAT(donate_case_prize_info[i][dcp_chance]));
+	}
+
+	for(new i; i < DONATE_SHOP_CASES_COUNT; i++){
+		cef_emit_event(playerid, "sortDonateCasePrizes", CEFINT(i));
+	}
 }
 
 #warning CREATE_PHOTOS

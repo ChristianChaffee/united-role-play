@@ -362,7 +362,7 @@ CMD:settime(playerid, params[]){
 }
 
 CMD:setweather(playerid, params[]){
-	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "setweather '/settime [ID погоды (0 - 255)]'");
+	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/settime [ID погоды (0 - 255)]'");
 	if(params[0] < 0 || params[0] > 255) return SendErrorMessage(playerid, "ID погоды должно быть от 0 до 255.");
 
 	SetWeather(params[0]);
@@ -373,5 +373,12 @@ CMD:setweather(playerid, params[]){
 		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name), playerid, params[0]);
 	Admin:SendAdminMessage(COLOR_GREY, small_string);
 	small_string[0] = EOS;
+	return true;
+}
+
+CMD:setskin(playerid, params[]){
+	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/setskin [ID скина]'");
+
+	SetPlayerSkin(playerid, params[0]);
 	return true;
 }

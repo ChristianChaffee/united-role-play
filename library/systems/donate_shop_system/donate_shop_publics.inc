@@ -178,15 +178,15 @@ public DonateShop_BuyNicknameCheck(playerid, name[]){
 		name, GetPlayerData(playerid, p_id));
 	mysql_tquery(mysql, query);
 
-	SetPlayerName(playerid, name);
-	format(GetPlayerData(playerid, p_name), MAX_PLAYER_NAME, "%s", name);
-
 	small_string[0] = EOS;
 	format(small_string, sizeof(small_string),
-		"Вы сменили ник-нейм на %s за %d U-Coins.",
-		name, donate_upgrades_info[DONATE_UPGRADE_NAME][du_price]);
-	SendClientMessage(playerid, COLOR_YELLOW, small_string);
+		"%s сменил(-а) ник-нейм на %s.",
+		GetPlayerData(playerid, p_name), name);
+	SendClientMessageToAll(COLOR_LIGHT_RED, small_string);
 	small_string[0] = EOS;
+
+	SetPlayerName(playerid, name);
+	format(GetPlayerData(playerid, p_name), MAX_PLAYER_NAME, "%s", name);
 	return true;
 }
 
@@ -215,5 +215,165 @@ public DonateShop_BuyCashBox(playerid, const arguments[]){
 		donate_cashbox_info[index][dc_name], donate_cashbox_info[index][dc_give_money], donate_cashbox_info[index][dc_price]);
 	SendClientMessage(playerid, COLOR_YELLOW, small_string);
 	small_string[0] = EOS;
+	return true;
+}
+
+forward DonateShop_BuySkin(playerid, const arguments[]);
+public DonateShop_BuySkin(playerid, const arguments[]){
+	new index;
+	sscanf(arguments, "i", index);
+
+	if(index < 0 || index >= DONATE_SHOP_SKINS_COUNT){
+		Donate:ShowError(playerid, "Произошла ошибка.");
+		return false;
+	}
+
+	new price = Donate:GetPriceWithDiscount(donate_skin_info[index][ds_price], donate_skin_info[index][ds_discount]),
+		slot_index = Inventory:GetFreeSlotIndex(playerid);
+
+	if(price > GetPlayerData(playerid, p_donate)){
+		Donate:ShowError(playerid, "У Вас недостаточно U-Coin`s.");
+		return false;
+	}
+	if(slot_index == -1){
+		Donate:ShowError(playerid, "У Вас нет места в инвентаре.");
+		return false;
+	}
+
+	Donate:HideUI(playerid);
+	Donate:GiveDonate(playerid, -price);
+
+	Inventory:GiveItem(playerid, slot_index, ITEM_SKIN_ID, _, donate_skin_info[index][ds_model]);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"Вы купили скин \"%s\" за %d U-Coins.",
+		donate_skin_info[index][ds_name], price);
+	SendClientMessage(playerid, COLOR_YELLOW, small_string);
+	small_string[0] = EOS;
+	return true;
+}
+
+forward DonateShop_BuyCase(playerid, const arguments[]);
+public DonateShop_BuyCase(playerid, const arguments[]){
+	new index;
+	sscanf(arguments, "i", index);
+
+	if(index < 0 || index >= DONATE_SHOP_CASES_COUNT){
+		Donate:ShowError(playerid, "Произошла ошибка.");
+		return false;
+	}
+	if(GetPlayerData(playerid, p_donate) <= Donate:GetPriceWithDiscount(donate_case_info[index][dci_price], donate_case_info[index][dci_discount])){
+		Donate:ShowError(playerid, "У Вас недостаточно U-Coin`s.");
+		return false;
+	}
+	if(Inventory:GetFreeSlotIndex(playerid) == -1){
+		Donate:ShowError(playerid, "У Вас недостаточно места в инвентаре.");
+		return false;
+	}
+	if(GetFreeVehicleSlotsCount(playerid) <= 0){
+		Donate:ShowError(playerid, "У Вас недостаточно свободных слотов для транспорта.");
+		return false;
+	}
+
+	cef_emit_event(playerid, "Donate_StartCase",
+		CEFINT(index));
+	return true;
+}
+
+forward DonateShop_CaseResult(playerid, const arguments[]);
+public DonateShop_CaseResult(playerid, const arguments[]){
+	new case_index, prize_index;
+	sscanf(arguments, "ii", case_index, prize_index);
+
+	if(prize_index < 0 || prize_index >= DONATE_SHOP_CASE_PRIZES_COUNT){
+		Donate:ShowError(playerid, "Произошла ошибка.");
+		return false;
+	}
+	if(GetPlayerData(playerid, p_donate) <= Donate:GetPriceWithDiscount(donate_case_info[case_index][dci_price], donate_case_info[case_index][dci_discount])){
+		Donate:ShowError(playerid, "У Вас недостаточно U-Coin`s.");
+		return false;
+	}
+
+	switch(donate_case_prize_info[prize_index][dcp_type]){
+
+		case CASE_PRIZE_TYPE_MONEY:{
+			GiveMoney(playerid, donate_case_prize_info[prize_index][dcp_count]);
+
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"Вы получили %d$ (%s).",
+				donate_case_prize_info[prize_index][dcp_count], donate_case_info[case_index][dci_name]);
+			SendClientMessage(playerid, COLOR_YELLOW, small_string);
+			small_string[0] = EOS;
+
+			Donate:HideUI(playerid);
+			Donate:GiveDonate(playerid, -Donate:GetPriceWithDiscount(donate_case_info[case_index][dci_price], donate_case_info[case_index][dci_discount]));
+		}
+
+		case CASE_PRIZE_TYPE_DONATE:{
+			Donate:GiveDonate(playerid, donate_case_prize_info[prize_index][dcp_count]);
+
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"Вы получили %d U-Coins (%s).",
+				donate_case_prize_info[prize_index][dcp_count], donate_case_info[case_index][dci_name]);
+			SendClientMessage(playerid, COLOR_YELLOW, small_string);
+			small_string[0] = EOS;
+
+			Donate:HideUI(playerid);
+			Donate:GiveDonate(playerid, -Donate:GetPriceWithDiscount(donate_case_info[case_index][dci_price], donate_case_info[case_index][dci_discount]));
+		}
+
+		case CASE_PRIZE_TYPE_SKIN:{
+			new slot_index = Inventory:GetFreeSlotIndex(playerid);
+			if(slot_index == -1){
+				Donate:ShowError(playerid, "У Вас недостаточно места в инвентаре.");
+				return false;
+			}
+
+			Inventory:GiveItem(playerid, slot_index, ITEM_SKIN_ID, _, donate_case_prize_info[prize_index][dcp_count]);
+
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"Вы получили Одежду №%d (%s)",
+				donate_case_prize_info[prize_index][dcp_count], donate_case_info[case_index][dci_name]);
+			SendClientMessage(playerid, COLOR_YELLOW, small_string);
+			small_string[0] = EOS;
+
+			Donate:HideUI(playerid);
+			Donate:GiveDonate(playerid, -Donate:GetPriceWithDiscount(donate_case_info[case_index][dci_price], donate_case_info[case_index][dci_discount]));
+		}
+
+		case CASE_PRIZE_TYPE_VEHICLE:{
+			if(GetFreeVehicleSlotsCount(playerid) <= 0){
+				Donate:ShowError(playerid, "У Вас недостаточно слотов для транспорта.");
+				return false;
+			}
+
+			static const fmt_query[] = "INSERT INTO vehicles (model_id, status, owner, price, color_1, color_2) VALUES (%d, %d, %d, %d, %d, %d)";
+			new query[sizeof(fmt_query) + ((-2 + 11) * 6)];
+			mysql_format(mysql, query, sizeof(query), fmt_query,
+				donate_case_prize_info[prize_index][dcp_count],
+				VEHICLE_STATUS_PLAYER,
+				GetPlayerData(playerid, p_id),
+				Donate:GetPriceWithDiscount(donate_case_info[case_index][dci_price], donate_case_info[case_index][dci_discount]) * DONATE_SHOP_CONVERT,
+				1, 1);
+			mysql_tquery(mysql, query);
+
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"Вы получили транспорт \"%s\" (%s)",
+				GetVehicleParamsData(GetVehicleParamIndexByModel(donate_case_prize_info[prize_index][dcp_count]), vp_name), 
+				donate_case_info[case_index][dci_name]);
+			SendClientMessage(playerid, COLOR_YELLOW, small_string);
+			small_string[0] = EOS;
+			SendClientMessage(playerid, COLOR_GREY, "- Для загрузки транспорта используйте телефон ('/phone').");
+
+			Donate:HideUI(playerid);
+			Donate:GiveDonate(playerid, -Donate:GetPriceWithDiscount(donate_case_info[case_index][dci_price], donate_case_info[case_index][dci_discount]));
+		}
+	}
+
 	return true;
 }

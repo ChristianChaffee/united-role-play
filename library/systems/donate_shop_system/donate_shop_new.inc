@@ -7,6 +7,8 @@
 #define DONATE_SHOP_VEHICLES_COUNT 		38
 #define DONATE_SHOP_UPGRADES_COUNT 		4
 #define DONATE_SHOP_CASHBOXES_COUNT 	4
+#define DONATE_SHOP_SKINS_COUNT 		8
+#define DONATE_SHOP_CASES_COUNT 		1
 
 //==============================================================================
 enum
@@ -15,6 +17,19 @@ enum
 	RARITY_TYPE_RARE,
 	RARITY_TYPE_EPIC,
 	RARITY_TYPE_LEGENDARY
+}
+
+enum
+{
+	CASE_PRIZE_TYPE_MONEY,
+	CASE_PRIZE_TYPE_DONATE,
+	CASE_PRIZE_TYPE_VEHICLE,
+	CASE_PRIZE_TYPE_SKIN
+}
+
+enum
+{
+	CASE_INDEX_START,
 }
 
 //==============================================================================
@@ -102,3 +117,72 @@ new const donate_cashbox_info[DONATE_SHOP_CASHBOXES_COUNT][donate_cashbox_info_s
 	{"Премиум набор", 400, 30000},
 	{"Элитный набор", 1000, 85000}
 };
+
+//==============================================================================
+enum donate_skin_info_struct
+{
+	ds_name[64],
+	ds_price,
+	ds_discount,
+	ds_model,
+	ds_rarity,
+	ds_image_url[32]
+}
+new const donate_skin_info[DONATE_SHOP_SKINS_COUNT][donate_skin_info_struct] = {
+	{"Дон Карлеоне", 2000, 0, 313, RARITY_TYPE_LEGENDARY, "assets/donate/skins/313.png"},
+	{"Сэм Винчестер", 300, 0, 314, RARITY_TYPE_COMMON, "assets/donate/skins/314.png"},
+	{"Дин Винчестер", 300, 0, 315, RARITY_TYPE_COMMON, "assets/donate/skins/315.png"},
+	{"Винсент Кассель", 100, 0, 316, RARITY_TYPE_COMMON, "assets/donate/skins/316.png"},
+	{"Злобный француз", 450, 0, 317, RARITY_TYPE_RARE, "assets/donate/skins/317.png"},
+	{"Пеннивайз", 3500, 15, 318, RARITY_TYPE_LEGENDARY, "assets/donate/skins/318.png"},
+	{"Дональд Трамп", 1500, 0, 319, RARITY_TYPE_EPIC, "assets/donate/skins/319.png"},
+	{"Трэвис Скотт", 1250, 0, 320, RARITY_TYPE_EPIC, "assets/donate/skins/320.png"}
+};
+
+//==============================================================================
+enum donate_case_info_struct
+{
+	dci_name[64],
+	dci_price,
+	dci_discount,
+	dci_image_url[32]
+}
+new const donate_case_info[DONATE_SHOP_CASES_COUNT][donate_case_info_struct] = {
+	{"Кейс \"Стартовый\"", 150, 10, "assets/donate/case.png"}
+};
+
+enum donate_case_prize_info_struct
+{
+	dcp_type,
+	dcp_count,
+	dcp_rarity,
+	dcp_image_url[32],
+	Float:dcp_chance,
+	dcp_case_index,
+}
+
+new const donate_case_prize_info[][donate_case_prize_info_struct] = {
+	// --- Кейс "Стартовый"
+	{CASE_PRIZE_TYPE_MONEY, 3500, RARITY_TYPE_COMMON, "assets/donate/money.png", 15.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_MONEY, 4500, RARITY_TYPE_COMMON, "assets/donate/money.png", 15.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_MONEY, 5500, RARITY_TYPE_RARE, "assets/donate/money.png", 10.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_MONEY, 6500, RARITY_TYPE_RARE, "assets/donate/money.png", 10.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_MONEY, 10000, RARITY_TYPE_LEGENDARY, "assets/donate/money.png", 5.0, CASE_INDEX_START},
+
+	{CASE_PRIZE_TYPE_DONATE, 400, RARITY_TYPE_RARE, "assets/donate/coin.png", 9.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_DONATE, 600, RARITY_TYPE_RARE, "assets/donate/coin.png", 9.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_DONATE, 800, RARITY_TYPE_EPIC, "assets/donate/coin.png", 6.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_DONATE, 1500, RARITY_TYPE_LEGENDARY, "assets/donate/coin.png", 4.0, CASE_INDEX_START},
+
+	{CASE_PRIZE_TYPE_SKIN, 316, RARITY_TYPE_COMMON, "assets/donate/skins/316.png", 4.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_SKIN, 314, RARITY_TYPE_RARE, "assets/donate/skins/314.png", 3.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_SKIN, 315, RARITY_TYPE_RARE, "assets/donate/skins/315.png", 3.0, CASE_INDEX_START},
+
+	{CASE_PRIZE_TYPE_VEHICLE, 401, RARITY_TYPE_EPIC, "assets/donate/vehicles/401.jpg", 2.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_VEHICLE, 410, RARITY_TYPE_EPIC, "assets/donate/vehicles/410.jpg", 2.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_VEHICLE, 422, RARITY_TYPE_EPIC, "assets/donate/vehicles/422.jpg", 2.0, CASE_INDEX_START},
+	{CASE_PRIZE_TYPE_VEHICLE, 426, RARITY_TYPE_LEGENDARY, "assets/donate/vehicles/426.jpg", 1.0, CASE_INDEX_START}
+	//--------------------------------------------------------------------------
+};
+
+new const DONATE_SHOP_CASE_PRIZES_COUNT = sizeof(donate_case_prize_info);
