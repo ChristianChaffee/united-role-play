@@ -1,5 +1,5 @@
 
-#define VEHICLE_MODELS_COUNT 						217
+#define VEHICLE_MODELS_COUNT 						218
 #define VEHICLE_FUEL_TIME 							60000
 
 #define GetVehicleData(%0,%1)  						vehicle_info[%0][%1]
