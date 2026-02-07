@@ -1,5 +1,5 @@
 
-#define VEHICLE_MODELS_COUNT 						216
+#define VEHICLE_MODELS_COUNT 						217
 #define VEHICLE_FUEL_TIME 							60000
 
 #define GetVehicleData(%0,%1)  						vehicle_info[%0][%1]
@@ -65,9 +65,9 @@ enum vehicle_params_info_struct
 	vp_max_speed,
 }
 new const vehicle_params_info[VEHICLE_MODELS_COUNT][vehicle_params_info_struct] = {
-	{400, "Landstalker", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 2.7, 157},
+	{400, "Chevrolet Suburban GMT800", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 2.7, 157},
 	{401, "Bravura", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 4.9, 147},
-	{402, "Buffalo", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 2.7, 186},
+	{402, "Dodge Challenger R/T", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 2.7, 186},
 	{403, "Linerunner", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 5.7, 109},
 	{404, "Perenniel", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 5.7, 133},
 	{405, "Sentinel", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.6, 163},
@@ -277,10 +277,13 @@ new const vehicle_params_info[VEHICLE_MODELS_COUNT][vehicle_params_info_struct] 
 	{609, "Boxburg", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 8.0, 120},
 	{610, "Farm Trailer", FUEL_TYPE_NONE, VEHICLE_TYPE_TRAILER, 0.0, 0},
 	{611, "Utility Trailer", FUEL_TYPE_NONE, VEHICLE_TYPE_TRAILER, 0.0, 0},
-	{15000, "Ubermacht 36C", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 4.5, 165},
+	{15000, "BMW E36 318i", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 4.5, 165},
 	{15001, "Benefactor C200", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 4.5, 165},
-	{15002, "Benefactor S600", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.4, 180},
-	{15003, "Ubermacht 38L", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.4, 180}
+	{15002, "Mercedes-Benz W140 S600L", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.8, 153},
+	{15003, "BMW E38 750i", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.8, 153},
+
+	{15004, "BMW E39 530D", FUEL_TYPE_DISEL, VEHICLE_TYPE_CAR, 5.2, 148},
+	{15005, "Mercedes-Benz W210 E320", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 5.2, 148}
 };
 
 enum vehicle_info_struct
