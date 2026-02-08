@@ -382,3 +382,7 @@ CMD:setskin(playerid, params[]){
 	SetPlayerSkin(playerid, params[0]);
 	return true;
 }
+
+CMD:fracmenu(playerid){
+	return Admin:ShowFractionMenu(playerid);
+}

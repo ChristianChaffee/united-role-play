@@ -79,3 +79,40 @@ public CheckPlayerAdminPassword(playerid){
 		return true;
 	}
 }
+
+forward OnAdminFractionCreate(playerid);
+public OnAdminFractionCreate(playerid){
+	new temp_frac_id = cache_insert_id(),
+		free_frac_index = -1;
+
+	for(new i; i < MAX_FRACTIONS; i++){
+		if(GetFractionData(i, f_id) != 0) continue;
+		free_frac_index = i;
+		break;
+	}
+
+	if(!temp_frac_id || free_frac_index == -1){
+		SendErrorMessage(playerid, "Произошла ошибка.");
+		Admin:DeleteFractionPVars(playerid);
+		return false;
+	}
+
+	new fraction_name[64];
+	GetPVarString(playerid, "Admin_FracCreateName", fraction_name, sizeof(fraction_name));
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"[A][%d] Администратор %s[%d] создал(-а) фракцию \"%s\" (%s).",
+		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name), playerid,
+		fraction_name, fraction_type_names[GetPVarInt(playerid, "Admin_FracCreateType")]);
+	Admin:SendAdminMessage(COLOR_GREY, small_string);
+	small_string[0] = EOS;
+
+	static const fmt_query[] = "SELECT * FROM fractions WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query, temp_frac_id);
+	mysql_tquery(mysql, query, "LoadFractions", "i", free_frac_index);
+
+	Admin:DeleteFractionPVars(playerid);
+	return true;
+}

@@ -214,3 +214,78 @@ DialogResponse:D_ADMIN_HOUSE_CREATE_ACCEPT(playerid, response, listitem, inputte
 	DeletePVar(playerid, "Admin_HouseCreatePrice");
 	return true;
 }
+
+DialogResponse:D_ADMIN_FRACMENU(playerid, response, listitem, inputtext[]){
+	if(!response) return false;
+
+	switch(listitem){
+		case 0: Admin:ShowCreateFraction(playerid);
+	}
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_CREATE(playerid, response, listitem, inputtext[]){
+	if(!response){
+		Admin:DeleteFractionPVars(playerid);
+		callcmd::fracmenu(playerid);
+		return false;
+	}
+
+	switch(listitem){
+		case 0: Admin:ShowCreateFractionName(playerid);
+		case 1: Admin:ShowCreateFractionType(playerid);
+		case 2: Admin:ShowCreateFractionColor(playerid);
+		case 3:{
+
+			new fraction_name[64];
+			GetPVarString(playerid, "Admin_FracCreateName", fraction_name, sizeof(fraction_name));
+
+			static const fmt_query[] = "INSERT INTO fractions (name, type, color_str, color_value) VALUES ('%s', %d, '%s', %d)";
+			new query[sizeof(fmt_query) + (-2 + 64) + (-2 + 32) + ((-2 + 11) * 2)];
+			mysql_format(mysql, query, sizeof(query), fmt_query,
+				fraction_name, GetPVarInt(playerid, "Admin_FracCreateType"),
+				color_info[GetPVarInt(playerid, "Admin_FracCreateColor")][color_str],
+				color_info[GetPVarInt(playerid, "Admin_FracCreateColor")][color_code]);
+			mysql_tquery(mysql, query, "OnAdminFractionCreate", "i", playerid);
+		}
+	}
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_CREATE_NAME(playerid, response, listitem, inputtext[]){
+	if(!response){
+		Admin:ShowCreateFraction(playerid);
+		return false;
+	}
+
+	if(strlen(inputtext) < 5 || strlen(inputtext) >= 64){
+		Admin:ShowCreateFractionName(playerid, ""cl_grey"Ошибка: "cl_white"название фракции должно быть от 5 до 64 символов.");
+		return false;
+	}
+
+	SetPVarString(playerid, "Admin_FracCreateName", inputtext);
+	Admin:ShowCreateFraction(playerid);
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_CREATE_TYPE(playerid, response, listitem, inputtext[]){
+	if(!response){
+		Admin:ShowCreateFraction(playerid);
+		return false;
+	}
+
+	SetPVarInt(playerid, "Admin_FracCreateType", listitem);
+	Admin:ShowCreateFraction(playerid);
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_CREATE_COLOR(playerid, response, listitem, inputtext[]){
+	if(!response){
+		Admin:ShowCreateFraction(playerid);
+		return false;
+	}
+
+	SetPVarInt(playerid, "Admin_FracCreateColor", listitem);
+	Admin:ShowCreateFraction(playerid);
+	return true;
+}

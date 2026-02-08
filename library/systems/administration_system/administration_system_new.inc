@@ -10,6 +10,10 @@
 	Admin_HouseCreateType
 	Admin_HouseCreatePrice
 
+	Admin_FracCreateName
+	Admin_FracCreateType
+	Admin_FracCreateColor
+
 */
 
 #define Admin:%0(%1)  					Admn_%0(%1)
@@ -70,5 +74,6 @@ new const admin_command_info[][admin_command_info_struct] = {
 	{6, "paydayres", "Внеплановый PayDay с рестартом сервера."},
 	{6, "addbiz", "Создать бизнес."},
 	{6, "addhouse", "Создать дом."},
+	{6, "fracmenu", "Управление фракциями."},
 	{6, "gmx", "Произвести рестарт сервера через 5 секунд."}
 };

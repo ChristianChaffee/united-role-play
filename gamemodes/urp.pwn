@@ -661,6 +661,7 @@ stock IsDataBaseLoaded(){
 	if(!load_info[loaded_start_quests]) return false;
 	if(!load_info[loaded_houses]) return false;
 	if(!load_info[loaded_garages]) return false;
+	if(!load_info[loaded_fractions]) return false;
 	return true;
 }
 
