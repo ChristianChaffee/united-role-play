@@ -160,9 +160,9 @@ stock Admin:ShowCreateFraction(playerid){
 	big_string[0] = EOS;
 	format(big_string, sizeof(big_string),
 		""cl_grey"Параметр\t"cl_grey"Значение\n\
-		"cl_grey"1. "cl_white"Название фракции\t%s\n\
-		"cl_grey"2. "cl_white"Тип фракции\t%s\n\
-		"cl_grey"3. "cl_white"Цвет фракции\t%s%s",
+		"cl_blue"1. "cl_white"Название фракции\t%s\n\
+		"cl_blue"2. "cl_white"Тип фракции\t%s\n\
+		"cl_blue"3. "cl_white"Цвет фракции\t%s%s",
 		fraction_name_str,
 		(!GetPVarType(playerid, "Admin_FracCreateType")) ? ("-") : (fraction_type_names[GetPVarInt(playerid, "Admin_FracCreateType")]),
 		fraction_color_str, fraction_create_str);
@@ -223,4 +223,23 @@ stock Admin:ShowCreateFractionColor(playerid){
 		"Далее", "Назад");
 	big_string[0] = EOS;
 	return true;
+}
+
+stock Admin:ShowFraction(playerid, fraction_index){
+	if(fraction_index < 0 || fraction_index >= MAX_FRACTIONS) return false;
+	if(!GetFractionData(fraction_index, f_id)) return false;
+
+	new color_index;
+	for(new i; i < COLORS_COUNT; i++){
+		if(color_info[i][color_value] != GetFractionData(fraction_index, f_color_value)) continue;
+		color_index = i;
+		break;
+	}
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_grey"Параметр\t"cl_grey"Значение\n\
+		"cl_blue"1. "cl_white"Название\t%s\n\
+		"cl_blue"2. "cl_white"Тэг\t%s\n\
+		"cl_blue"3. "cl_white"Цвет\t%s%s");
 }
