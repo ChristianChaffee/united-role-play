@@ -13,6 +13,7 @@
 	Admin_FracCreateName
 	Admin_FracCreateType
 	Admin_FracCreateColor
+	Admin_FractionIndex
 
 */
 

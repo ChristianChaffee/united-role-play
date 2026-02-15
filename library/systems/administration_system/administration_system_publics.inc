@@ -116,3 +116,18 @@ public OnAdminFractionCreate(playerid){
 	Admin:DeleteFractionPVars(playerid);
 	return true;
 }
+
+forward ShowFractionInfo(playerid, fraction_index);
+public ShowFractionInfo(playerid, fraction_index){
+	if(fraction_index < 0 || fraction_index >= MAX_FRACTIONS) return false;
+
+	new rows;
+	cache_get_row_count(rows);
+	if(!rows) return false;
+
+	new temp_name[MAX_PLAYER_NAME];
+	cache_get_value_name(0, "leader_name", temp_name);
+
+	Fraction:ShowFractionInfoDialog(playerid, fraction_index, temp_name);
+	return true;
+}

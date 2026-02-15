@@ -220,6 +220,7 @@ DialogResponse:D_ADMIN_FRACMENU(playerid, response, listitem, inputtext[]){
 
 	switch(listitem){
 		case 0: Admin:ShowCreateFraction(playerid);
+		default: Admin:ShowFractionInfo(playerid, player_listitems[playerid][listitem - 1]);
 	}
 	return true;
 }
@@ -287,5 +288,168 @@ DialogResponse:D_ADMIN_FRAC_CREATE_COLOR(playerid, response, listitem, inputtext
 
 	SetPVarInt(playerid, "Admin_FracCreateColor", listitem);
 	Admin:ShowCreateFraction(playerid);
+	return true;
+}
+
+//==============================================================================
+DialogResponse:D_ADMIN_FRAC_INFO(playerid, response, listitem, inputtext[]){
+	if(!response){
+		DeletePVar(playerid, "Admin_FractionIndex");
+		callcmd::fracmenu(playerid);
+		return false;
+	}
+
+	switch(listitem){
+		case 0: Admin:ShowChangeFracName(playerid);
+		case 1: Admin:ShowChangeFracTag(playerid);
+		case 2: Admin:ShowChangeFracType(playerid);
+		case 3:{
+			if(!GetFractionData(GetPVarInt(playerid, "Admin_FractionIndex"), f_leader_account_id)){
+				SendClientMessage(playerid, COLOR_GREY, "- Чтобы назначить лидера используйте команду "cl_white"'/makeleader [ID]'");
+				Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+				return false;
+			}
+			Admin:ShowAcceptUninviteLeader(playerid);
+		}
+		case 4: Admin:ShowChangeFracColor(playerid);
+	}
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_CHANGE_NAME(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	if(!response){
+		Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+		return false;
+	}
+
+	if(strlen(inputtext) < 5 || strlen(inputtext) >= 64){
+		Admin:ShowChangeFracName(playerid,""cl_grey"Ошибка: "cl_white"Название должно быть от 5 до 64 символов.");
+		return false;
+	}
+
+	new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"[A][%d] %s[%d] поменял(-а) название фракции \"%s\" на \"%s\".",
+		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name),
+		playerid, GetFractionData(fraction_index, f_name), inputtext);
+	Admin:SendAdminMessage(COLOR_GREY, small_string);
+	small_string[0] = EOS;
+
+	format(GetFractionData(fraction_index, f_name), 64, "%s", inputtext);
+	Fraction:UpdateStr(fraction_index, "name", GetFractionData(fraction_index, f_name));
+
+	Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_CHANGE_TAG(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	if(!response){
+		Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+		return false;
+	}
+
+	if(strlen(inputtext) < 2 || strlen(inputtext) > 6){
+		Admin:ShowChangeFracTag(playerid,""cl_grey"Ошибка: "cl_white"Тэг должен быть от 2 до 6 символов.");
+		return false;
+	}
+
+	new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"[A][%d] %s[%d] установил(-а) тэг фракции \"%s\" на \"%s\".",
+		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name),
+		playerid, GetFractionData(fraction_index, f_name), inputtext);
+	Admin:SendAdminMessage(COLOR_GREY, small_string);
+	small_string[0] = EOS;
+
+	format(GetFractionData(fraction_index, f_tag), 64, "%s", inputtext);
+	Fraction:UpdateStr(fraction_index, "tag", GetFractionData(fraction_index, f_tag));
+
+	Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_CHANGE_TYPE(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	if(!response){
+		Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+		return false;
+	}
+
+	new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+	if(listitem == GetFractionData(fraction_index, f_type)){
+		SendErrorMessage(playerid, "Выберите тип фракции, отличающийся от нынешнего.");
+		Admin:ShowChangeFracType(playerid);
+		return false;
+	}
+
+	SetFractionData(fraction_index, f_type, listitem);
+	Fraction:UpdateInt(fraction_index, "type", listitem);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"[A][%d] %s[%d] изменил(-а) тип фракции \"%s\" на \"%s\".",
+		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name),
+		playerid, GetFractionData(fraction_index, f_name), fraction_type_names[listitem]);
+	Admin:SendAdminMessage(COLOR_GREY, small_string);
+	small_string[0] = EOS;
+
+	Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_ACCEPT_LEADER(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	if(!response){
+		Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+		return false;
+	}
+
+	new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+	if(!GetFractionData(fraction_index, f_leader_account_id)){
+		SendErrorMessage(playerid, "Произошла ошибка.");
+		Admin:ShowFractionInfo(playerid, fraction_index);
+		return false;
+	}
+
+	SetFractionData(fraction_index, f_leader_account_id, 0);
+	Fraction:UpdateInt(fraction_index, "leader_account_id", 0);
+
+	Fraction:UninvitePlayer(GetFractionData(fraction_index, f_leader_account_id));
+
+	SendClientMessage(playerid, COLOR_GREEN, "Вы сняли лидера фракции.");
+	Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_CHANGE_COLOR(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	if(!response){
+		Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+		return false;
+	}
+
+	new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+
+	SetFractionData(fraction_index, f_color_value, color_info[listitem][color_code]);
+	format(GetFractionData(fraction_index, f_color_str), 16, "%s", color_info[listitem][color_str]);
+
+	Fraction:UpdateInt(fraction_index, "color_value", GetFractionData(fraction_index, f_color_value));
+	Fraction:UpdateStr(fraction_index, "color_str", GetFractionData(fraction_index, f_color_str));
+
+	SendClientMessage(playerid, COLOR_GREEN, "Вы изменили цвет фракции.");
+	Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+
+	#warning MAKE_LOGIC
 	return true;
 }

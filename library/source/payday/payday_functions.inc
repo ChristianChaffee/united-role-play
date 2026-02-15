@@ -2,7 +2,7 @@
 stock PayDay(hour){
 
 	SetWorldTime(hour);
-	SetWeather(wather_list[random(sizeof(wather_list))]);
+	//SetWeather(wather_list[random(sizeof(wather_list))]);
 
 	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
 		if(!player_logged[i]) continue;

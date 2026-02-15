@@ -7,7 +7,7 @@ hook OnGameModeInit(){
 	gettime(hour);
 	SetWorldTime(hour);
 
-	SetWeather(wather_list[random(sizeof(wather_list))]);
+	//SetWeather(wather_list[random(sizeof(wather_list))]);
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 

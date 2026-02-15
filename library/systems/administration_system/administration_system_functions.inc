@@ -111,11 +111,12 @@ stock Admin:ShowFractionMenu(playerid){
 		format(big_string, sizeof(big_string),
 			"%s\n\
 			"cl_grey"%d. "cl_white"%s "cl_grey"[%s]",
-			big_string, count,
+			big_string, count + 1,
 			GetFractionData(i, f_name),
 			fraction_type_names[GetFractionData(i, f_type)]);
 
 		player_listitems[playerid][count] = i;
+		count++;
 	}
 
 	Dialog_Open(playerid, Dialog:D_ADMIN_FRACMENU, DIALOG_STYLE_LIST,
@@ -225,21 +226,141 @@ stock Admin:ShowCreateFractionColor(playerid){
 	return true;
 }
 
-stock Admin:ShowFraction(playerid, fraction_index){
+stock Admin:ShowFractionInfo(playerid, fraction_index){
+	if(fraction_index < 0 || fraction_index >= MAX_FRACTIONS){
+		SendErrorMessage(playerid, "Произошла ошибка.");
+		return false;
+	}
+
+	if(!GetFractionData(fraction_index, f_leader_account_id)){
+		Fraction:ShowFractionInfoDialog(playerid, fraction_index, "Отсутствует");
+	}
+	else{
+		static const fmt_query[] = "SELECT f.*, a.name AS leader_name FROM fractions f JOIN accounts a ON f.leader_account_id = a.id WHERE f.id = %d";
+		new query[sizeof(fmt_query) + (-2 + 11)];
+		mysql_format(mysql, query, sizeof(query), fmt_query, GetFractionData(fraction_index, f_id));
+		mysql_tquery(mysql, query, "ShowFractionInfo", "ii", playerid, fraction_index);
+	}
+
+	return true;
+}
+
+stock Fraction:ShowFractionInfoDialog(playerid, fraction_index, leader_name[]){
 	if(fraction_index < 0 || fraction_index >= MAX_FRACTIONS) return false;
-	if(!GetFractionData(fraction_index, f_id)) return false;
 
 	new color_index;
 	for(new i; i < COLORS_COUNT; i++){
-		if(color_info[i][color_value] != GetFractionData(fraction_index, f_color_value)) continue;
-		color_index = i;
-		break;
+		if(color_info[i][color_code] == GetFractionData(fraction_index, f_color_value)){
+			color_index = i;
+			break;
+		}
 	}
+
+	SetPVarInt(playerid, "Admin_FractionIndex", fraction_index);
 
 	big_string[0] = EOS;
 	format(big_string, sizeof(big_string),
 		""cl_grey"Параметр\t"cl_grey"Значение\n\
-		"cl_blue"1. "cl_white"Название\t%s\n\
-		"cl_blue"2. "cl_white"Тэг\t%s\n\
-		"cl_blue"3. "cl_white"Цвет\t%s%s");
+		"cl_blue"Название фракции\t"cl_white"%s\n\
+		"cl_blue"Тэг фракции\t"cl_white"%s\n\
+		"cl_blue"Тип фракции\t"cl_white"%s\n\
+		"cl_blue"Лидер фракции\t"cl_white"%s\n\
+		"cl_blue"Цвет фракции\t"cl_white"%s%s",
+		GetFractionData(fraction_index, f_name), GetFractionData(fraction_index, f_tag),
+		fraction_type_names[GetFractionData(fraction_index, f_type)],
+		leader_name,
+		GetFractionData(fraction_index, f_color_str), color_info[color_index][color_name]);
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_FRAC_INFO, DIALOG_STYLE_TABLIST_HEADERS,
+		GetFractionData(fraction_index, f_name), big_string,
+		"Выбрать", "Закрыть");
+
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Admin:ShowChangeFracName(playerid, error_text[] = ""){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите новое название для фракции "cl_grey"\"%s\"\n\
+		"cl_grey"Название должно быть от 5 до 64 символов.\n\n%s",
+		GetFractionData(GetPVarInt(playerid, "Admin_FractionIndex"), f_name), error_text);
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_FRAC_CHANGE_NAME, DIALOG_STYLE_INPUT,
+		"Название фракции", big_string,
+		"ИЗменить", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Admin:ShowChangeFracTag(playerid, error_text[] = ""){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите тэг для фракции "cl_grey"\"%s\"\n\
+		"cl_grey"Тэг должен быть от 2 до 6 символов.\n\n%s",
+		GetFractionData(GetPVarInt(playerid, "Admin_FractionIndex"), f_name), error_text);
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_FRAC_CHANGE_TAG, DIALOG_STYLE_INPUT,
+		"Тэг фракции", big_string,
+		"ИЗменить", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Admin:ShowChangeFracType(playerid){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	big_string[0] = EOS;
+	for(new i; i < FRACTIONS_TYPES_COUNT; i++){
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%d. "cl_white"%s",
+			big_string, i + 1, fraction_type_names[i]);
+	}
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_FRAC_CHANGE_TYPE, DIALOG_STYLE_LIST,
+		"Тип фракции", big_string,
+		"ИЗменить", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Admin:ShowAcceptUninviteLeader(playerid){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Вы действительно хотите уволить лидера фракции "cl_grey"\"%s\""cl_white"?",
+		GetFractionData(GetPVarInt(playerid, "Admin_FractionIndex"), f_name));
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_FRAC_ACCEPT_LEADER, DIALOG_STYLE_MSGBOX,
+		"Снять лидера фракции", big_string,
+		"Уволить", "Назад");
+	
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Admin:ShowChangeFracColor(playerid){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	big_string[0] = EOS;
+
+	for(new i; i < COLORS_COUNT; i++){
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			%s%s",
+			big_string, color_info[i][color_str], color_info[i][color_name]);
+	}
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_FRAC_CHANGE_COLOR, DIALOG_STYLE_LIST,
+		"Выберите цвет", big_string,
+		"Выбрать", "Назад");
+	
+	big_string[0] = EOS;
+	return true;
 }
