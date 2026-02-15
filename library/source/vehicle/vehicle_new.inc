@@ -1,5 +1,5 @@
 
-#define VEHICLE_MODELS_COUNT 						218
+#define VEHICLE_MODELS_COUNT 						219
 #define VEHICLE_FUEL_TIME 							60000
 
 #define GetVehicleData(%0,%1)  						vehicle_info[%0][%1]
@@ -65,19 +65,19 @@ enum vehicle_params_info_struct
 	vp_max_speed,
 }
 new const vehicle_params_info[VEHICLE_MODELS_COUNT][vehicle_params_info_struct] = {
-	{400, "Chevrolet Suburban GMT800", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 2.7, 157},
-	{401, "Bravura", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 4.9, 147},
+	{400, "Jeep Grand Cherokee WJ", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 2.7, 157},
+	{401, "Toyota Corolla E180", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 4.9, 147},
 	{402, "Dodge Challenger R/T", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 2.7, 186},
 	{403, "Linerunner", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 5.7, 109},
-	{404, "Perenniel", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 5.7, 133},
-	{405, "Sentinel", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.6, 163},
+	{404, "Volkswagen Passat B8 2.0 TDI 4-motion", FUEL_TYPE_DISEL, VEHICLE_TYPE_CAR, 5.7, 133},
+	{405, "BMW 540i E34", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 3.6, 163},
 	{406, "Dumper", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 4.9, 110},
-	{407, "Firetruck", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 3.9, 148},
+	{407, "Pierce Firetruck", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 3.9, 148},
 	{408, "Trashmaster", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 8.3, 100},
 	{409, "Stretch", FUEL_TYPE_DISEL, VEHICLE_TYPE_CAR, 4.0, 158},
-	{410, "Manana", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 5.8, 129},
-	{411, "Infernus", FUEL_TYPE_98, VEHICLE_TYPE_CAR, 1.9, 221},
-	{412, "Voodoo", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 3.3, 168},
+	{410, "BMW M2 F87", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 5.8, 129},
+	{411, "Honda NSX I", FUEL_TYPE_98, VEHICLE_TYPE_CAR, 1.9, 221},
+	{412, "Chevrolet Impala 1967", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 3.3, 168},
 	{413, "Pony", FUEL_TYPE_DISEL, VEHICLE_TYPE_CAR, 8.0, 110},
 	{414, "Mule", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 8.0, 105},
 	{415, "Cheetah", FUEL_TYPE_98, VEHICLE_TYPE_CAR, 2.1, 192},
@@ -86,7 +86,7 @@ new const vehicle_params_info[VEHICLE_MODELS_COUNT][vehicle_params_info_struct] 
 	{418, "Moonbeam", FUEL_TYPE_DISEL, VEHICLE_TYPE_CAR, 8.4, 115},
 	{419, "Esperanto", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 5.0, 149},
 	{420, "Taxi", FUEL_TYPE_DISEL, VEHICLE_TYPE_CAR, 4.9, 145},
-	{421, "Washington", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.8, 153},
+	{421, "Lincoln Continental X 3.7", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.8, 153},
 	{422, "Bobcat", FUEL_TYPE_DISEL, VEHICLE_TYPE_CAR, 4.9, 140},
 	{423, "Mr. Whoopee", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 11.5, 98},
 	{424, "BF Injection", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.2, 135},
@@ -244,7 +244,7 @@ new const vehicle_params_info[VEHICLE_MODELS_COUNT][vehicle_params_info_struct] 
 	{576, "Tornado", FUEL_TYPE_92, VEHICLE_TYPE_CAR, 5.2, 142},
 	{577, "AT-400", FUEL_TYPE_98, VEHICLE_TYPE_PLANE, 0.0, 0},
 	{578, "DFT-30", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 7.0, 125},
-	{579, "Huntley", FUEL_TYPE_DISEL, VEHICLE_TYPE_CAR, 4.8, 155},
+	{579, "Cadillac Escalade V", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 4.8, 155},
 	{580, "Stafford", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 4.0, 165},
 	{581, "BF-400", FUEL_TYPE_92, VEHICLE_TYPE_MOTORBIKE, 6.0, 185},
 	{582, "Newsvan", FUEL_TYPE_DISEL, VEHICLE_TYPE_TRUCK, 7.5, 130},
@@ -283,7 +283,9 @@ new const vehicle_params_info[VEHICLE_MODELS_COUNT][vehicle_params_info_struct] 
 	{15003, "BMW E38 750i", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 3.8, 153},
 
 	{15004, "BMW E39 530D", FUEL_TYPE_DISEL, VEHICLE_TYPE_CAR, 5.2, 148},
-	{15005, "Mercedes-Benz W210 E320", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 5.2, 148}
+	{15005, "Mercedes-Benz W210 E320", FUEL_TYPE_95, VEHICLE_TYPE_CAR, 5.2, 148},
+
+	{15007, "Mercedes-Benz W223 S500", FUEL_TYPE_98, VEHICLE_TYPE_CAR, 5.2, 148}
 };
 
 enum vehicle_info_struct
