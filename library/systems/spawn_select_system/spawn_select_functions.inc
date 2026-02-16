@@ -5,7 +5,8 @@ stock SpawnSelect:ShowUI(playerid){
 		"showSpawnSelector");
 
 	new is_house_blocked = true,
-	 	is_last_pos_blocked = true;
+	 	is_last_pos_blocked = true,
+	 	is_fraction_blocked = true;
 
 	for(new i; i < MAX_HOUSES; i++){
 		if(!GetHouseData(i, h_id)) continue;
@@ -23,11 +24,20 @@ stock SpawnSelect:ShowUI(playerid){
 		is_last_pos_blocked = false;
 	}
 
+	if(GetPlayerData(playerid, p_fraction) != 0 && GetPlayerFractionIndex(playerid) != -1){
+		new fraction_index = GetPlayerFractionIndex(playerid);
+		if(GetFractionData(fraction_index, f_spawn_x) != 0.0 || GetFractionData(fraction_index, f_spawn_y) != 0.0
+			|| GetFractionData(fraction_index, f_spawn_z) != 0.0){
+
+			is_fraction_blocked = false;
+		}
+	}
+
 	cef_emit_event(playerid, "setSpawnSelectorData",
 		CEFINT(0),
 		CEFINT(is_house_blocked),
 		CEFINT(is_last_pos_blocked),
-		CEFINT(1));
+		CEFINT(is_fraction_blocked));
 	return true;
 }
 
@@ -95,6 +105,28 @@ stock SpawnSelect:SetPlayerSpawn(playerid, spawn_type){
 
  			spawn_vw = GetPlayerData(playerid, p_spawn_vw);
  			spawn_int = GetPlayerData(playerid, p_spawn_int);
+		}
+
+		case SPAWN_TYPE_FRACTION:{
+			new fraction_index = GetPlayerFractionIndex(playerid);
+			if(fraction_index == -1){
+				SpawnSelect:SetPlayerSpawn(playerid, SPAWN_TYPE_STANDART);
+				return false;
+			}
+			if(GetFractionData(fraction_index, f_spawn_x) == 0.0 && GetFractionData(fraction_index, f_spawn_y) == 0.0 && GetFractionData(fraction_index, f_spawn_z) == 0.0){
+				SpawnSelect:SetPlayerSpawn(playerid, SPAWN_TYPE_STANDART);
+				return false;
+			}
+
+			SetSpawnInfo(playerid, 0, GetPlayerData(playerid, p_skin),
+ 				GetFractionData(fraction_index, f_spawn_x),
+ 				GetFractionData(fraction_index, f_spawn_y),
+ 				GetFractionData(fraction_index, f_spawn_z),
+ 				GetFractionData(fraction_index, f_spawn_angle),
+ 				0, 0, 0, 0, 0, 0);
+
+ 			spawn_vw = GetFractionData(fraction_index, f_spawn_vw);
+ 			spawn_int = GetFractionData(fraction_index, f_spawn_int);
 		}
 	}
 

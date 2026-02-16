@@ -31,6 +31,12 @@ enum fraction_info_struct
 	f_color_str[16],
 	f_color_value,
 	f_ranks_count,
+	Float:f_spawn_x,
+	Float:f_spawn_y,
+	Float:f_spawn_z,
+	Float:f_spawn_angle,
+	f_spawn_vw,
+	f_spawn_int
 }
 new fraction_info[MAX_FRACTIONS][fraction_info_struct];
 new fraction_ranks[MAX_FRACTIONS][MAX_FRACTION_RANKS][32];

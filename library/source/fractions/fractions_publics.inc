@@ -27,6 +27,13 @@ public LoadFractions(fraction_index){
 
 		cache_get_value_name_int(i, "ranks_count", GetFractionData(fraction_index, f_ranks_count));
 
+		cache_get_value_name_float(i, "spawn_x", GetFractionData(fraction_index, f_spawn_x));
+		cache_get_value_name_float(i, "spawn_y", GetFractionData(fraction_index, f_spawn_y));
+		cache_get_value_name_float(i, "spawn_z", GetFractionData(fraction_index, f_spawn_z));
+		cache_get_value_name_float(i, "spawn_angle", GetFractionData(fraction_index, f_spawn_angle));
+		cache_get_value_name_int(i, "spawn_vw", GetFractionData(fraction_index, f_spawn_vw));
+		cache_get_value_name_int(i, "spawn_int", GetFractionData(fraction_index, f_spawn_int));
+
 		for(new g, rank_str[8]; g < MAX_FRACTION_RANKS; g++){
 			format(rank_str, sizeof(rank_str), "rank_%d", g + 1);
 			cache_get_value_name(i, rank_str, fraction_ranks[fraction_index][g]);

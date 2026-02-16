@@ -313,6 +313,34 @@ DialogResponse:D_ADMIN_FRAC_INFO(playerid, response, listitem, inputtext[]){
 		}
 		case 4: Admin:ShowChangeFracColor(playerid);
 		case 5: Admin:ShowRanksMenu(playerid);
+		case 6:{
+			new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+
+			GetPlayerPos(playerid, 
+				GetFractionData(fraction_index, f_spawn_x),
+				GetFractionData(fraction_index, f_spawn_y),
+				GetFractionData(fraction_index, f_spawn_z));
+			GetPlayerFacingAngle(playerid, GetFractionData(fraction_index, f_spawn_angle));
+			SetFractionData(fraction_index, f_spawn_vw, GetPlayerVirtualWorld(playerid));
+			SetFractionData(fraction_index, f_spawn_int, GetPlayerInterior(playerid));
+
+			static const fmt_query[] = "UPDATE fractions SET spawn_x = '%f', spawn_y = '%f', spawn_z = '%f', spawn_angle = '%f', spawn_vw = %d, spawn_int = %d WHERE id = %d";
+			new query[sizeof(fmt_query) + ((-2 + 11) * 7)];
+			mysql_format(mysql, query, sizeof(query), fmt_query,
+				GetFractionData(fraction_index, f_spawn_x), GetFractionData(fraction_index, f_spawn_y), 
+				GetFractionData(fraction_index, f_spawn_z), GetFractionData(fraction_index, f_spawn_angle),
+				GetFractionData(fraction_index, f_spawn_vw), GetFractionData(fraction_index, f_spawn_int),
+				GetFractionData(fraction_index, f_id));
+			mysql_tquery(mysql, query);
+
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"[A][%d] %s[%d] изменил(-а) место спавна фракции \"%s\"",
+				GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name),
+				playerid, GetFractionData(fraction_index, f_name));
+			Admin:SendAdminMessage(COLOR_GREY, small_string);
+			small_string[0] = EOS;
+		}
 	}
 	return true;
 }

@@ -414,3 +414,13 @@ stock GetFreeVehicleSlotsCount(playerid){
 
 	return GetPlayerData(playerid, p_vehicle_slots) - rows;
 }
+
+stock GetPlayerFractionIndex(playerid){
+	if(!GetPlayerData(playerid, p_fraction)) return -1;
+	for(new i; i < MAX_FRACTIONS; i++){
+		if(!GetFractionData(i, f_id)) continue;
+		if(GetPlayerData(playerid, p_fraction) != GetFractionData(i, f_id)) continue;
+		return i;
+	}
+	return -1;
+}
