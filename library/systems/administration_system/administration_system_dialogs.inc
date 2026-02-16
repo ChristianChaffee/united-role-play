@@ -607,13 +607,23 @@ DialogResponse:D_MAKELEADER(playerid, response, listitem, inputtext[]){
 	if(!IsPlayerConnected(scdplayerid) && !player_logged[scdplayerid]) return SendErrorMessage(playerid, "Игрок не в сети.");
 	if(GetPlayerData(scdplayerid, p_fraction) > 0) return SendErrorMessage(playerid, "Игрок уже состоит во фракции.");
 
+
 	SetPlayerData(scdplayerid, p_fraction, GetFractionData(fraction_index, f_id));
 	SetPlayerData(scdplayerid, p_fraction_rank, GetFractionData(fraction_index, f_ranks_count));
 
-	static const fmt_query[] = "UPDATE accounts SET fraction = %d, fraction_rank = %d WHERE id = %d";
-	new query[sizeof(fmt_query) + ((-2 + 11) * 3)];
+	new fraction_skin_index = Fraction:UpdatePlayerSkinIndex(playerid);
+	if(fraction_skin_index != -1){
+		SetPlayerData(scdplayerid, p_fraction_skin, GetFractionSkinData(fraction_skin_index, fs_id));	
+	}
+
+	SetFractionData(fraction_index, f_leader_account_id, GetPlayerData(scdplayerid, p_id));
+	Fraction:UpdateInt(fraction_index, "leader_account_id", GetFractionData(fraction_index, f_leader_account_id));
+
+	static const fmt_query[] = "UPDATE accounts SET fraction = %d, fraction_rank = %d, fraction_skin = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 4)];
 	mysql_format(mysql, query, sizeof(query), fmt_query,
 		GetPlayerData(scdplayerid, p_fraction), GetPlayerData(scdplayerid, p_fraction_rank),
+		GetPlayerData(playerid, p_fraction_skin),
 		GetPlayerData(scdplayerid, p_id));
 	mysql_tquery(mysql, query);
 

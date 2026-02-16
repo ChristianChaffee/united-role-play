@@ -118,7 +118,12 @@ stock SpawnSelect:SetPlayerSpawn(playerid, spawn_type){
 				return false;
 			}
 
-			SetSpawnInfo(playerid, 0, GetPlayerData(playerid, p_skin),
+			new skin_id = GetPlayerData(playerid, p_skin);
+			if(Fraction:GetPlayerSkinIndex(playerid) != -1){
+				skin_id = GetFractionSkinData(Fraction:GetPlayerSkinIndex(playerid), fs_skin_id);
+			}
+
+			SetSpawnInfo(playerid, 0, skin_id,
  				GetFractionData(fraction_index, f_spawn_x),
  				GetFractionData(fraction_index, f_spawn_y),
  				GetFractionData(fraction_index, f_spawn_z),
@@ -127,6 +132,8 @@ stock SpawnSelect:SetPlayerSpawn(playerid, spawn_type){
 
  			spawn_vw = GetFractionData(fraction_index, f_spawn_vw);
  			spawn_int = GetFractionData(fraction_index, f_spawn_int);
+		
+ 			SetPlayerData(playerid, p_fraction_duty, true);
 		}
 	}
 

@@ -46,3 +46,34 @@ public LoadFractions(fraction_index){
 	}
 	return true;
 }
+
+forward LoadFractionSkins(fraction_skin_index);
+public LoadFractionSkins(fraction_skin_index){
+	new rows,
+		tick_time = GetTickCount(),
+		old_fraction_skin_index = fraction_skin_index;
+
+	cache_get_row_count(rows);
+	if(rows >= MAX_FRACTION_SKINS){
+		printf("[LoadFractionSkins - ERROR]: Количество записей в базе данных превышает размер массива (%d >= %d)", rows, MAX_FRACTION_SKINS);
+		return false;
+	}
+
+	for(new i; i < rows; i++){
+		if(old_fraction_skin_index == -1){
+			fraction_skin_index = i;
+		}
+
+		cache_get_value_name_int(i, "id", GetFractionSkinData(fraction_skin_index, fs_id));
+		cache_get_value_name_int(i, "fraction_id", GetFractionSkinData(fraction_skin_index, fs_fraction_id));
+		cache_get_value_name_int(i, "skin_id", GetFractionSkinData(fraction_skin_index, fs_skin_id));
+		cache_get_value_name_int(i, "rank", GetFractionSkinData(fraction_skin_index, fs_rank));
+		cache_get_value_name_int(i, "sex", GetFractionSkinData(fraction_skin_index, fs_sex));
+	}
+
+	if(old_fraction_skin_index == -1){
+		printf("[LoadFractionSkins]: Скины фракций загружены <%d шт> <%d мс>", rows, GetTickCount() - tick_time);
+		load_info[loaded_fractions_skins] = true;
+	}
+	return true;
+}

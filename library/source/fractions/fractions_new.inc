@@ -6,8 +6,11 @@
 #define SetFractionData(%0,%1,%2) 		fraction_info[%0][%1] = %2
 #define AddFractionData(%0,%1,%2)  		fraction_info[%0][%1] += %2
 
+#define GetFractionSkinData(%0,%1)  	fraction_skin_info[%0][%1]
+
 //==============================================================================
 #define MAX_FRACTIONS 				30
+#define MAX_FRACTION_SKINS  		200
 #define MAX_FRACTION_RANKS 			20
 #define FRACTIONS_TYPES_COUNT 		5
 
@@ -19,6 +22,17 @@ new const fraction_type_names[FRACTIONS_TYPES_COUNT][64] = {
 	"Средство массовой информации",
 	"Криминальная структура"
 };
+
+//==============================================================================
+enum fraction_skin_info_struct
+{
+	fs_id,
+	fs_fraction_id,
+	fs_skin_id,
+	fs_rank,
+	fs_sex
+}
+new fraction_skin_info[MAX_FRACTION_SKINS][fraction_skin_info_struct];
 
 //==============================================================================
 enum fraction_info_struct

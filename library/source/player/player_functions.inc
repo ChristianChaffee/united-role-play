@@ -48,6 +48,7 @@ stock LoadPlayer(playerid, Cache:cache_id){
 
 	cache_get_value_name_int(0, "fraction", GetPlayerData(playerid, p_fraction));
 	cache_get_value_name_int(0, "fraction_rank", GetPlayerData(playerid, p_fraction_rank));
+	cache_get_value_name_int(0, "fraction_skin", GetPlayerData(playerid, p_fraction_skin));
 
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
@@ -378,6 +379,9 @@ stock GivePlayerAllWeapons(playerid){
 
 stock GetPlayerColorEx(playerid){
 	if(GetPVarType(playerid, "Mask")) return 0x7a766700;
+	if(GetPlayerData(playerid, p_fraction) != 0 && GetPlayerData(playerid, p_fraction_duty)){
+		return GetFractionData(GetPlayerFractionIndex(playerid), f_color_value);
+	}
 	return 0xFFFFFFAA;
 }
 

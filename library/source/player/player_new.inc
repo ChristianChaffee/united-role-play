@@ -75,6 +75,8 @@ enum player_info_struct
 
 	p_fraction,
 	p_fraction_rank,
+	p_fraction_skin,
+	p_fraction_duty
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -121,7 +123,9 @@ new const player_info_default[player_info_struct] = {
 	0,
 
 	0,
-	0
+	0,
+	0,
+	false
 };
 
 //==============================================================================

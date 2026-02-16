@@ -70,10 +70,12 @@ enum load_info_struct
 	loaded_start_quests,
 	loaded_houses,
 	loaded_garages,
-	loaded_fractions
+	loaded_fractions,
+	loaded_fractions_skins
 }
 
 new load_info[load_info_struct] = {
+	false,
 	false,
 	false,
 	false,
