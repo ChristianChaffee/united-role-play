@@ -37,6 +37,15 @@ stock PlayerPayDay(playerid){
 	}
 	//----------------------
 
+	if(GetPlayerData(playerid, p_fraction) != 0){
+		AddPlayerData(playerid, p_fraction_hours, 1);
+		static const fmt_query[] = "UPDATE accounts SET fraction_hours = %d WHERE id = %d";
+		new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+		mysql_format(mysql, query, sizeof(query), fmt_query,
+			GetPlayerData(playerid, p_fraction_hours), GetPlayerData(playerid, p_id));
+		mysql_tquery(mysql, query);
+	}
+
 	//--------------- Информирование
 	SendClientMessage(playerid, -1, ""cl_lime"=================== [ "cl_white"PAY DAY "cl_lime"] ===================");
 

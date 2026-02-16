@@ -34,6 +34,8 @@ public LoadFractions(fraction_index){
 		cache_get_value_name_int(i, "spawn_vw", GetFractionData(fraction_index, f_spawn_vw));
 		cache_get_value_name_int(i, "spawn_int", GetFractionData(fraction_index, f_spawn_int));
 
+		cache_get_value_name(i, "icon_url", GetFractionData(fraction_index, f_icon_url));
+
 		for(new g, rank_str[8]; g < MAX_FRACTION_RANKS; g++){
 			format(rank_str, sizeof(rank_str), "rank_%d", g + 1);
 			cache_get_value_name(i, rank_str, fraction_ranks[fraction_index][g]);

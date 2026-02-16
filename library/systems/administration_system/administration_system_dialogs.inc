@@ -611,7 +611,7 @@ DialogResponse:D_MAKELEADER(playerid, response, listitem, inputtext[]){
 	SetPlayerData(scdplayerid, p_fraction, GetFractionData(fraction_index, f_id));
 	SetPlayerData(scdplayerid, p_fraction_rank, GetFractionData(fraction_index, f_ranks_count));
 
-	new fraction_skin_index = Fraction:UpdatePlayerSkinIndex(playerid);
+	new fraction_skin_index = Fraction:UpdatePlayerSkinIndex(scdplayerid);
 	if(fraction_skin_index != -1){
 		SetPlayerData(scdplayerid, p_fraction_skin, GetFractionSkinData(fraction_skin_index, fs_id));	
 	}
@@ -623,7 +623,7 @@ DialogResponse:D_MAKELEADER(playerid, response, listitem, inputtext[]){
 	new query[sizeof(fmt_query) + ((-2 + 11) * 4)];
 	mysql_format(mysql, query, sizeof(query), fmt_query,
 		GetPlayerData(scdplayerid, p_fraction), GetPlayerData(scdplayerid, p_fraction_rank),
-		GetPlayerData(playerid, p_fraction_skin),
+		GetPlayerData(scdplayerid, p_fraction_skin),
 		GetPlayerData(scdplayerid, p_id));
 	mysql_tquery(mysql, query);
 

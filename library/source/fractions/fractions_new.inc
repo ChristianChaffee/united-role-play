@@ -50,7 +50,8 @@ enum fraction_info_struct
 	Float:f_spawn_z,
 	Float:f_spawn_angle,
 	f_spawn_vw,
-	f_spawn_int
+	f_spawn_int,
+	f_icon_url[128]
 }
 new fraction_info[MAX_FRACTIONS][fraction_info_struct];
 new fraction_ranks[MAX_FRACTIONS][MAX_FRACTION_RANKS][32];

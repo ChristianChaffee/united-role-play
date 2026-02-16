@@ -76,7 +76,8 @@ enum player_info_struct
 	p_fraction,
 	p_fraction_rank,
 	p_fraction_skin,
-	p_fraction_duty
+	p_fraction_duty,
+	p_fraction_hours
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
