@@ -46,6 +46,9 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	cache_get_value_name_int(0, "vehicle_slots", GetPlayerData(playerid, p_vehicle_slots));
 	cache_get_value_name_int(0, "wanted", GetPlayerData(playerid, p_wanted));
 
+	cache_get_value_name_int(0, "fraction", GetPlayerData(playerid, p_fraction));
+	cache_get_value_name_int(0, "fraction_rank", GetPlayerData(playerid, p_fraction_rank));
+
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
 	return true;

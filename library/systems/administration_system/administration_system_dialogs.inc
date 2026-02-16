@@ -312,6 +312,7 @@ DialogResponse:D_ADMIN_FRAC_INFO(playerid, response, listitem, inputtext[]){
 			Admin:ShowAcceptUninviteLeader(playerid);
 		}
 		case 4: Admin:ShowChangeFracColor(playerid);
+		case 5: Admin:ShowRanksMenu(playerid);
 	}
 	return true;
 }
@@ -451,5 +452,114 @@ DialogResponse:D_ADMIN_FRAC_CHANGE_COLOR(playerid, response, listitem, inputtext
 	Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
 
 	#warning MAKE_LOGIC
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_RANKS_MENU(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	if(!response){
+		Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));
+		return false;
+	}
+
+	switch(listitem){
+		case 0: Admin:ShowFracRankList(playerid);
+		case 1: Admin:ShowFracChangeMaxRank(playerid);
+	}
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_MAX_RANK(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	if(!response){
+		Admin:ShowRanksMenu(playerid);
+		return true;
+	}
+
+	new rank;
+	if(sscanf(inputtext, "i", rank)){
+		Admin:ShowFracChangeMaxRank(playerid, ""cl_grey"Ошибка: "cl_white"максимальный ранг должен быть числовым значением.");
+		return false;
+	}
+	if(rank < 5 || rank > MAX_FRACTION_RANKS){
+		Admin:ShowFracChangeMaxRank(playerid, ""cl_grey"Ошибка: "cl_white"максимальный ранг должен быть от 5 до "#MAX_FRACTION_RANKS".");
+		return false;
+	}
+
+	new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+
+	SetFractionData(fraction_index, f_ranks_count, rank);
+	Fraction:UpdateInt(fraction_index, "ranks_count", rank);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"[A][%d] %s[%d] изменил(-а) максимальный ранг фракции \"%s\" на %d.",
+		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name),
+		playerid, GetFractionData(fraction_index, f_name), rank);
+	Admin:SendAdminMessage(COLOR_GREY, small_string);
+	small_string[0] = EOS;
+
+	static const fmt_query[] = "SELECT id FROM accounts WHERE fraction = %d AND fraction_rank >= %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetFractionData(fraction_index, f_id), rank);
+	mysql_tquery(mysql, query, "CheckFractionRankChange", "i", fraction_index);
+
+	Admin:ShowRanksMenu(playerid);
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_RANKS_LIST(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	if(!response){
+		Admin:ShowRanksMenu(playerid);
+		return true;
+	}
+
+	SetPVarInt(playerid, "Admin_FractionRank", listitem);
+	Admin:ShowChangeFracRank(playerid);
+	return true;
+}
+
+DialogResponse:D_ADMIN_FRAC_CHANGE_RANK(playerid, response, listitem, inputtext[]){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+	if(!GetPVarType(playerid, "Admin_FractionRank")) return false;
+
+	if(!response){
+		DeletePVar(playerid, "Admin_FractionRank");
+		Admin:ShowFracRankList(playerid);
+		return true;
+	}
+
+	if(strlen(inputtext) < 2 || strlen(inputtext) >= 32){
+		Admin:ShowChangeFracRank(playerid, ""cl_grey"Ошибка: "cl_white"название ранга должно быть от 2 до 32 символов.");
+		return false;
+	}
+
+	new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"[A][%d] %s[%d] изменил(-а) название ранга %d фракции \"%s\" на %s.",
+		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name),
+		playerid, GetPVarInt(playerid, "Admin_FractionRank") + 1, 
+		GetFractionData(fraction_index, f_name), inputtext);
+	Admin:SendAdminMessage(COLOR_GREY, small_string);
+	small_string[0] = EOS;
+
+	format(fraction_ranks[fraction_index][GetPVarInt(playerid, "Admin_FractionRank")], 32, "%s", inputtext);
+
+	static const fmt_query[] = "UPDATE fractions SET rank_%d = '%s' WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 2) + (-2 + 32)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPVarInt(playerid, "Admin_FractionRank") + 1,
+		inputtext, GetFractionData(fraction_index, f_id));
+	mysql_tquery(mysql, query);
+
+	DeletePVar(playerid, "Admin_FractionRank");
+	Admin:ShowFracRankList(playerid);
 	return true;
 }

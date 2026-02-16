@@ -265,7 +265,8 @@ stock Fraction:ShowFractionInfoDialog(playerid, fraction_index, leader_name[]){
 		"cl_blue"Тэг фракции\t"cl_white"%s\n\
 		"cl_blue"Тип фракции\t"cl_white"%s\n\
 		"cl_blue"Лидер фракции\t"cl_white"%s\n\
-		"cl_blue"Цвет фракции\t"cl_white"%s%s",
+		"cl_blue"Цвет фракции\t"cl_white"%s%s\n\
+		"cl_blue"- "cl_white"Управление рангами",
 		GetFractionData(fraction_index, f_name), GetFractionData(fraction_index, f_tag),
 		fraction_type_names[GetFractionData(fraction_index, f_type)],
 		leader_name,
@@ -362,5 +363,71 @@ stock Admin:ShowChangeFracColor(playerid){
 		"Выбрать", "Назад");
 	
 	big_string[0] = EOS;
+	return true;
+}
+
+stock Admin:ShowRanksMenu(playerid){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_FRAC_RANKS_MENU, DIALOG_STYLE_LIST,
+		"Управление рангами", 
+		""cl_blue"- "cl_white"Список рангов\n\
+		"cl_blue"- "cl_white"Изменить максимальный ранг",
+		"Выбрать", "Назад");
+	return true;
+}
+
+stock Admin:ShowFracRankList(playerid){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	big_string[0] = EOS;
+	for(new i; i < GetFractionData(GetPVarInt(playerid, "Admin_FractionIndex"), f_ranks_count); i++){
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%d. "cl_white"%s",
+			big_string, i + 1,
+			fraction_ranks[GetPVarInt(playerid, "Admin_FractionIndex")][i]);
+	}
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_FRAC_RANKS_LIST, DIALOG_STYLE_LIST,
+		"Список рангов", big_string,
+		"Изменить", "Назад");
+	big_string[0] = EOS;
+	return true;
+}
+
+stock Admin:ShowFracChangeMaxRank(playerid, error_text[] = ""){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите новый максимальный ранг для фракции "cl_grey"\"%s\"\n\
+		"cl_grey"Максимальный ранг фракции должен быть от 5 до "#MAX_FRACTION_RANKS"\n\n%s",
+		GetFractionData(GetPVarInt(playerid, "Admin_FractionIndex"), f_name), error_text);
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_FRAC_MAX_RANK, DIALOG_STYLE_INPUT,
+		"Максимальный ранг", big_string,
+		"Изменить", "Назад");
+	big_string[0] = EOS;
+
+	return true;
+}
+
+stock Admin:ShowChangeFracRank(playerid, error_text[] = ""){
+	if(!GetPVarType(playerid, "Admin_FractionIndex")) return false;
+	if(!GetPVarType(playerid, "Admin_FractionRank")) return false;
+
+	big_string[0] = EOS;
+	format(big_string, sizeof(big_string),
+		""cl_blue"- "cl_white"Введите новое название для "cl_grey"\"%s\" (Ранг %d)\n\
+		"cl_grey"Название ранга должно быть от 2 до 32 символов.\n\n%s",
+		fraction_ranks[GetPVarInt(playerid, "Admin_FractionIndex")][GetPVarInt(playerid, "Admin_FractionRank")],
+		GetPVarInt(playerid, "Admin_FractionRank") + 1, error_text);
+
+	Dialog_Open(playerid, Dialog:D_ADMIN_FRAC_CHANGE_RANK, DIALOG_STYLE_INPUT,
+		"Изменить ранг", big_string,
+		"Изменить", "Назад");
+	big_string[0] = EOS;
+
 	return true;
 }

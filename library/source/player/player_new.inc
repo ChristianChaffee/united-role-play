@@ -72,6 +72,9 @@ enum player_info_struct
 	p_donate,
 	p_vehicle_slots,
 	p_wanted,
+
+	p_fraction,
+	p_fraction_rank,
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -115,6 +118,9 @@ new const player_info_default[player_info_struct] = {
 
 	0,
 	3,
+	0,
+
+	0,
 	0
 };
 

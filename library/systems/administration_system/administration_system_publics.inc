@@ -131,3 +131,45 @@ public ShowFractionInfo(playerid, fraction_index){
 	Fraction:ShowFractionInfoDialog(playerid, fraction_index, temp_name);
 	return true;
 }
+
+forward CheckFractionRankChange(fraction_index);
+public CheckFractionRankChange(fraction_index){
+	if(fraction_index < 0 || fraction_index >= MAX_FRACTIONS) return false;
+
+	new rows;
+	cache_get_row_count(rows);
+
+	if(!rows) return true;
+
+	static const fmt_query[] = "UPDATE accounts SET fraction_rank = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+
+	for(new i, temp_id; i < rows; i++){
+
+		cache_get_value_name_int(i, "id", temp_id);
+
+		if(GetFractionData(fraction_index, f_leader_account_id) == temp_id){
+			mysql_format(mysql, query, sizeof(query), fmt_query,
+				GetFractionData(fraction_index, f_ranks_count),
+				temp_id);
+			mysql_tquery(mysql, query);
+		}
+		else{
+			mysql_format(mysql, query, sizeof(query), fmt_query,
+				GetFractionData(fraction_index, f_ranks_count) - 1,
+				temp_id);
+			mysql_tquery(mysql, query);
+		}
+
+		if(GetPlayerIdBySqlId(temp_id) != INVALID_PLAYER_ID){
+			if(GetFractionData(fraction_index, f_leader_account_id) == temp_id){
+				SetPlayerData(GetPlayerIdBySqlId(temp_id), p_fraction_rank, GetFractionData(fraction_index, f_ranks_count));
+			}
+			else{
+				SetPlayerData(GetPlayerIdBySqlId(temp_id), p_fraction_rank, GetFractionData(fraction_index, f_ranks_count) - 1);
+			}
+		}
+	}
+
+	return true;
+}

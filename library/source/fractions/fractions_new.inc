@@ -8,6 +8,7 @@
 
 //==============================================================================
 #define MAX_FRACTIONS 				30
+#define MAX_FRACTION_RANKS 			20
 #define FRACTIONS_TYPES_COUNT 		5
 
 //==============================================================================
@@ -28,6 +29,8 @@ enum fraction_info_struct
 	f_type,
 	f_leader_account_id,
 	f_color_str[16],
-	f_color_value
+	f_color_value,
+	f_ranks_count,
 }
 new fraction_info[MAX_FRACTIONS][fraction_info_struct];
+new fraction_ranks[MAX_FRACTIONS][MAX_FRACTION_RANKS][32];
