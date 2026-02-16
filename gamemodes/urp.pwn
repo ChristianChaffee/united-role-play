@@ -22,15 +22,18 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\payday\payday_new.inc"
 #include "..\library\source\cef\cef_new.inc"
 #include "..\library\source\fractions\fractions_new.inc"
+#include "..\library\source\fractions\fraction_menu\fraction_menu_new.inc"
 
 #include "..\library\source\player\player_functions.inc"
 #include "..\library\source\vehicle\vehicle_functions.inc"
 #include "..\library\source\payday\payday_functions.inc"
 #include "..\library\source\fractions\fractions_functions.inc"
+#include "..\library\source\fractions\fraction_menu\fraction_menu_functions.inc"
 
 #include "..\library\source\vehicle\vehicle_publics.inc"
 #include "..\library\source\player\player_publics.inc"
 #include "..\library\source\fractions\fractions_publics.inc"
+#include "..\library\source\fractions\fraction_menu\fraction_menu_publics.inc"
 
 #include "..\library\source\database\database_hooks.inc"
 #include "..\library\source\player\player_hooks.inc"
@@ -38,6 +41,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\payday\payday_hooks.inc"
 #include "..\library\source\cef\cef_hooks.inc"
 #include "..\library\source\fractions\fractions_hooks.inc"
+#include "..\library\source\fractions\fraction_menu\fraction_menu_hooks.inc"
 
 #include "..\library\source\cef\cef_publics.inc"
 
