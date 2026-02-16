@@ -100,3 +100,36 @@ stock Fraction:SendMessage(fraction_index, color, const message[], duty_check = 
 	}
 	return true;
 }
+
+stock Fraction:UpdateDressroom(fraction_index){
+	if(fraction_index < 0 || fraction_index >= MAX_FRACTIONS) return false;
+
+	if(IsValidDynamicPickup(GetFractionData(fraction_index, f_dressroom_pic))){
+		DestroyDynamicPickup(GetFractionData(fraction_index, f_dressroom_pic));
+	}
+	if(IsValidDynamic3DTextLabel(GetFractionData(fraction_index, f_dressroom_text))){
+		DestroyDynamic3DTextLabel(GetFractionData(fraction_index, f_dressroom_text));
+	}
+
+	if(GetFractionData(fraction_index, f_dressroom_x) == 0.0 && GetFractionData(fraction_index, f_dressroom_y) == 0.0
+		&& GetFractionData(fraction_index, f_dressroom_z) == 0.0) return true;
+
+	GetFractionData(fraction_index, f_dressroom_pic) = CreateDynamicPickup(FRAC_DRESSROOM_PICKUP_MODEL, 23, 
+		GetFractionData(fraction_index, f_dressroom_x), 
+		GetFractionData(fraction_index, f_dressroom_y), 
+		GetFractionData(fraction_index, f_dressroom_z), 
+		GetFractionData(fraction_index, f_dressroom_vw),
+		GetFractionData(fraction_index, f_dressroom_int));
+
+	GetFractionData(fraction_index, f_dressroom_text) = CreateDynamic3DTextLabel(""cl_blue"Раздевалка\n\
+		"cl_white"Используйте "cl_grey"'Left ALT'", 
+		-1, 
+		GetFractionData(fraction_index, f_dressroom_x), 
+		GetFractionData(fraction_index, f_dressroom_y), 
+		GetFractionData(fraction_index, f_dressroom_z), 
+		15.0, _, _, 1, 
+		GetFractionData(fraction_index, f_dressroom_vw),
+		GetFractionData(fraction_index, f_dressroom_int));
+
+	return true;
+}

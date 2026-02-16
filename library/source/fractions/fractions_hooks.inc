@@ -8,6 +8,51 @@ hook OnGameModeInit(){
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
+hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
+	if(newkeys == KEY_WALK && !IsPlayerInAnyVehicle(playerid)){
+		for(new fraction_index; fraction_index < MAX_FRACTIONS; fraction_index++){
+			if(!GetFractionData(fraction_index, f_id)) continue;
+			if(GetFractionData(fraction_index, f_dressroom_x) == 0.0 && GetFractionData(fraction_index, f_dressroom_y) == 0.0
+				&& GetFractionData(fraction_index, f_dressroom_z) == 0.0) continue;
+
+			if(IsPlayerInRangeOfPoint(playerid, 2.0, 
+				GetFractionData(fraction_index, f_dressroom_x), GetFractionData(fraction_index, f_dressroom_y),
+				GetFractionData(fraction_index, f_dressroom_z))
+				&& GetPlayerVirtualWorld(playerid) == GetFractionData(fraction_index, f_dressroom_vw)
+				&& GetPlayerInterior(playerid) == GetFractionData(fraction_index, f_dressroom_int)){
+
+				if(GetPlayerData(playerid, p_fraction) != GetFractionData(fraction_index, f_id)){
+					small_string[0] = EOS;
+					format(small_string, sizeof(small_string),
+						"Данная раздевалка принадлежит фракции \"%s\".",
+						GetFractionData(fraction_index, f_name));
+					SendErrorMessage(playerid, small_string);
+					small_string[0] = EOS;
+				}
+				else{
+					if(GetPlayerData(playerid, p_fraction_duty)){
+						SendClientMessage(playerid, COLOR_BLUE, "Вы завершили рабочий день.");
+						SetPlayerData(playerid, p_fraction_duty, false);
+						SetPlayerSkin(playerid, GetPlayerData(playerid, p_skin));
+						SetPlayerColor(playerid, GetPlayerColorEx(playerid));
+					}
+					else{
+						SendClientMessage(playerid, COLOR_BLUE, "Вы начали рабочий день.");
+						SetPlayerData(playerid, p_fraction_duty, true);
+					
+						if(Fraction:GetPlayerSkinIndex(playerid) != -1){
+							SetPlayerSkin(playerid, GetFractionSkinData(Fraction:GetPlayerSkinIndex(playerid), fs_skin_id));
+						}
+
+						SetPlayerColor(playerid, GetPlayerColorEx(playerid));
+					}
+				}
+			}
+		}
+	}
+	return Y_HOOKS_CONTINUE_RETURN_1;
+}
+
 hook OnPlayerCommandReceived(playerid, cmd[], params[], flags){
 	for(new i; i < FRACTION_COMMANDS_COUNT; i++){
 		if(!strcmp(cmd, fraction_commands_info[i][fc_command])){

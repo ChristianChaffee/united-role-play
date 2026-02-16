@@ -315,6 +315,7 @@ DialogResponse:D_ADMIN_FRAC_INFO(playerid, response, listitem, inputtext[]){
 		case 5: Admin:ShowRanksMenu(playerid);
 		case 6:{
 			new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+			DeletePVar(playerid, "Admin_FractionIndex");
 
 			GetPlayerPos(playerid, 
 				GetFractionData(fraction_index, f_spawn_x),
@@ -340,6 +341,35 @@ DialogResponse:D_ADMIN_FRAC_INFO(playerid, response, listitem, inputtext[]){
 				playerid, GetFractionData(fraction_index, f_name));
 			Admin:SendAdminMessage(COLOR_GREY, small_string);
 			small_string[0] = EOS;
+		}
+		case 7:{
+			new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+			DeletePVar(playerid, "Admin_FractionIndex");
+
+			GetPlayerPos(playerid, 
+				GetFractionData(fraction_index, f_dressroom_x),
+				GetFractionData(fraction_index, f_dressroom_y),
+				GetFractionData(fraction_index, f_dressroom_z));
+			SetFractionData(fraction_index, f_dressroom_vw, GetPlayerVirtualWorld(playerid));
+			SetFractionData(fraction_index, f_dressroom_int, GetPlayerInterior(playerid));
+
+			static const fmt_query[] = "UPDATE fractions SET dressroom_x = '%f', dressroom_y = '%f', dressroom_z = '%f', dressroom_vw = %d, dressroom_int = %d WHERE id = %d";
+			new query[sizeof(fmt_query) + ((-2 + 11) * 6)];
+			mysql_format(mysql, query, sizeof(query), fmt_query,
+				GetFractionData(fraction_index, f_dressroom_x), GetFractionData(fraction_index, f_dressroom_y), 
+				GetFractionData(fraction_index, f_dressroom_z), GetFractionData(fraction_index, f_dressroom_vw), 
+				GetFractionData(fraction_index, f_dressroom_int), GetFractionData(fraction_index, f_id));
+			mysql_tquery(mysql, query);
+
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"[A][%d] %s[%d] изменил(-а) место раздевалки фракции \"%s\"",
+				GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name),
+				playerid, GetFractionData(fraction_index, f_name));
+			Admin:SendAdminMessage(COLOR_GREY, small_string);
+			small_string[0] = EOS;
+
+			Fraction:UpdateDressroom(fraction_index);
 		}
 	}
 	return true;
@@ -450,10 +480,10 @@ DialogResponse:D_ADMIN_FRAC_ACCEPT_LEADER(playerid, response, listitem, inputtex
 		return false;
 	}
 
+	Fraction:UninvitePlayer(GetFractionData(fraction_index, f_leader_account_id));
+
 	SetFractionData(fraction_index, f_leader_account_id, 0);
 	Fraction:UpdateInt(fraction_index, "leader_account_id", 0);
-
-	Fraction:UninvitePlayer(GetFractionData(fraction_index, f_leader_account_id));
 
 	SendClientMessage(playerid, COLOR_GREEN, "Вы сняли лидера фракции.");
 	Admin:ShowFractionInfo(playerid, GetPVarInt(playerid, "Admin_FractionIndex"));

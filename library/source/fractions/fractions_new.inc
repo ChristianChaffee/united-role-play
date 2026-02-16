@@ -9,10 +9,12 @@
 #define GetFractionSkinData(%0,%1)  	fraction_skin_info[%0][%1]
 
 //==============================================================================
-#define MAX_FRACTIONS 				30
-#define MAX_FRACTION_SKINS  		200
-#define MAX_FRACTION_RANKS 			20
-#define FRACTIONS_TYPES_COUNT 		5
+#define MAX_FRACTIONS 					30
+#define MAX_FRACTION_SKINS  			200
+#define MAX_FRACTION_RANKS 				20
+#define FRACTIONS_TYPES_COUNT 			5
+
+#define FRAC_DRESSROOM_PICKUP_MODEL 	1275
 
 //==============================================================================
 new const fraction_type_names[FRACTIONS_TYPES_COUNT][64] = {
@@ -60,7 +62,15 @@ enum fraction_info_struct
 	Float:f_spawn_angle,
 	f_spawn_vw,
 	f_spawn_int,
-	f_icon_url[128]
+	f_icon_url[128],
+	Float:f_dressroom_x,
+	Float:f_dressroom_y,
+	Float:f_dressroom_z,
+	f_dressroom_vw,
+	f_dressroom_int,
+
+	f_dressroom_pic,
+	Text3D:f_dressroom_text
 }
 new fraction_info[MAX_FRACTIONS][fraction_info_struct];
 new fraction_ranks[MAX_FRACTIONS][MAX_FRACTION_RANKS][32];
