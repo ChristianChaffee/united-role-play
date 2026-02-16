@@ -16,6 +16,8 @@
 	Admin_FractionIndex
 	Admin_FractionRank
 
+	Admin_MakeleaderID
+
 */
 
 #define Admin:%0(%1)  					Admn_%0(%1)
@@ -69,6 +71,7 @@ new const admin_command_info[][admin_command_info_struct] = {
 	{4, "tveh", "Создать временный транспорт."},
 	{4, "delveh", "Удалить транспорт."},
 	{4, "nrg", "Создать временный транспорт NRG-500."},
+	{4, "makeleader", "Назначить игрока лидером фракции."},
 
 	{6, "agivemoney", "Выдать игроку игровую валюту ($)."},
 	{6, "giveinv", "Выдать предмет в инвентарь игроку."},

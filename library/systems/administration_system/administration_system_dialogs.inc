@@ -563,3 +563,46 @@ DialogResponse:D_ADMIN_FRAC_CHANGE_RANK(playerid, response, listitem, inputtext[
 	Admin:ShowFracRankList(playerid);
 	return true;
 }
+
+//==============================================================================
+DialogResponse:D_MAKELEADER(playerid, response, listitem, inputtext[]){
+	if(!response){
+		DeletePVar(playerid, "Admin_MakeleaderID");
+		return false;
+	}
+
+	new scdplayerid = GetPVarInt(playerid, "Admin_MakeleaderID"),
+		fraction_index = player_listitems[playerid][listitem];
+
+	DeletePVar(playerid, "Admin_MakeleaderID");
+
+	if(!IsPlayerConnected(scdplayerid) && !player_logged[scdplayerid]) return SendErrorMessage(playerid, "Игрок не в сети.");
+	if(GetPlayerData(scdplayerid, p_fraction) > 0) return SendErrorMessage(playerid, "Игрок уже состоит во фракции.");
+
+	SetPlayerData(scdplayerid, p_fraction, GetFractionData(fraction_index, f_id));
+	SetPlayerData(scdplayerid, p_fraction_rank, GetFractionData(fraction_index, f_ranks_count));
+
+	static const fmt_query[] = "UPDATE accounts SET fraction = %d, fraction_rank = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 3)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerData(scdplayerid, p_fraction), GetPlayerData(scdplayerid, p_fraction_rank),
+		GetPlayerData(scdplayerid, p_id));
+	mysql_tquery(mysql, query);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"[A][%d] %s[%d] назначил(-а) %s[%d] лидером фракции \"%s\".",
+		GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name),
+		playerid, 
+		GetPlayerData(scdplayerid, p_name), scdplayerid,
+		GetFractionData(fraction_index, f_name));
+	Admin:SendAdminMessage(COLOR_GREY, small_string);
+
+	format(small_string, sizeof(small_string),
+		"Администратор %s назначил(-а) Вас лидером фракции \"%s\".",
+		GetPlayerData(playerid, p_name), GetFractionData(fraction_index, f_name));
+	SendClientMessage(scdplayerid, COLOR_LIME, small_string);
+	small_string[0] = EOS;
+
+	return true;
+}

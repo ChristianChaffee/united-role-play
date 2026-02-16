@@ -386,3 +386,37 @@ CMD:setskin(playerid, params[]){
 CMD:fracmenu(playerid){
 	return Admin:ShowFractionMenu(playerid);
 }
+
+CMD:makeleader(playerid, params[]){
+	if(sscanf(params, "i", params[0])) return SendErrorMessage(playerid, "Используйте '/makeleader [ID игрока]'");
+
+	if(!IsPlayerConnected(params[0]) && !player_logged[params[0]]) return SendErrorMessage(playerid, "Игрок не в сети.");
+	if(GetPlayerData(params[0], p_fraction) > 0) return SendErrorMessage(playerid, "Игрок уже состоит во фракции.");
+
+	big_string[0] = EOS;
+	new count;
+	for(new i; i < MAX_FRACTIONS; i++){
+		if(!GetFractionData(i, f_id)) continue;
+		if(GetFractionData(i, f_leader_account_id) != 0) continue;
+
+		format(big_string, sizeof(big_string),
+			"%s\n\
+			"cl_blue"%d. "cl_white"%s",
+			big_string, count + 1, GetFractionData(i, f_name));
+
+		player_listitems[playerid][count] = i;
+		count++;
+	}
+
+	if(!count){
+		SendErrorMessage(playerid, "В данный момент нет свободных фракций.");
+		return false;
+	}
+
+	SetPVarInt(playerid, "Admin_MakeleaderID", params[0]);
+	Dialog_Open(playerid, Dialog:D_MAKELEADER, DIALOG_STYLE_LIST,
+		"Выберите фракцию", big_string,
+		"Выбрать", "Закрыть");
+	big_string[0] = EOS;
+	return true;
+}
