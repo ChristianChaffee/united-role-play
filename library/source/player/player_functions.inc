@@ -50,6 +50,7 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	cache_get_value_name_int(0, "fraction_rank", GetPlayerData(playerid, p_fraction_rank));
 	cache_get_value_name_int(0, "fraction_skin", GetPlayerData(playerid, p_fraction_skin));
 	cache_get_value_name_int(0, "fraction_hours", GetPlayerData(playerid, p_fraction_hours));
+	cache_get_value_name_int(0, "fraction_gun_cooldown", GetPlayerData(playerid, p_fraction_gun_cooldown));
 
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);

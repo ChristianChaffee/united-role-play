@@ -8,6 +8,15 @@ hook OnGameModeInit(){
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
+hook OnPlayerDisconnect(playerid, reason){
+	static const fmt_query[] = "UPDATE accounts SET fraction_gun_cooldown = %d WHERE id = %d";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerData(playerid, p_fraction_gun_cooldown), GetPlayerData(playerid, p_id));
+	mysql_tquery(mysql, query);
+	return Y_HOOKS_CONTINUE_RETURN_1;
+}
+
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 	if(newkeys == KEY_WALK && !IsPlayerInAnyVehicle(playerid)){
 		for(new fraction_index; fraction_index < MAX_FRACTIONS; fraction_index++){
@@ -45,6 +54,29 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 						}
 
 						SetPlayerColor(playerid, GetPlayerColorEx(playerid));
+					}
+				}
+			}
+			else if(IsPlayerInRangeOfPoint(playerid, 2.0, 
+				GetFractionData(fraction_index, f_gun_x), GetFractionData(fraction_index, f_gun_y),
+				GetFractionData(fraction_index, f_gun_z))
+				&& GetPlayerVirtualWorld(playerid) == GetFractionData(fraction_index, f_gun_vw)
+				&& GetPlayerInterior(playerid) == GetFractionData(fraction_index, f_gun_int)){
+
+				if(GetPlayerData(playerid, p_fraction) != GetFractionData(fraction_index, f_id)){
+					small_string[0] = EOS;
+					format(small_string, sizeof(small_string),
+						"Данная оружейная фракции \"%s\".",
+						GetFractionData(fraction_index, f_name));
+					SendErrorMessage(playerid, small_string);
+					small_string[0] = EOS;
+				}
+				else{
+					if(!GetPlayerData(playerid, p_fraction_duty)){
+						SendErrorMessage(playerid, "Вам необходимо начать рабочий день.");
+					}
+					else{
+						Fraction:GiveFracWeapon(playerid);
 					}
 				}
 			}
@@ -93,4 +125,19 @@ hook OnPlayerCommandReceived(playerid, cmd[], params[], flags){
 		}
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
+}
+
+//==============================================================================
+hook stock OnPlayerSecondUpdate(playerid){
+	if(GetPlayerData(playerid, p_fraction_gun_cooldown) > 0){
+		SetPlayerData(playerid, p_fraction_gun_cooldown, GetPlayerData(playerid, p_fraction_gun_cooldown) - 1);
+		if(GetPlayerData(playerid, p_fraction_gun_cooldown) <= 0){
+			static const fmt_query[] = "UPDATE accounts SET fraction_gun_cooldown = 0 WHERE id = %d";
+			new query[sizeof(fmt_query) + (-2 + 11)];
+			mysql_format(mysql, query, sizeof(query), fmt_query,
+				GetPlayerData(playerid, p_id));
+			mysql_tquery(mysql, query);
+		}
+	}
+	return continue(playerid);
 }

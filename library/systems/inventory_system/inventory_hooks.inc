@@ -25,4 +25,5 @@ hook stock OnPlayerSecondUpdate(playerid){
 			DeletePVar(playerid, "Inventory_EatDrinkAnimationTimer");
 		}
 	}
+	return continue(playerid);
 }

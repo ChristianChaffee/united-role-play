@@ -13,8 +13,12 @@
 #define MAX_FRACTION_SKINS  			200
 #define MAX_FRACTION_RANKS 				20
 #define FRACTIONS_TYPES_COUNT 			5
+#define MAX_FRACTION_GUNS 				5
 
 #define FRAC_DRESSROOM_PICKUP_MODEL 	1275
+#define FRAC_GUN_PICKUP_MODEL 			353
+
+#define FRAC_GUN_COOLDOWN 				180
 
 //==============================================================================
 new const fraction_type_names[FRACTIONS_TYPES_COUNT][64] = {
@@ -46,6 +50,51 @@ enum fraction_skin_info_struct
 new fraction_skin_info[MAX_FRACTION_SKINS][fraction_skin_info_struct];
 
 //==============================================================================
+enum fraction_gun_info_struct
+{
+	f_gun_id,
+	f_gun_ammo,
+	f_gun_rank,
+}
+new const fraction_gun_info[FRACTIONS_TYPES_COUNT][MAX_FRACTION_GUNS][fraction_gun_info_struct] = {
+	{
+		{WEAPON_COLT45, 50, 2},
+		{WEAPON_MP5, 120, 2},
+		{WEAPON_NITESTICK, 1, 1},
+		{0, 0, 0},
+		{0, 0, 0}
+	},
+	{
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0}
+	},
+	{
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0}
+	},
+	{
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0}
+	},
+	{
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0},
+		{0, 0, 0}
+	}
+};
+
+//==============================================================================
 enum fraction_info_struct
 {
 	f_id,
@@ -68,9 +117,16 @@ enum fraction_info_struct
 	Float:f_dressroom_z,
 	f_dressroom_vw,
 	f_dressroom_int,
+	Float:f_gun_x,
+	Float:f_gun_y,
+	Float:f_gun_z,
+	f_gun_vw,
+	f_gun_int,
 
 	f_dressroom_pic,
-	Text3D:f_dressroom_text
+	Text3D:f_dressroom_text,
+	f_gun_pic,
+	Text3D:f_gun_text
 }
 new fraction_info[MAX_FRACTIONS][fraction_info_struct];
 new fraction_ranks[MAX_FRACTIONS][MAX_FRACTION_RANKS][32];

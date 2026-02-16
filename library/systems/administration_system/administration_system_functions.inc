@@ -268,7 +268,8 @@ stock Fraction:ShowFractionInfoDialog(playerid, fraction_index, leader_name[]){
 		"cl_blue"Цвет фракции\t"cl_white"%s%s\n\
 		"cl_blue"- "cl_white"Управление рангами\n\
 		"cl_blue"- "cl_white"Изменить место спавна фракции\n\
-		"cl_blue"- "cl_white"Изменить место раздевалки фракции",
+		"cl_blue"- "cl_white"Изменить место раздевалки фракции\n\
+		"cl_blue"- "cl_white"Изменить место оружейной фракции",
 		GetFractionData(fraction_index, f_name), GetFractionData(fraction_index, f_tag),
 		fraction_type_names[GetFractionData(fraction_index, f_type)],
 		leader_name,

@@ -371,6 +371,35 @@ DialogResponse:D_ADMIN_FRAC_INFO(playerid, response, listitem, inputtext[]){
 
 			Fraction:UpdateDressroom(fraction_index);
 		}
+		case 8:{
+			new fraction_index = GetPVarInt(playerid, "Admin_FractionIndex");
+			DeletePVar(playerid, "Admin_FractionIndex");
+
+			GetPlayerPos(playerid, 
+				GetFractionData(fraction_index, f_gun_x),
+				GetFractionData(fraction_index, f_gun_y),
+				GetFractionData(fraction_index, f_gun_z));
+			SetFractionData(fraction_index, f_gun_vw, GetPlayerVirtualWorld(playerid));
+			SetFractionData(fraction_index, f_gun_int, GetPlayerInterior(playerid));
+
+			static const fmt_query[] = "UPDATE fractions SET gun_x = '%f', gun_y = '%f', gun_z = '%f', gun_vw = %d, gun_int = %d WHERE id = %d";
+			new query[sizeof(fmt_query) + ((-2 + 11) * 6)];
+			mysql_format(mysql, query, sizeof(query), fmt_query,
+				GetFractionData(fraction_index, f_gun_x), GetFractionData(fraction_index, f_gun_y), 
+				GetFractionData(fraction_index, f_gun_z), GetFractionData(fraction_index, f_gun_vw), 
+				GetFractionData(fraction_index, f_gun_int), GetFractionData(fraction_index, f_id));
+			mysql_tquery(mysql, query);
+
+			small_string[0] = EOS;
+			format(small_string, sizeof(small_string),
+				"[A][%d] %s[%d] изменил(-а) место оружейной фракции \"%s\"",
+				GetPlayerAdminData(playerid, pa_level), GetPlayerData(playerid, p_name),
+				playerid, GetFractionData(fraction_index, f_name));
+			Admin:SendAdminMessage(COLOR_GREY, small_string);
+			small_string[0] = EOS;
+
+			Fraction:UpdateGuns(fraction_index);
+		}
 	}
 	return true;
 }
