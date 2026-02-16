@@ -22,6 +22,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\payday\payday_new.inc"
 #include "..\library\source\cef\cef_new.inc"
 #include "..\library\source\fractions\fractions_new.inc"
+#include "..\library\source\fractions\fraction_commands_new.inc"
 #include "..\library\source\fractions\fraction_menu\fraction_menu_new.inc"
 
 #include "..\library\source\player\player_functions.inc"

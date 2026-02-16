@@ -23,6 +23,15 @@ new const fraction_type_names[FRACTIONS_TYPES_COUNT][64] = {
 	"Криминальная структура"
 };
 
+enum
+{
+	FRAC_TYPE_GOVERMENT,
+	FRAC_TYPE_POLICE,
+	FRAC_TYPE_MEDIC,
+	FRAC_TYPE_NEWS,
+	FRAC_TYPE_CRIMINAL
+}
+
 //==============================================================================
 enum fraction_skin_info_struct
 {
