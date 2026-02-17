@@ -9,6 +9,7 @@
 #include <streamer>
 #include <sscanf2>
 #include <cef>
+#include <Pawn.RakNet>
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
 
 native IsValidVehicle(vehicleid);
@@ -690,4 +691,12 @@ stock GenerateSimCardNumber(){
 	}
 
 	return random_number;
+}
+
+stock SetStatusChat(playerid, id, status){ 
+	new BitStream:bsn = BS_New(); 
+
+	BS_WriteValue(bsn, PR_UINT8, id); 
+	BS_WriteValue(bsn, PR_UINT8, status);
+	PR_SendRPC(bsn, playerid, 220); 
 }
