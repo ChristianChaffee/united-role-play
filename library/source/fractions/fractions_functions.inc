@@ -53,6 +53,9 @@ stock Fraction:UninvitePlayer(account_id){
 		if(GetPVarType(playerid, "Fraction_InMembersUI")){
 			Fraction:HideMembersUI(playerid);
 		}
+		if(GetPVarType(playerid, "Fraction_InInfoUI")){
+			Fraction:HideInfoUI(playerid);
+		}
 	}
 	return true;
 }
@@ -224,4 +227,17 @@ stock Fraction:GiveFracWeapon(playerid){
 	SetPlayerHealth(playerid, 100.0);
 	big_string[0] = EOS;
 	return true;
+}
+
+stock Fraction:GetOnlineMembers(fraction_index){
+	if(fraction_index < 0 || fraction_index >= MAX_FRACTIONS) return false;
+	if(!GetFractionData(fraction_index, f_id)) return false;
+
+	new count;
+	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
+		if(!IsPlayerConnected(i) || !player_logged[i]) continue;
+		if(GetPlayerData(i, p_fraction) != GetFractionData(fraction_index, f_id)) continue;
+		count++;
+	}
+	return count;
 }

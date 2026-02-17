@@ -60,3 +60,31 @@ stock Fraction:HideMembersUI(playerid){
 	cef_emit_event(playerid, "hideFactionMembers");
 	return true;
 }
+
+stock Fraction:ShowInfoUI(playerid, leader_name[]){
+	if(!GetPlayerData(playerid, p_fraction)) return SendErrorMessage(playerid, "Вы не состоите во фракции.");
+	
+	new fraction_index = GetPlayerFractionIndex(playerid);
+	if(fraction_index == -1) return false;
+
+	if(GetPVarType(playerid, "Fraction_InMenuUI")){
+		Fraction:HideMenuUI(playerid);
+	}
+
+	cef_emit_event(playerid, "showFactionInfo",
+		CEFSTR(GetFractionData(fraction_index, f_icon_url)),
+		CEFSTR(GetFractionData(fraction_index, f_name)),
+		CEFSTR(fraction_type_names[GetFractionData(fraction_index, f_type)]),
+		CEFSTR(GetFractionData(fraction_index, f_tag)),
+		CEFSTR(leader_name),
+		CEFINT(Fraction:GetOnlineMembers(fraction_index)));
+
+	SetPVarInt(playerid, "Fraction_InInfoUI", 1);
+	return true;
+}
+
+stock Fraction:HideInfoUI(playerid){
+	DeletePVar(playerid, "Fraction_InInfoUI");
+	cef_emit_event(playerid, "hideFactionInfo");
+	return true;
+}

@@ -134,3 +134,48 @@ public FactionMember_Fire(playerid, const arguments[]){
 	Fraction:HideMembersUI(playerid);
 	return true;
 }
+
+forward FactionMenu_Info(playerid, const arguments[]);
+public FactionMenu_Info(playerid, const arguments[]){
+	new fraction_index = GetPlayerFractionIndex(playerid);
+	if(fraction_index == -1){
+		Fraction:HideMenuUI(playerid);
+		return false;
+	}
+
+	if(!GetFractionData(fraction_index, f_leader_account_id)){
+		Fraction:ShowInfoUI(playerid, "Отсутствует");
+	}
+	else{
+		static const fmt_query[] = "SELECT a.name AS leader_name FROM fractions f JOIN accounts a ON a.id = f.leader_account_id WHERE f.id = %d";
+		new query[sizeof(fmt_query) + (-2 + 11)];
+		mysql_format(mysql, query, sizeof(query), fmt_query, GetFractionData(fraction_index, f_id));
+		mysql_tquery(mysql, query, "FactionMenu_InfoLoad", "i", playerid);
+	}
+	return true;
+}
+
+forward FactionMenu_InfoLoad(playerid);
+public FactionMenu_InfoLoad(playerid){
+	new rows;
+	cache_get_row_count(rows);
+
+	if(!rows) return SendErrorMessage(playerid, "Произошла ошибка.");
+
+	new leader_name[MAX_PLAYER_NAME];
+	cache_get_value_name(0, "leader_name", leader_name);
+	Fraction:ShowInfoUI(playerid, leader_name);
+	return true;
+}
+
+forward FactionInfo_Close(playerid, const arguments[]);
+public FactionInfo_Close(playerid, const arguments[]){
+	Fraction:HideInfoUI(playerid);
+	return true;
+}
+
+forward FactionMenu_Close(playerid, const arguments[]);
+public FactionMenu_Close(playerid, const arguments[]){
+	Fraction:HideMenuUI(playerid);
+	return true;
+}

@@ -5,6 +5,7 @@
 
 	Fraction_InMenuUI
 	Fraction_InMembersUI
+	Fraction_InInfoUI
 
 */
 
