@@ -9,7 +9,9 @@
 #include <streamer>
 #include <sscanf2>
 #include <cef>
+//#include <Pawn.RakNet>
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
+#include <urp.inc>
 
 native IsValidVehicle(vehicleid);
 
@@ -36,6 +38,8 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\player\player_publics.inc"
 #include "..\library\source\fractions\fractions_publics.inc"
 #include "..\library\source\fractions\fraction_menu\fraction_menu_publics.inc"
+#include "..\library\source\chat\chat_publics.inc"
+
 
 #include "..\library\source\database\database_hooks.inc"
 #include "..\library\source\player\player_hooks.inc"
@@ -44,6 +48,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\cef\cef_hooks.inc"
 #include "..\library\source\fractions\fractions_hooks.inc"
 #include "..\library\source\fractions\fraction_menu\fraction_menu_hooks.inc"
+#include "..\library\source\chat\chat_hooks.inc"
 
 #include "..\library\source\cef\cef_publics.inc"
 
@@ -88,6 +93,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\house_system\house_garage_system\house_garage_new.inc"
 #include "..\library\systems\spawn_select_system\spawn_select_new.inc"
 #include "..\library\systems\donate_shop_system\donate_shop_new.inc"
+#include "..\library\systems\hud_system\hud_system_new.inc"
 
 public OnGameModeInit(){
 	EnableStuntBonusForAll(false);
@@ -575,6 +581,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\house_system\house_garage_system\house_garage_functions.inc"
 #include "..\library\systems\spawn_select_system\spawn_select_functions.inc"
 #include "..\library\systems\donate_shop_system\donate_shop_functions.inc"
+#include "..\library\systems\hud_system\hud_system_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -606,6 +613,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\house_system\house_garage_system\house_garage_hooks.inc"
 #include "..\library\systems\spawn_select_system\spawn_select_hooks.inc"
 #include "..\library\systems\donate_shop_system\donate_shop_hooks.inc"
+#include "..\library\systems\hud_system\hud_system_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 #include "..\library\systems\administration_system\administration_system_commands.inc"
@@ -694,4 +702,12 @@ stock GenerateSimCardNumber(){
 	}
 
 	return random_number;
+}
+
+public Chathider_OnKeyPressed(playerid, key){
+	return 1;
+}
+
+public OnUserChangeLayout(playerid, layout[]){
+    return 1;
 }
