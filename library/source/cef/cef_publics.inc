@@ -16,6 +16,11 @@ public OnCefBrowserCreated(player_id, browser_id, status_code){
 		if(!player_logged[player_id]){
 			RegistrationTimer(player_id);
 		}
+
+		cef_always_listen_keys(player_id, CEF_BROWSER_LOGO, true);
+
+		SetChatStatus(player_id, false);
+		cef_emit_event(player_id, "Chat_SetStatus", CEFINT(1));
 	}
 	return 1;
 }

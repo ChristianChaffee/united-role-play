@@ -1,4 +1,4 @@
-// Copyright (C) 2018 Y_Less
+// Copyright (C) 2013-2015 Zeex
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -23,38 +23,46 @@
 #endif
 #define JIT_INC
 
-/**
- * <library name="amx_assembly jit" summary="AMX Assembly Library: Detect the JIT plugin.">
- *   <summary pawndoc="true">
- *     This library uses the enhanced <em>pawndoc.xsl</em> from
- *     <a href="https://github.com/pawn-lang/pawndoc">pawn-lang/pawndoc</a>.
- *     This XSL has features such as library and markdown support, and will not
- *     render this message when used.
- *   </summary>
- * </library>
- */
+//
+// This variable will be set to true if the JIT plugin is loaded.
+//
+public const bool:__JIT = false;
 
-/// <p/>
+//
+// OnJITCompile() is called when the script is about to be compiled by
+// the JIT plugin
+//
+forward OnJITCompile();
 
-#if !defined __register_names
-	const __cod = 0;
-	const __dat = 1;
-	const __hea = 2;
-	const __stp = 3;
-	const __stk = 4;
-	const __frm = 5;
-	const __cip = 6;
-	const __jit = 7;
-	const __jmp = 8;
-	const __flg = 9;
-	#define __register_names
-#endif
+//
+// OnJITError() is called when an error occurs during JIT compilation.
+// See your server log for additional error information.
+//
+forward OnJITError();
 
-/// <library>amx_assembly jit</library>
+//
+// Checks if the script is currently running in JIT mode. This function
+// will return false in OnJITCompile().
+//
 stock bool:IsJITPresent() {
 	#emit zero.pri
-	#emit lctrl __jit
+	#emit lctrl 7
 	#emit retn
-	return false;
+	return false; // make compiler happy
+}
+
+//
+// Checks if the JIT plugin supports the fast jumps feature that was added
+// in version 2.1.
+//
+// https://github.com/Zeex/samp-plugin-jit/issues/51
+//
+stock bool:IsJITASMJumpCapable() {
+	#emit lctrl 6
+	#emit move.alt
+	#emit lctrl 8
+	#emit neq
+	#emit retn
+	return false; // make compiler happy
 }
 

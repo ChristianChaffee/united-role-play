@@ -9,8 +9,9 @@
 #include <streamer>
 #include <sscanf2>
 #include <cef>
-#include <Pawn.RakNet>
+//#include <Pawn.RakNet>
 #include <YSI-Includes-5.x\YSI_Coding\y_hooks>
+#include <urp.inc>
 
 native IsValidVehicle(vehicleid);
 
@@ -32,6 +33,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\vehicle\vehicle_publics.inc"
 #include "..\library\source\player\player_publics.inc"
 #include "..\library\source\fractions\fractions_publics.inc"
+#include "..\library\source\chat\chat_publics.inc"
 
 #include "..\library\source\database\database_hooks.inc"
 #include "..\library\source\player\player_hooks.inc"
@@ -39,6 +41,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\source\payday\payday_hooks.inc"
 #include "..\library\source\cef\cef_hooks.inc"
 #include "..\library\source\fractions\fractions_hooks.inc"
+#include "..\library\source\chat\chat_hooks.inc"
 
 #include "..\library\source\cef\cef_publics.inc"
 
@@ -693,10 +696,10 @@ stock GenerateSimCardNumber(){
 	return random_number;
 }
 
-stock SetStatusChat(playerid, id, status){ 
-	new BitStream:bsn = BS_New(); 
+public Chathider_OnKeyPressed(playerid, key){
+	return 1;
+}
 
-	BS_WriteValue(bsn, PR_UINT8, id); 
-	BS_WriteValue(bsn, PR_UINT8, status);
-	PR_SendRPC(bsn, playerid, 220); 
+public OnUserChangeLayout(playerid, layout[]){
+    return 1;
 }
