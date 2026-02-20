@@ -397,22 +397,27 @@ stock Inventory:UseItem(playerid, slot_index){
 				}
 			}
 			case ITEM_SKIN_ID:{
-				new old_skin = GetPlayerSkin(playerid);
+				if(GetPlayerData(playerid, p_fraction_duty)){
+					SendErrorMessage(playerid, "Вы не можете сменить одежду, пока находитесь на работе!");
+				}
+				else{
+					new old_skin = GetPlayerSkin(playerid);
 
-				SetPlayerSkin(playerid, GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one));
-				Inventory:SetPlayerSlotNull(playerid, slot_index);
+					SetPlayerSkin(playerid, GetPlayerInventoryItemData(playerid, slot_index, inv_player_value_one));
+					Inventory:SetPlayerSlotNull(playerid, slot_index);
 
-				Inventory:GiveItem(playerid, slot_index, ITEM_SKIN_ID, _, old_skin);
+					Inventory:GiveItem(playerid, slot_index, ITEM_SKIN_ID, _, old_skin);
 
-				SetPlayerData(playerid, p_skin, GetPlayerSkin(playerid));
+					SetPlayerData(playerid, p_skin, GetPlayerSkin(playerid));
 
-				static const fmt_query[] = "UPDATE accounts SET skin = %d WHERE id = %d";
-				new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
-				mysql_format(mysql, query, sizeof(query), fmt_query,
-					GetPlayerData(playerid, p_skin), GetPlayerData(playerid, p_id));
-				mysql_tquery(mysql, query);
+					static const fmt_query[] = "UPDATE accounts SET skin = %d WHERE id = %d";
+					new query[sizeof(fmt_query) + ((-2 + 11) * 2)];
+					mysql_format(mysql, query, sizeof(query), fmt_query,
+						GetPlayerData(playerid, p_skin), GetPlayerData(playerid, p_id));
+					mysql_tquery(mysql, query);
 
-				SendMeAction(playerid, "сменил(-а) одежду.", true);
+					SendMeAction(playerid, "сменил(-а) одежду.", true);
+				}
 			}
 			case ITEM_DEAGLE_ID, ITEM_SHOTGUN_ID, ITEM_MP5_ID, ITEM_M4_ID:{
 				if(!Inventory:GetAmmoForWeapon(playerid, GetInventoryItemData(GetPlayerInventoryItemData(playerid, slot_index, inv_player_item_id), item_id))){
