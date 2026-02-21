@@ -420,3 +420,66 @@ CMD:makeleader(playerid, params[]){
 	big_string[0] = EOS;
 	return true;
 }
+
+CMD:addfracveh(playerid, params[]){
+	new fraction_id, model_id, color_1, color_2;
+	if(sscanf(params, "iiii", fraction_id, model_id, color_1, color_2)) return SendErrorMessage(playerid, "Используйте '/addfracveh [ID фракции] [ID транспорта] [Цвет №1] [Цвет №2]'");
+
+	new fraction_index = -1;
+	for(new i; i < MAX_FRACTIONS; i++){
+		if(!GetFractionData(i, f_id)) continue;
+		if(GetFractionData(i, f_id) != fraction_id) continue;
+		fraction_index = i;
+		break;
+	}
+
+	if(fraction_index == -1){
+		SendErrorMessage(playerid, "Данной фракции не существует.");
+		return false;
+	}
+
+	new Float:pos[4];
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	GetPlayerFacingAngle(playerid, pos[3]);
+
+	new vehicleid = CreateVehicle(model_id, pos[0], pos[1], pos[2], pos[3], color_1, color_2, 30);
+	SetVehicleVirtualWorld(vehicleid, GetPlayerVirtualWorld(playerid));
+	LinkVehicleToInterior(vehicleid, GetPlayerInterior(playerid));
+	PutPlayerInVehicle(playerid, vehicleid, 0);
+
+	SendClientMessage(playerid, COLOR_GREEN, "Используйте '/savefracveh' чтобы сохранить транспорт фракции.");
+
+	SetPVarInt(playerid, "Admin_AddFracVehFractionIndex", fraction_index);
+	SetPVarInt(playerid, "Admin_AddFracVehVehicleid", vehicleid);
+	SetPVarInt(playerid, "Admin_AddFracVehColor1", color_1);
+	SetPVarInt(playerid, "Admin_AddFracVehColor2", color_2);
+	return true;
+}
+
+CMD:savefracveh(playerid){
+	if(!GetPVarType(playerid, "Admin_AddFracVehVehicleid")) return SendErrorMessage(playerid, "Вы не создаёте фракционный транспорт.");
+	if(GetPlayerVehicleID(playerid) != GetPVarInt(playerid, "Admin_AddFracVehVehicleid")) return SendErrorMessage(playerid, "Вы должны находиться в создаваемом транспорте.");
+
+	new Float:pos[4];
+	GetVehiclePos(GetPVarInt(playerid, "Admin_AddFracVehVehicleid"), pos[0], pos[1], pos[2]);
+	GetVehicleZAngle(GetPVarInt(playerid, "Admin_AddFracVehVehicleid"), pos[3]);
+
+	static const fmt_query[] = "INSERT INTO vehicles (model_id, status, fraction_id, color_1, color_2, pos_x, pos_y, pos_z, pos_angle, pos_vw, pos_int) \
+		VALUES (%d, %d, %d, %d, %d, %f, %f, %f, %f, %d, %d)";
+	new query[sizeof(fmt_query) + ((-2 + 11) * 11)];
+
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetVehicleModel(GetPVarInt(playerid, "Admin_AddFracVehVehicleid")),
+		VEHICLE_STATUS_FRACTION, 
+		GetFractionData(GetPVarInt(playerid, "Admin_AddFracVehFractionIndex"), f_id),
+		GetPVarInt(playerid, "Admin_AddFracVehColor1"), GetPVarInt(playerid, "Admin_AddFracVehColor1"),
+		pos[0], pos[1], pos[2], pos[3], GetPlayerVirtualWorld(playerid), GetPlayerInterior(playerid));
+
+	mysql_tquery(mysql, query, "AddNewFractionVehicle");
+
+	RemovePlayerFromVehicle(playerid);
+	DestroyVehicle(GetPVarInt(playerid, "Admin_AddFracVehVehicleid"));
+
+	Admin:DestroyCreateFracVehPVars(playerid);
+	return true;
+}

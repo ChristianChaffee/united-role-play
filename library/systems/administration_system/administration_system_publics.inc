@@ -173,3 +173,12 @@ public CheckFractionRankChange(fraction_index){
 
 	return true;
 }
+
+forward AddNewFractionVehicle();
+public AddNewFractionVehicle(){
+	static const fmt_query[] = "SELECT * FROM vehicles WHERE id = %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query, cache_insert_id());
+	mysql_tquery(mysql, query, "LoadVehicles");
+	return true;
+}

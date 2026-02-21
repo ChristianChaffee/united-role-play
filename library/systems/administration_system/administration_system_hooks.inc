@@ -8,6 +8,10 @@ hook OnGameModeInit(){
 }
 
 hook OnPlayerDisconnect(playerid, reason){
+	if(GetPVarType(playerid, "Admin_AddFracVehVehicleid") && IsValidVehicle(GetPVarInt(playerid, "Admin_AddFracVehVehicleid"))){
+		DestroyVehicle(GetPVarInt(playerid, "Admin_AddFracVehVehicleid"));
+	}
+
 	player_admin_info[playerid] = player_admin_info_default;
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
@@ -26,6 +30,14 @@ hook OnPlayerCommandReceived(playerid, cmd[], params[], flags){
 
 			return Y_HOOKS_CONTINUE_RETURN_1;
 		}
+	}
+	return Y_HOOKS_CONTINUE_RETURN_1;
+}
+
+hook OnPlayerStateChange(playerid, newstate, oldstate){
+	if(oldstate == PLAYER_STATE_DRIVER && GetPVarType(playerid, "Admin_AddFracVehVehicleid") && IsValidVehicle(GetPVarInt(playerid, "Admin_AddFracVehVehicleid"))){
+		DestroyVehicle(GetPVarInt(playerid, "Admin_AddFracVehVehicleid"));
+		SendClientMessage(playerid, COLOR_LIGHT_RED, "Создание фракционного транспорта отменено.");
 	}
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }

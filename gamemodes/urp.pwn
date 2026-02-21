@@ -641,6 +641,7 @@ stock OnMySQLConnect(){
 #include "..\library\source\mapping\licensing_center_int.inc"
 #include "..\library\source\mapping\car_showroom_sf.inc"
 #include "..\library\source\mapping\garage_int.inc"
+#include "..\library\source\mapping\city_hall_ext.inc"
 
 //=============================================================== ƒ–”√»≈ ‘”Õ ÷»»
 stock ShowStats(playerid, forplayerid){

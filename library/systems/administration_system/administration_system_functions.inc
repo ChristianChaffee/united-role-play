@@ -434,3 +434,11 @@ stock Admin:ShowChangeFracRank(playerid, error_text[] = ""){
 
 	return true;
 }
+
+stock Admin:DestroyCreateFracVehPVars(playerid){
+	DeletePVar(playerid, "Admin_AddFracVehFractionIndex");
+	DeletePVar(playerid, "Admin_AddFracVehVehicleid");
+	DeletePVar(playerid, "Admin_AddFracVehColor1");
+	DeletePVar(playerid, "Admin_AddFracVehColor2");
+	return true;
+}
