@@ -95,6 +95,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\donate_shop_system\donate_shop_new.inc"
 #include "..\library\systems\hud_system\hud_system_new.inc"
 #include "..\library\systems\taxes_system\taxes_new.inc"
+#include "..\library\systems\open_barriers\open_barriers_new.inc"
 
 public OnGameModeInit(){
 	EnableStuntBonusForAll(false);
@@ -586,6 +587,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\donate_shop_system\donate_shop_functions.inc"
 #include "..\library\systems\hud_system\hud_system_functions.inc"
 #include "..\library\systems\taxes_system\taxes_functions.inc"
+#include "..\library\systems\open_barriers\open_barriers_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -619,6 +621,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\donate_shop_system\donate_shop_hooks.inc"
 #include "..\library\systems\hud_system\hud_system_hooks.inc"
 #include "..\library\systems\taxes_system\taxes_hooks.inc"
+#include "..\library\systems\open_barriers\open_barriers_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 #include "..\library\systems\administration_system\administration_system_commands.inc"
@@ -642,6 +645,7 @@ stock OnMySQLConnect(){
 #include "..\library\source\mapping\car_showroom_sf.inc"
 #include "..\library\source\mapping\garage_int.inc"
 #include "..\library\source\mapping\city_hall_ext.inc"
+#include "..\library\source\mapping\city_hall_int.inc"
 
 //=============================================================== ƒ–”√»≈ ‘”Õ ÷»»
 stock ShowStats(playerid, forplayerid){

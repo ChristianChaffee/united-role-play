@@ -37,6 +37,22 @@ CMD:a(playerid, params[]){
 	return true;
 }
 
+CMD:ainfo(playerid){
+	new Float:pos[4];
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	GetPlayerFacingAngle(playerid, pos[3]);
+
+	small_string[0] = EOS;
+	format(small_string, sizeof(small_string),
+		"X: %.2f | Y: %.2f | Z: %.2f | FA: %.2f | VW: %d | INT: %d",
+		pos[0], pos[1], pos[2], pos[3],
+		GetPlayerVirtualWorld(playerid), GetPlayerInterior(playerid));
+	SendClientMessage(playerid, COLOR_LIME, small_string);
+	small_string[0] = EOS;
+
+	return true;
+}
+
 CMD:hp(playerid){
 	SendClientMessage(playerid, COLOR_LIME, "¬ы восстановили себе здоровье и нужды.");
 

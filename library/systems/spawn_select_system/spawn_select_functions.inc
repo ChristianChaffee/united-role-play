@@ -149,6 +149,7 @@ stock SpawnSelect:SetPlayerSpawn(playerid, spawn_type){
 
 	player_logged[playerid] = true;
 	SpawnPlayer(playerid);
+	FreezePlayerTime(playerid, 2);
 
 	SetPlayerVirtualWorld(playerid, spawn_vw);
 	SetPlayerInterior(playerid, spawn_int);

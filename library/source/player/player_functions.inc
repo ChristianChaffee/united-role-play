@@ -39,8 +39,8 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	cache_get_value_name_float(0, "spawn_y", GetPlayerData(playerid, p_spawn_y));
 	cache_get_value_name_float(0, "spawn_z", GetPlayerData(playerid, p_spawn_z));
 	cache_get_value_name_float(0, "spawn_angle", GetPlayerData(playerid, p_spawn_angle));
-	cache_get_value_name_int(0, "vw", GetPlayerData(playerid, p_spawn_vw));
-	cache_get_value_name_int(0, "int", GetPlayerData(playerid, p_spawn_int));
+	cache_get_value_name_int(0, "spawn_vw", GetPlayerData(playerid, p_spawn_vw));
+	cache_get_value_name_int(0, "spawn_int", GetPlayerData(playerid, p_spawn_int));
 	
 	cache_get_value_name_int(0, "donate", GetPlayerData(playerid, p_donate));
 	cache_get_value_name_int(0, "vehicle_slots", GetPlayerData(playerid, p_vehicle_slots));
@@ -457,4 +457,13 @@ stock GetPlayerFractionIndex(playerid){
 		return i;
 	}
 	return -1;
+}
+
+stock FreezePlayerTime(playerid, seconds){
+	if(GetPVarType(playerid, "Player_FreezeTimer")) return false;
+	if(seconds <= 0 || seconds >= 500) return false;
+
+	SetPVarInt(playerid, "Player_FreezeTimer", seconds);
+	TogglePlayerControllable(playerid, false);
+	return true;
 }

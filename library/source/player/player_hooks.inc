@@ -46,6 +46,13 @@ hook stock OnPlayerSecondUpdate(playerid){
 
 		player_afk[playerid] = 0;
 	}
+	if(GetPVarType(playerid, "Player_FreezeTimer") && GetPVarInt(playerid, "Player_FreezeTimer") > 0){
+		SetPVarInt(playerid, "Player_FreezeTimer", GetPVarInt(playerid, "Player_FreezeTimer") - 1);
+		if(GetPVarInt(playerid, "Player_FreezeTimer") <= 0){
+			DeletePVar(playerid, "Player_FreezeTimer");
+			TogglePlayerControllable(playerid, true);
+		}
+	}
 
 	if(GetPVarType(playerid, "Mask") && GetPVarType(playerid, "Mask_Timer") && GetPVarInt(playerid, "Mask_Timer") > 0){
 		SetPVarInt(playerid, "Mask_Timer", GetPVarInt(playerid, "Mask_Timer") - 1);
