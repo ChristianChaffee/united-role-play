@@ -8,7 +8,7 @@
 #define GAME_INT 						0
 
 //==============================================================================
-new small_string[144], big_string[4096];
+new small_string[256], big_string[4096];
 
 //==============================================================================
 new const wather_list[] = {
@@ -71,10 +71,12 @@ enum load_info_struct
 	loaded_houses,
 	loaded_garages,
 	loaded_fractions,
-	loaded_fractions_skins
+	loaded_fractions_skins,
+	loaded_taxes
 }
 
 new load_info[load_info_struct] = {
+	false,
 	false,
 	false,
 	false,

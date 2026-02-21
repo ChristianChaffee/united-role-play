@@ -30,6 +30,13 @@ new const fraction_commands_info[][fraction_commands_info_struct] = {
 		"Список членов фракции онлайн.",
 		1,
 		false
+	},
+	{
+		"taxes",
+		{FRAC_TYPE_GOVERMENT, -1, -1, -1, -1},
+		"Управление налогооблажением.",
+		10,
+		true
 	}
 };
 

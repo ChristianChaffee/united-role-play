@@ -52,6 +52,8 @@ stock LoadPlayer(playerid, Cache:cache_id){
 	cache_get_value_name_int(0, "fraction_hours", GetPlayerData(playerid, p_fraction_hours));
 	cache_get_value_name_int(0, "fraction_gun_cooldown", GetPlayerData(playerid, p_fraction_gun_cooldown));
 
+	cache_get_value_name_int(0, "pay", GetPlayerData(playerid, p_pay));
+
 	cache_delete(cache_id);
 	OnPlayerAccountLoaded(playerid);
 	return true;
@@ -419,6 +421,32 @@ stock GetFreeVehicleSlotsCount(playerid){
 	cache_get_row_count(rows);
 
 	return GetPlayerData(playerid, p_vehicle_slots) - rows;
+}
+
+stock GetPlayerVehiclesCount(playerid){
+	static const fmt_query[] = "SELECT id FROM vehicles WHERE owner = %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		GetPlayerData(playerid, p_id));
+	mysql_query(mysql, query);
+
+	new rows;
+	cache_get_row_count(rows);
+
+	return rows;
+}
+
+stock GetPlayerOfflineVehiclesCount(account_id){
+	static const fmt_query[] = "SELECT id FROM vehicles WHERE owner = %d";
+	new query[sizeof(fmt_query) + (-2 + 11)];
+	mysql_format(mysql, query, sizeof(query), fmt_query,
+		account_id);
+	mysql_query(mysql, query);
+
+	new rows;
+	cache_get_row_count(rows);
+
+	return rows;
 }
 
 stock GetPlayerFractionIndex(playerid){

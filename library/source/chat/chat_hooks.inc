@@ -23,3 +23,10 @@ hook function SendClientMessage(playerid, color, const message[]){
 	cef_emit_event(playerid, "Chat_SendMessage", CEFINT(color), CEFSTR(message));
 	return continue(playerid, color, message);
 }
+
+hook function SendClientMessageToAll(color, const message[]){
+	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
+		cef_emit_event(i, "Chat_SendMessage", CEFINT(color), CEFSTR(message));
+	}
+	return continue(color, message);
+}

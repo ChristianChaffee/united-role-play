@@ -94,6 +94,7 @@ native IsValidVehicle(vehicleid);
 #include "..\library\systems\spawn_select_system\spawn_select_new.inc"
 #include "..\library\systems\donate_shop_system\donate_shop_new.inc"
 #include "..\library\systems\hud_system\hud_system_new.inc"
+#include "..\library\systems\taxes_system\taxes_new.inc"
 
 public OnGameModeInit(){
 	EnableStuntBonusForAll(false);
@@ -533,6 +534,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\house_system\house_garage_system\house_garage_publics.inc"
 #include "..\library\systems\spawn_select_system\spawn_select_publics.inc"
 #include "..\library\systems\donate_shop_system\donate_shop_publics.inc"
+#include "..\library\systems\taxes_system\taxes_publics.inc"
 
 #include "..\library\systems\registration_system\registration_dialogs.inc"
 #include "..\library\systems\bank_system\bank_system_dialogs.inc"
@@ -551,6 +553,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\report_system\report_system_dialogs.inc"
 #include "..\library\systems\business_system\business_dialogs.inc"
 #include "..\library\systems\inventory_system\inventory_items\inventory_items_dialogs.inc"
+#include "..\library\systems\taxes_system\taxes_dialogs.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_functions.inc"
 #include "..\library\systems\registration_system\registration_functions.inc"
@@ -582,6 +585,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\spawn_select_system\spawn_select_functions.inc"
 #include "..\library\systems\donate_shop_system\donate_shop_functions.inc"
 #include "..\library\systems\hud_system\hud_system_functions.inc"
+#include "..\library\systems\taxes_system\taxes_functions.inc"
 
 #include "..\library\systems\skin_select_system\skin_select_hooks.inc"
 #include "..\library\systems\registration_system\registration_hooks.inc"
@@ -614,6 +618,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\spawn_select_system\spawn_select_hooks.inc"
 #include "..\library\systems\donate_shop_system\donate_shop_hooks.inc"
 #include "..\library\systems\hud_system\hud_system_hooks.inc"
+#include "..\library\systems\taxes_system\taxes_hooks.inc"
 
 #include "..\library\systems\inventory_system\inventory_commands.inc"
 #include "..\library\systems\administration_system\administration_system_commands.inc"
@@ -625,6 +630,7 @@ stock OnMySQLConnect(){
 #include "..\library\systems\house_system\house_system_commands.inc"
 #include "..\library\systems\house_system\house_garage_system\house_garage_commands.inc"
 #include "..\library\systems\donate_shop_system\donate_shop_commands.inc"
+#include "..\library\systems\taxes_system\taxes_commands.inc"
 
 //==============================================================================
 #include "..\library\source\mapping\spawn.inc"
@@ -677,6 +683,7 @@ stock IsDataBaseLoaded(){
 	if(!load_info[loaded_garages]) return false;
 	if(!load_info[loaded_fractions]) return false;
 	if(!load_info[loaded_fractions_skins]) return false;
+	if(!load_info[loaded_taxes]) return false;
 	return true;
 }
 
@@ -711,3 +718,6 @@ public Chathider_OnKeyPressed(playerid, key){
 public OnUserChangeLayout(playerid, layout[]){
     return 1;
 }
+
+FixSVarString(str[], size = sizeof(str))
+    for (new i = 0; ((str[i] &= 0xFF) != '\0') && (++i != size);) {} 

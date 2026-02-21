@@ -78,7 +78,9 @@ enum player_info_struct
 	p_fraction_skin,
 	p_fraction_duty,
 	p_fraction_hours,
-	p_fraction_gun_cooldown
+	p_fraction_gun_cooldown,
+
+	p_pay
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
@@ -128,6 +130,8 @@ new const player_info_default[player_info_struct] = {
 	0,
 	0,
 	false,
+	0,
+
 	0
 };
 
