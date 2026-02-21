@@ -93,6 +93,30 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys){
 	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
+hook OnPlayerStateChange(playerid, newstate, oldstate){
+	if(newstate == PLAYER_STATE_DRIVER && GetVehicleData(GetPlayerVehicleID(playerid), v_status) == VEHICLE_STATUS_FRACTION
+		&& GetPlayerData(playerid, p_fraction) != GetVehicleData(GetPlayerVehicleID(playerid), v_fraction_id)){
+
+		new fraction_index = -1;
+		for(new i; i < MAX_FRACTIONS; i++){
+			if(!GetFractionData(i, f_id)) continue;
+			if(GetFractionData(i, f_id) != GetVehicleData(GetPlayerVehicleID(playerid), v_fraction_id)) continue;
+			fraction_index = i;
+		}
+
+		RemovePlayerFromVehicle(playerid);
+
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			"Данный транспорт принадлежит \"%s\".",
+			GetFractionData(fraction_index, f_name));
+		SendErrorMessage(playerid, small_string);
+		small_string[0] = EOS;
+	}
+
+	return Y_HOOKS_CONTINUE_RETURN_1;
+}
+
 hook stock OnMySQLConnect(){
 	static const fmt_query[] = "SELECT * FROM vehicles WHERE status != %d";
 	new query[sizeof(fmt_query) + (-2 + 11)];

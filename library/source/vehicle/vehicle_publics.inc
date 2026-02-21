@@ -27,6 +27,8 @@ public LoadVehicles(){
 		cache_get_value_name_int(i, "pos_vw", temp_vehicle_data[v_vw]);
 		cache_get_value_name_int(i, "pos_int", temp_vehicle_data[v_int]);
 
+		cache_get_value_name_int(i, "fraction_id", temp_vehicle_data[v_fraction_id]);
+
 		cache_get_value_name_float(i, "fuel", temp_vehicle_data[v_fuel]);
 
 		vehicleid = CreateVehicle(temp_vehicle_data[v_model_id], 

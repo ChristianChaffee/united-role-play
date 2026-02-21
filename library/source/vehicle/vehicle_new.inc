@@ -314,6 +314,8 @@ enum vehicle_info_struct
 
 	v_owner,
 	v_price,
+
+	v_fraction_id
 }
 new vehicle_info[MAX_VEHICLES][vehicle_info_struct];
 new const vehicle_info_empty[vehicle_info_struct] = {
@@ -340,5 +342,7 @@ new const vehicle_info_empty[vehicle_info_struct] = {
 	Text3D:-1,
 
 	0,
+	0,
+
 	0
 };
