@@ -39,7 +39,6 @@ stock Fraction:ShowMembersUI(playerid){
 	SetPVarInt(playerid, "Fraction_InMembersUI", 1);
 	cef_emit_event(playerid, "showFactionMembers");
 
-	#warning MAKE_AFK
 	for(new i, j = GetPlayerPoolSize(); i <= j; i++){
 		if(!IsPlayerConnected(i) && !player_logged[i]) continue;
 		if(GetPlayerData(i, p_fraction) != GetPlayerData(playerid, p_fraction)) continue;
@@ -49,7 +48,7 @@ stock Fraction:ShowMembersUI(playerid){
 			CEFINT(i),
 			CEFSTR(fraction_ranks[GetPlayerFractionIndex(i)][GetPlayerData(i, p_fraction_rank) - 1]),
 			CEFINT(GetPlayerData(i, p_fraction_rank)),
-			CEFINT(0),
+			CEFINT(player_afk[playerid]),
 			CEFINT((GetPlayerData(i, p_fraction_duty)) ? (0) : (1)));
 	}
 	return true;

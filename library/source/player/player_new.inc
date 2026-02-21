@@ -84,6 +84,7 @@ enum player_info_struct
 }
 new player_info[MAX_PLAYERS][player_info_struct];
 new player_logged[MAX_PLAYERS] = { false, ... };
+new player_afk[MAX_PLAYERS] = { 0, ... };
 
 new const player_info_default[player_info_struct] = {
 	0,

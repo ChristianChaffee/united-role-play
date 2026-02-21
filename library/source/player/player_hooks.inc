@@ -33,6 +33,20 @@ hook function SetPlayerDrunkLevel(playerid, level){
 
 //==============================================================================
 hook stock OnPlayerSecondUpdate(playerid){
+	if(IsPlayerAFK(playerid)){
+		player_afk[playerid]++;
+	}
+	if(!IsPlayerAFK(playerid) && player_afk[playerid] > 0){
+		small_string[0] = EOS;
+		format(small_string, sizeof(small_string),
+			"Вы простояли в AFK %d секунд(-ы).",
+			player_afk[playerid]);
+		SendClientMessage(playerid, COLOR_GREEN, small_string);
+		small_string[0] = EOS;
+
+		player_afk[playerid] = 0;
+	}
+
 	if(GetPVarType(playerid, "Mask") && GetPVarType(playerid, "Mask_Timer") && GetPVarInt(playerid, "Mask_Timer") > 0){
 		SetPVarInt(playerid, "Mask_Timer", GetPVarInt(playerid, "Mask_Timer") - 1);
 		if(GetPVarInt(playerid, "Mask_Timer") <= 0){

@@ -719,5 +719,13 @@ public OnUserChangeLayout(playerid, layout[]){
     return 1;
 }
 
+public OnPlayerEnterAFK(playerid){
+    return 1;
+}
+
+public OnPlayerExitAFK(playerid){
+    return 1;
+}
+
 FixSVarString(str[], size = sizeof(str))
     for (new i = 0; ((str[i] &= 0xFF) != '\0') && (++i != size);) {} 
