@@ -9,3 +9,4 @@ forward OnUserChangeLayout(playerid, layout[]);
 
 native SetChatStatus(playerid, bool:status);
 native GetUserLayout(playerid, string_return[], size = sizeof(string_return));
+native QuitGameForPlayer(playerid);

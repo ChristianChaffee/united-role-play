@@ -49,6 +49,7 @@ new command_info[][command_info_struct] = {
 	{"/maskoff", "снять маску", COMMAND_TYPE_GENERAL},
 	{"/time", "взглянуть на часы", COMMAND_TYPE_GENERAL},
 	{"/phone", "достать телефон", COMMAND_TYPE_GENERAL},
+	{"/q", "выйти из игры", COMMAND_TYPE_GENERAL},
 
 	{"/park", "припарковать личное транспортное средство", COMMAND_TYPE_VEHICLE},
 	{"/lock", "открыть/закрыть транспортное средство", COMMAND_TYPE_VEHICLE},

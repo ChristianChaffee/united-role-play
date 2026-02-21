@@ -78,3 +78,10 @@ CMD:time(playerid){
 	ApplyAnimation(playerid, "COP_AMBIENT", "Coplook_watch", 4.1, 0, 0, 0, 0, 2000, 1);
 	return true;
 }
+
+CMD:q(playerid){
+	if(!IsPlayerConnected(playerid)) return false;
+
+	QuitGameForPlayer(playerid);
+	return true;
+}
